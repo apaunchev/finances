@@ -1,0 +1,8 @@
+html {
+  font-family: sans-serif;
+}
+
+[ng-click] {
+  cursor: pointer;
+  color: dimgrey;
+}

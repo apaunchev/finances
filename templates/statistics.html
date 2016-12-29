@@ -1,0 +1,50 @@
+<h4>Overall</h4>
+<dl>
+  <dt>Balance</dt>
+  <dd ng-bind="balance | currency"></dd>
+</dl>
+
+<h4>This week</h4>
+<dl>
+  <dt>Income</dt>
+  <dd ng-bind="weeklyIncome | currency"></dd>
+
+  <dt>Expenses</dt>
+  <dd ng-bind="weeklyExpenses | currency"></dd>
+
+  <dt>Highest income</dt>
+  <dd ng-bind="weeklyHighestIncome | currency"></dd>
+
+  <dt>Highest expense</dt>
+  <dd ng-bind="weeklyHighestExpense | currency"></dd>
+</dl>
+
+<h4>This month</h4>
+<dl>
+  <dt>Income</dt>
+  <dd ng-bind="monthlyIncome | currency"></dd>
+
+  <dt>Expenses</dt>
+  <dd ng-bind="monthlyExpenses | currency"></dd>
+
+  <dt>Highest income</dt>
+  <dd ng-bind="monthlyHighestIncome | currency"></dd>
+
+  <dt>Highest expense</dt>
+  <dd ng-bind="monthlyHighestExpense | currency"></dd>
+</dl>
+
+<h4>This year</h4>
+<dl>
+  <dt>Income</dt>
+  <dd ng-bind="yearlyIncome | currency"></dd>
+
+  <dt>Expenses</dt>
+  <dd ng-bind="yearlyExpenses | currency"></dd>
+
+  <dt>Highest income</dt>
+  <dd ng-bind="yearlyHighestIncome | currency"></dd>
+
+  <dt>Highest expense</dt>
+  <dd ng-bind="yearlyHighestExpense | currency"></dd>
+</dl>

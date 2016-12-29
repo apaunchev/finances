@@ -1,0 +1,22 @@
+<table class="categories-list">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>Spent</th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr ng-repeat="c in $storage.categories">
+        <td>{{ c.name }}</td>
+        <td>{{ c.spent | currency }}</td>
+        <td><a ng-click="deleteCategory(c)">delete</a></td>
+      </tr>
+    </tbody>
+</table>
+
+<form id="add-category-form" ng-submit="addCategory()">
+  <input type="text" placeholder="name" ng-model="category.name" required>
+  <input type="submit" value="+">
+</form>

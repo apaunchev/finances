@@ -1,0 +1,33 @@
+<header>
+  <p>{{ amountLeft | currency:"$":0 }} left to spend today</p>
+</header>
+
+<h2>Expenses</h2>
+
+<form id="expenses-form" ng-submit="addExpense()">
+  <input id="expense-date" type="date" ng-model="expense.date" required>
+  <input id="expense-description" type="text" placeholder="Description" ng-model="expense.description" required>
+  <input id="expense-amount" type="number" min="0.01" step="0.01" placeholder="Amount" ng-model="expense.amount" required>
+  <select id="expense-category" ng-model="expense.category">
+    <option ng-repeat="c in $storage.categories" value="{{ c.id }}">{{ c.name }}</option>
+  </select>
+  <input id="expense-isRecurring" type="checkbox" ng-model="expense.isRecurring"> recurring?
+  <input type="submit" value="+">
+</form>
+
+<ul class="expenses-list">
+  <li ng-repeat="e in $storage.expenses">{{ e.date | date }} - {{ e.description }} - {{ e.amount | currency }} - {{ e.categoryName }} <span ng-show="e.type === 'fixed'">- ↺</span> - <a ng-click="deleteExpense(e)">delete</a></li>
+</ul>
+
+<h2>Income</h2>
+
+<form id="income-form" ng-submit="addIncome()">
+  <input id="income-date" type="date" ng-model="income.date">
+  <input id="income-description" type="text" placeholder="Description" ng-model="income.description">
+  <input id="income-amount" type="number" min="0.01" step="0.01" placeholder="Amount" ng-model="income.amount">
+  <input type="submit" value="+">
+</form>
+
+<ul class="income-list">
+  <li ng-repeat="i in $storage.income">{{ i.date | date }} - {{ i.description }} - {{ i.amount | currency }} - <a ng-click="deleteIncome(i)">delete</a></li>
+</ul>

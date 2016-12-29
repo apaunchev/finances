@@ -1,0 +1,15 @@
+{
+  "name": "finances",
+  "version": "0.0.1",
+  "scripts": {
+    "start": "browser-sync start --server --files '**/*.css, **/*.html, **/*.js'"
+  },
+  "devDependencies": {
+    "browser-sync": "^2.12.5"
+  },
+  "dependencies": {
+    "angular": "^1.6.1",
+    "angular-route": "^1.6.1",
+    "ngstorage": "^0.3.11"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "categories": [
+    {
+      "id": 0,
+      "name": "Unsorted"
+    },
+    {
+      "id": 1,
+      "name": "Groceries"
+    },
+    {
+      "id": 2,
+      "name": "Travel"
+    },
+    {
+      "id": 3,
+      "name": "Car"
+    },
+    {
+      "id": 4,
+      "name": "Clothes"
+    },
+    {
+      "id": 5,
+      "name": "Entertainment"
+    },
+    {
+      "id": 6,
+      "name": "Electronics"
+    },
+    {
+      "id": 7,
+      "name": "Services"
+    }
+  ],
+  "expenses": [
+    {
+      "id": "56981c27-5b16-4283-b6df-5581e12e9494",
+      "type": "variable",
+      "amount": 59.90,
+      "description": "Video Game",
+      "date": 1482329734000,
+      "category": 5
+    },
+    {
+      "id": "e9108c99-7c20-48bf-b23b-d5d1e87819db",
+      "type": "fixed",
+      "amount": 24.90,
+      "description": "Phone Bill",
+      "date": 1482848134000,
+      "category": 7
+    }
+  ],
+  "income": [
+    {
+      "id": "a2da9e5e-afbf-49e2-93ab-ff32680ed81e",
+      "amount": 1000,
+      "description": "Salary",
+      "date": 1481760000000
+    }
+  ]
+}
