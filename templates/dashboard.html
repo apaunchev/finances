@@ -1,33 +1,65 @@
-<header>
-  <p>{{ amountLeft | currency:"$":0 }} left to spend today</p>
-</header>
+<section class="bb b--black-10 pv4 ph3 pa5-m ph6-l pv5-l">
+  <p class="f5 f2-ns mw8 measure lh-copy" ng-cloak>You have {{ amountLeft | currency:"$":0 }} left to spend today.</p>
+</section>
 
-<h2>Expenses</h2>
+<section class="bb b--black-10 pv4 ph3 pa5-m ph6-l pv5-l">
+  <h1 class="fw4 f6 ttu tracked pb3">Expenses</h1>
 
-<form id="expenses-form" ng-submit="addExpense()">
-  <input id="expense-date" type="date" ng-model="expense.date" required>
-  <input id="expense-description" type="text" placeholder="Description" ng-model="expense.description" required>
-  <input id="expense-amount" type="number" min="0.01" step="0.01" placeholder="Amount" ng-model="expense.amount" required>
-  <select id="expense-category" ng-model="expense.category">
-    <option ng-repeat="c in $storage.categories" value="{{ c.id }}">{{ c.name }}</option>
-  </select>
-  <input id="expense-isRecurring" type="checkbox" ng-model="expense.isRecurring"> recurring?
-  <input type="submit" value="+">
-</form>
+  <form class="mb4" id="expenses-form" ng-submit="addExpense()">
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" id="expense-date" type="date" ng-model="expense.date" required>
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" id="expense-description" type="text" placeholder="Description" ng-model="expense.description" required>
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" id="expense-amount" type="number" min="0.01" step="0.01" placeholder="Amount" ng-model="expense.amount" required>
+      <!--<select class="bg-white ba b--black-20 pa2 mb2 db w-100" id="expense-category" ng-model="expense.category">
+        <option ng-repeat="c in $storage.categories" value="{{ c.id }}">{{ c.name }}</option>
+      </select>-->
+      <!--<input id="expense-isRecurring" type="checkbox" ng-model="expense.isRecurring"> recurring?-->
+      <input class="f5 no-underline pointer black bg-white bg-animate hover-bg-black hover-white pa2 ba border-box w-100 center" type="submit" value="Add">
+  </form>
 
-<ul class="expenses-list">
-  <li ng-repeat="e in $storage.expenses">{{ e.date | date }} - {{ e.description }} - {{ e.amount | currency }} - {{ e.categoryName }} <span ng-show="e.type === 'fixed'">- ↺</span> - <a ng-click="deleteExpense(e)">delete</a></li>
-</ul>
+  <table class="collapse ba br2 b--black-10 pv2 ph3 w-100">
+    <tbody>
+      <tr class="striped--near-white">
+        <th class="pv2 ph3 tl f6 fw6 ttu">Date</th>
+        <th class="pv2 ph3 tl f6 fw6 ttu">Description</th>
+        <th class="pv2 ph3 tl f6 fw6 ttu">Amount</th>
+        <th class="pv2 ph3 tl f6 fw6 ttu">Category</th>
+        <th class="pv2 ph3 tl f6 fw6 ttu">Actions</th>
+      </tr>
+      <tr class="striped--near-white" ng-repeat="e in $storage.expenses">
+        <td class="pv2 ph3">{{ e.date | date }}<span title="This is a recurring expense." ng-show="e.type === 'fixed'"> ↺</span></td>
+        <td class="pv2 ph3 ">{{ e.description }}</td>
+        <td class="pv2 ph3">{{ e.amount | currency }}</td>
+        <td class="pv2 ph3 ">{{ e.categoryName }}</td>
+        <td class="pv2 ph3"><a ng-click="deleteExpense(e)"> delete</a></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
 
-<h2>Income</h2>
+<section class="bb b--black-10 pv4 ph3 pa5-m ph6-l pv5-l">
+  <h1 class="fw4 f6 ttu tracked pb3">Income</h1>
 
-<form id="income-form" ng-submit="addIncome()">
-  <input id="income-date" type="date" ng-model="income.date">
-  <input id="income-description" type="text" placeholder="Description" ng-model="income.description">
-  <input id="income-amount" type="number" min="0.01" step="0.01" placeholder="Amount" ng-model="income.amount">
-  <input type="submit" value="+">
-</form>
+  <form class="mb4" id="income-form" ng-submit="addIncome()">
+    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" id="income-date" type="date" ng-model="income.date" required>
+    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" id="income-description" type="text" placeholder="Description" ng-model="income.description" required>
+    <input class="input-reset ba b--black-20 pa2 mb2 db w-100" id="income-amount" type="number" min="0.01" step="0.01" placeholder="Amount" ng-model="income.amount" required>
+    <input class="f5 no-underline pointer black bg-white bg-animate hover-bg-black hover-white pa2 ba border-box w-100 center" type="submit" value="Add">
+  </form>
 
-<ul class="income-list">
-  <li ng-repeat="i in $storage.income">{{ i.date | date }} - {{ i.description }} - {{ i.amount | currency }} - <a ng-click="deleteIncome(i)">delete</a></li>
-</ul>
+  <table class="collapse ba br2 b--black-10 pv2 ph3 w-100">
+    <tbody>
+      <tr class="striped--near-white">
+        <th class="pv2 ph3 tl f6 fw6 ttu">Date</th>
+        <th class="pv2 ph3 tl f6 fw6 ttu">Description</th>
+        <th class="pv2 ph3 tl f6 fw6 ttu">Amount</th>
+        <th class="pv2 ph3 tl f6 fw6 ttu">Actions</th>
+      </tr>
+      <tr class="striped--near-white" ng-repeat="i in $storage.income">
+        <td class="pv2 ph3">{{ i.date | date }}</td>
+        <td class="pv2 ph3">{{ i.description }}</td>
+        <td class="pv2 ph3">{{ i.amount | currency }}</td>
+        <td class="pv2 ph3"><a ng-click="deleteIncome(i)">delete</a></td>
+      </tr>
+    </tbody>
+  </table>
+</section>

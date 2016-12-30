@@ -2,18 +2,26 @@
 <html lang="en" ng-app="finances">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <title>Finances</title>
+  
+  <link rel="stylesheet" href="css/tachyons.min.css"/>
   <link rel="stylesheet" href="css/app.css">
 </head>
-<body>
-  <ul class="menu">
-    <li><a href="/#!/">dashboard</a></li>
-    <li><a href="/#!/statistics">statistics</a></li>
-    <li><a href="/#!/categories">categories</a></li>
-    <li><a href="/#!/settings">settings</a></li>
-  </ul>
+<body class="avenir">
+  <nav class="bb b--black-10 w-100 pa3 ph5-m ph6-l border-box">
+    <div class="flex flex-row items-center justify-between">
+      <div>
+        <a class="f6 f5-ns fw6 link dim black-80 dim pv2 mr3 mr4-ns dib" href="/#!/">dashboard</a>
+        <a class="f6 f5-ns fw6 link dim black-80 dim pv2 mr3 mr4-ns dib" href="/#!/statistics">statistics</a>
+        <a class="f6 f5-ns fw6 link dim black-80 dim pv2 mr3 mr4-ns dib" href="/#!/categories">categories</a>
+        <a class="f6 f5-ns fw6 link dim black-80 dim pv2 mr3 mr4-ns dib" href="/#!/settings">settings</a>
+      </div>
+    </div>
+  </nav>
 
-  <div ng-view></div>
+  <main ng-view></main>
 
   <script src="node_modules/angular/angular.js"></script>
   <script src="node_modules/angular-route/angular-route.js"></script>

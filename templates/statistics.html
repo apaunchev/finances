@@ -1,50 +1,67 @@
-<h4>Overall</h4>
-<dl>
-  <dt>Balance</dt>
-  <dd ng-bind="balance | currency"></dd>
-</dl>
+<section class="bb b--black-10 pv4 ph3 pa5-m ph6-l pv5-l">
+  <h1 class="fw4 f6 ttu tracked pb3">Overall</h1>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Balance</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="balance | currency"></dd>
+  </dl>
+</section>
 
-<h4>This week</h4>
-<dl>
-  <dt>Income</dt>
-  <dd ng-bind="weeklyIncome | currency"></dd>
+<section class="bb b--black-10 pv4 ph3 pa5-m ph6-l pv5-l">
+  <h1 class="fw4 f6 ttu tracked pb3">This week</h1>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Income</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="weeklyIncome | currency"></dd>
+  </dl>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Expenses</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="weeklyExpenses | currency">993</dd>
+  </dl>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Highest income</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="weeklyHighestIncome | currency"></dd>
+  </dl>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Highest expense</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="weeklyHighestExpense | currency"></dd>
+  </dl>
+</section>
 
-  <dt>Expenses</dt>
-  <dd ng-bind="weeklyExpenses | currency"></dd>
+<section class="bb b--black-10 pv4 ph3 pa5-m ph6-l pv5-l">
+  <h1 class="fw4 f6 ttu tracked pb3">This month</h1>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Income</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="monthlyIncome | currency"></dd>
+  </dl>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Expenses</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="monthlyExpenses | currency">993</dd>
+  </dl>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Highest income</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="monthlyHighestIncome | currency"></dd>
+  </dl>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Highest expense</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="monthlyHighestExpense | currency"></dd>
+  </dl>
+</section>
 
-  <dt>Highest income</dt>
-  <dd ng-bind="weeklyHighestIncome | currency"></dd>
-
-  <dt>Highest expense</dt>
-  <dd ng-bind="weeklyHighestExpense | currency"></dd>
-</dl>
-
-<h4>This month</h4>
-<dl>
-  <dt>Income</dt>
-  <dd ng-bind="monthlyIncome | currency"></dd>
-
-  <dt>Expenses</dt>
-  <dd ng-bind="monthlyExpenses | currency"></dd>
-
-  <dt>Highest income</dt>
-  <dd ng-bind="monthlyHighestIncome | currency"></dd>
-
-  <dt>Highest expense</dt>
-  <dd ng-bind="monthlyHighestExpense | currency"></dd>
-</dl>
-
-<h4>This year</h4>
-<dl>
-  <dt>Income</dt>
-  <dd ng-bind="yearlyIncome | currency"></dd>
-
-  <dt>Expenses</dt>
-  <dd ng-bind="yearlyExpenses | currency"></dd>
-
-  <dt>Highest income</dt>
-  <dd ng-bind="yearlyHighestIncome | currency"></dd>
-
-  <dt>Highest expense</dt>
-  <dd ng-bind="yearlyHighestExpense | currency"></dd>
-</dl>
+<section class="bb b--black-10 pv4 ph3 pa5-m ph6-l pv5-l">
+  <h1 class="fw4 f6 ttu tracked pb3">This year</h1>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Income</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="yearlyIncome | currency"></dd>
+  </dl>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Expenses</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="yearlyExpenses | currency">993</dd>
+  </dl>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Highest income</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="yearlyHighestIncome | currency"></dd>
+  </dl>
+  <dl class="dib mr5">
+    <dd class="f6 f5-ns ml0 mb2">Highest expense</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="yearlyHighestExpense | currency"></dd>
+  </dl>
+</section>
