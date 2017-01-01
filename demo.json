@@ -39,7 +39,7 @@
       "type": "variable",
       "amount": 59.90,
       "description": "Video Game",
-      "date": 1482329734000,
+      "date": 1483282738000,
       "category": 5
     },
     {
@@ -47,7 +47,7 @@
       "type": "fixed",
       "amount": 24.90,
       "description": "Phone Bill",
-      "date": 1482848134000,
+      "date": 1483282738000,
       "category": 7
     }
   ],
@@ -56,7 +56,7 @@
       "id": "a2da9e5e-afbf-49e2-93ab-ff32680ed81e",
       "amount": 1000,
       "description": "Salary",
-      "date": 1481760000000
+      "date": 1483282738000
     }
   ]
 }
