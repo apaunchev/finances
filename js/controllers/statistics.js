@@ -46,21 +46,21 @@ angular.module('finances.statistics', ['ngRoute'])
 
     const weeklyExpenses = $scope.$storage.expenses.filter(expense => getWeekNumber(new Date(expense.date)) === week)
     $scope.weeklyExpenses = totalAmount(weeklyExpenses)
-    $scope.weeklyHighestExpense = Math.max.apply(Math, weeklyExpenses.map(expense => expense.amount))
+    $scope.weeklyHighestExpense = $scope.weeklyExpenses > 0 ? Math.max.apply(Math, weeklyExpenses.map(expense => expense.amount)) : 0
 
     const monthlyIncome = $scope.$storage.income.filter(income => new Date(income.date).getMonth() + 1 === month)
     $scope.monthlyIncome = totalAmount(monthlyIncome)
-    $scope.monthlyHighestIncome = Math.max.apply(Math, monthlyIncome.map(income => income.amount))
+    $scope.monthlyHighestIncome = $scope.monthlyIncome > 0 ? Math.max.apply(Math, monthlyIncome.map(income => income.amount)) : 0
 
     const monthlyExpenses = $scope.$storage.expenses.filter(expense => new Date(expense.date).getMonth() + 1 === month)
     $scope.monthlyExpenses = totalAmount(monthlyExpenses)
-    $scope.monthlyHighestExpense = Math.max.apply(Math, monthlyExpenses.map(expense => expense.amount))
+    $scope.monthlyHighestExpense = $scope.monthlyExpenses > 0 ? Math.max.apply(Math, monthlyExpenses.map(expense => expense.amount)) : 0
 
     const yearlyIncome = $scope.$storage.income.filter(income => new Date(income.date).getFullYear() === year)
     $scope.yearlyIncome = totalAmount(yearlyIncome)
-    $scope.yearlyHighestIncome = Math.max.apply(Math, yearlyIncome.map(income => income.amount))
+    $scope.yearlyHighestIncome = $scope.yearlyIncome > 0 ? Math.max.apply(Math, yearlyIncome.map(income => income.amount)) : 0
 
     const yearlyExpenses = $scope.$storage.expenses.filter(expense => new Date(expense.date).getFullYear() === year)
     $scope.yearlyExpenses = totalAmount(yearlyExpenses)
-    $scope.yearlyHighestExpense = Math.max.apply(Math, yearlyExpenses.map(expense => expense.amount))
+    $scope.yearlyHighestExpense = $scope.yearlyExpenses > 0 ? Math.max.apply(Math, yearlyExpenses.map(expense => expense.amount)) : 0
   }])
