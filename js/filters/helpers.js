@@ -5,6 +5,12 @@ function totalAmount (collection) {
   return collection.reduce((a, b) => a + b.amount, 0)
 }
 
+function findHighest (collection) {
+  const highest = Math.max.apply(Math, collection.map(item => item.amount))
+  if (highest <= 0) return 0
+  return highest
+}
+
 function daysInMonth (month, year) {
   return new Date(year, month, 0).getDate()
 }
@@ -28,6 +34,7 @@ function uuid () {
 
 angular.module('finances.filters', [])
   .filter('totalAmount', [() => totalAmount])
+  .filter('findHighest', [() => findHighest])
   .filter('daysInMonth', [() => daysInMonth])
   .filter('getWeekNumber', [() => getWeekNumber])
   .filter('uuid', [() => uuid])

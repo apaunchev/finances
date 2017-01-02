@@ -11,6 +11,7 @@ angular.module('finances.statistics', ['ngRoute'])
 
   .controller('StatisticsCtrl', ['$scope', '$localStorage', '$filter', 'dataService', function ($scope, $localStorage, $filter, dataService) {
     const totalAmount = $filter('totalAmount')
+    const findHighest = $filter('findHighest')
     const getWeekNumber = $filter('getWeekNumber')
 
     $scope.$storage = $localStorage
@@ -34,7 +35,7 @@ angular.module('finances.statistics', ['ngRoute'])
     }
 
     const now = new Date()
-    const month = now.getMonth() + 1
+    const month = now.getMonth()
     const week = getWeekNumber(now)
     const year = now.getFullYear()
 
@@ -42,25 +43,25 @@ angular.module('finances.statistics', ['ngRoute'])
 
     const weeklyIncome = $scope.$storage.income.filter(income => getWeekNumber(new Date(income.date)) === week)
     $scope.weeklyIncome = totalAmount(weeklyIncome)
-    $scope.weeklyHighestIncome = $scope.weeklyIncome > 0 ? Math.max.apply(Math, weeklyIncome.map(income => income.amount)) : 0
+    $scope.weeklyHighestIncome = findHighest(weeklyIncome)
 
     const weeklyExpenses = $scope.$storage.expenses.filter(expense => getWeekNumber(new Date(expense.date)) === week)
     $scope.weeklyExpenses = totalAmount(weeklyExpenses)
-    $scope.weeklyHighestExpense = $scope.weeklyExpenses > 0 ? Math.max.apply(Math, weeklyExpenses.map(expense => expense.amount)) : 0
+    $scope.weeklyHighestExpense = findHighest(weeklyExpenses)
 
-    const monthlyIncome = $scope.$storage.income.filter(income => new Date(income.date).getMonth() + 1 === month)
+    const monthlyIncome = $scope.$storage.income.filter(income => new Date(income.date).getMonth() === month)
     $scope.monthlyIncome = totalAmount(monthlyIncome)
-    $scope.monthlyHighestIncome = $scope.monthlyIncome > 0 ? Math.max.apply(Math, monthlyIncome.map(income => income.amount)) : 0
+    $scope.monthlyHighestIncome = findHighest(monthlyIncome)
 
-    const monthlyExpenses = $scope.$storage.expenses.filter(expense => new Date(expense.date).getMonth() + 1 === month)
+    const monthlyExpenses = $scope.$storage.expenses.filter(expense => new Date(expense.date).getMonth() === month)
     $scope.monthlyExpenses = totalAmount(monthlyExpenses)
-    $scope.monthlyHighestExpense = $scope.monthlyExpenses > 0 ? Math.max.apply(Math, monthlyExpenses.map(expense => expense.amount)) : 0
+    $scope.monthlyHighestExpense = findHighest(monthlyExpenses)
 
     const yearlyIncome = $scope.$storage.income.filter(income => new Date(income.date).getFullYear() === year)
     $scope.yearlyIncome = totalAmount(yearlyIncome)
-    $scope.yearlyHighestIncome = $scope.yearlyIncome > 0 ? Math.max.apply(Math, yearlyIncome.map(income => income.amount)) : 0
+    $scope.yearlyHighestIncome = findHighest(yearlyIncome)
 
     const yearlyExpenses = $scope.$storage.expenses.filter(expense => new Date(expense.date).getFullYear() === year)
     $scope.yearlyExpenses = totalAmount(yearlyExpenses)
-    $scope.yearlyHighestExpense = $scope.yearlyExpenses > 0 ? Math.max.apply(Math, yearlyExpenses.map(expense => expense.amount)) : 0
+    $scope.yearlyHighestExpense = findHighest(yearlyExpenses)
   }])
