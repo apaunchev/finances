@@ -21,6 +21,17 @@ angular.module('finances.dashboard', ['ngRoute'])
     $scope.$storage.income = $scope.$storage.income || []
     $scope.$storage.categories = $scope.$storage.categories || []
 
+    $scope.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    $scope.months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    $scope.years = [2016, 2017, 2018]
+    $scope.selectedMonth = now.getMonth()
+    $scope.selectedYear = now.getFullYear()
+
+    $scope.updateView = function (el) {
+      const elDate = new Date(el.date)
+      return elDate.getMonth() === $scope.selectedMonth && elDate.getFullYear() === $scope.selectedYear
+    }
+
     if (!$scope.$storage.expenses.length) {
       dataService.fetchData('expenses')
         .then(response => {
