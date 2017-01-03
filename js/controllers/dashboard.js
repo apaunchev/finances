@@ -1,4 +1,4 @@
-/* global angular */
+/* global _, angular */
 
 angular.module('finances.dashboard', ['ngRoute'])
 
@@ -23,7 +23,6 @@ angular.module('finances.dashboard', ['ngRoute'])
 
     $scope.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     $scope.months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    $scope.years = [2016, 2017, 2018]
     $scope.selectedMonth = now.getMonth()
     $scope.selectedYear = now.getFullYear()
 
@@ -95,6 +94,13 @@ angular.module('finances.dashboard', ['ngRoute'])
     function updateData () {
       const amountLeft = ((totalAmount($scope.$storage.income) - totalAmount($scope.$storage.expenses)) / daysInMonth(now.getMonth() + 1, now.getYear()))
       $scope.amountLeft = amountLeft > 0 ? amountLeft : 0
+
+      $scope.years = _.chain($scope.$storage.expenses)
+        .union($scope.$storage.income)
+        .groupBy(expense => new Date(expense.date).getFullYear())
+        .keys()
+        .map(year => parseInt(year))
+        .value()
 
       $scope.expense = {}
       $scope.expense.date = now
