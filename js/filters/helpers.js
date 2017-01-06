@@ -6,7 +6,7 @@ function totalAmount (collection) {
 }
 
 function findHighest (collection) {
-  const highest = Math.max.apply(Math, collection.map(item => item.amount))
+  var highest = Math.max.apply(Math, collection.map(item => item.amount))
   if (highest <= 0) return 0
   return highest
 }
@@ -32,9 +32,20 @@ function uuid () {
   })
 }
 
+function formatCurrency (input, currency) {
+  if (isNaN(input)) {
+    return input
+  }
+
+  input = Math.round(input)
+
+  return `${input} ${currency}`
+}
+
 angular.module('finances.filters', [])
   .filter('totalAmount', [() => totalAmount])
   .filter('findHighest', [() => findHighest])
   .filter('daysInMonth', [() => daysInMonth])
   .filter('getWeekNumber', [() => getWeekNumber])
   .filter('uuid', [() => uuid])
+  .filter('formatCurrency', [() => formatCurrency])

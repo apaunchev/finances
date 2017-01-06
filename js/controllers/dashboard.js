@@ -20,16 +20,12 @@ angular.module('finances.dashboard', ['ngRoute'])
     $scope.$storage.expenses = $scope.$storage.expenses || []
     $scope.$storage.income = $scope.$storage.income || []
     $scope.$storage.categories = $scope.$storage.categories || []
+    $scope.$storage.settings = $scope.$storage.settings || {}
 
     $scope.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
     $scope.months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     $scope.selectedMonth = now.getMonth()
     $scope.selectedYear = now.getFullYear()
-
-    $scope.updateView = function (el) {
-      const elDate = new Date(el.date)
-      return elDate.getMonth() === $scope.selectedMonth && elDate.getFullYear() === $scope.selectedYear
-    }
 
     if (!$scope.$storage.expenses.length) {
       dataService.fetchData('expenses')
@@ -55,9 +51,22 @@ angular.module('finances.dashboard', ['ngRoute'])
         .catch(error => console.error(error))
     }
 
+    if (angular.equals($scope.$storage.settings, {})) {
+      dataService.fetchData('settings')
+        .then(response => {
+          $scope.$storage.settings = response
+        })
+        .catch(error => console.error(error))
+    }
+
     $scope.$watch('$storage', () => {
       updateData()
     }, true)
+
+    $scope.updateView = function (el) {
+      const elDate = new Date(el.date)
+      return elDate.getMonth() === $scope.selectedMonth && elDate.getFullYear() === $scope.selectedYear
+    }
 
     $scope.addExpense = function () {
       const newExpense = {
@@ -94,6 +103,8 @@ angular.module('finances.dashboard', ['ngRoute'])
     function updateData () {
       const amountLeft = ((totalAmount($scope.$storage.income) - totalAmount($scope.$storage.expenses)) / daysInMonth(now.getMonth() + 1, now.getYear()))
       $scope.amountLeft = amountLeft > 0 ? amountLeft : 0
+
+      $scope.selectedCurrency = $scope.$storage.settings.currency
 
       $scope.years = _.chain($scope.$storage.expenses)
         .union($scope.$storage.income)

@@ -15,6 +15,7 @@ angular.module('finances.categories', ['ngRoute'])
     $scope.$storage = $localStorage
     $scope.$storage.categories = $scope.$storage.categories || []
     $scope.$storage.expenses = $scope.$storage.expenses || []
+    $scope.$storage.settings = $scope.$storage.settings || {}
 
     if (!$scope.$storage.categories.length) {
       dataService.fetchData('categories')
@@ -28,6 +29,14 @@ angular.module('finances.categories', ['ngRoute'])
       dataService.fetchData('expenses')
         .then(response => {
           $scope.$storage.expenses = response
+        })
+        .catch(error => console.error(error))
+    }
+
+    if (angular.equals($scope.$storage.settings, {})) {
+      dataService.fetchData('settings')
+        .then(response => {
+          $scope.$storage.settings = response
         })
         .catch(error => console.error(error))
     }
