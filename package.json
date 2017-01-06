@@ -10,6 +10,7 @@
   "dependencies": {
     "angular": "^1.6.1",
     "angular-route": "^1.6.1",
-    "ngstorage": "^0.3.11"
+    "ngstorage": "^0.3.11",
+    "underscore": "^1.8.3"
   }
 }
