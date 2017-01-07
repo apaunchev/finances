@@ -1,5 +1,5 @@
 <section class="bb b--black-10 pv4 ph3 pa5-m ph6-l pv5-l">
-  <p class="f5 f2-ns mw8 measure lh-copy" ng-cloak>You have {{ amountLeft | formatCurrency:$storage.settings.currency }} left to spend today.</p>
+  <p class="f5 f2-ns mw8 measure lh-copy" ng-cloak>You have {{ amountLeft | formatCurrency:$storage.appData.settings.currency }} left to spend today.</p>
 
   <select ng-options="y for y in years" ng-model="selectedYear"></select>
   <select ng-options="monthNames[m] for m in months" ng-model="selectedMonth"></select>
@@ -13,7 +13,7 @@
       <input class="input-reset ba b--black-20 pa2 mb2 db w-100" id="expense-description" type="text" placeholder="Description" ng-model="expense.description" required>
       <input class="input-reset ba b--black-20 pa2 mb2 db w-100" id="expense-amount" type="number" min="0.01" step="0.01" placeholder="Amount" ng-model="expense.amount" required>
       <!--<select class="bg-white ba b--black-20 pa2 mb2 db w-100" id="expense-category" ng-model="expense.category">
-        <option ng-repeat="c in $storage.categories" value="{{ c.id }}">{{ c.name }}</option>
+        <option ng-repeat="c in $storage.appData.categories" value="{{ c.id }}">{{ c.name }}</option>
       </select>-->
       <!--<input id="expense-isRecurring" type="checkbox" ng-model="expense.isRecurring"> recurring?-->
       <input class="f5 no-underline pointer black bg-white bg-animate hover-bg-black hover-white pa2 ba border-box w-100 center" type="submit" value="Add">
@@ -28,10 +28,10 @@
         <th class="pv2 ph3 tl f6 fw6 ttu">Category</th>
         <th class="pv2 ph3 tl f6 fw6 ttu">Actions</th>
       </tr>
-      <tr class="striped--near-white" ng-repeat="e in $storage.expenses | filter:updateView">
+      <tr class="striped--near-white" ng-repeat="e in $storage.appData.expenses | filter:updateView">
         <td class="pv2 ph3">{{ e.date | date }}<span title="This is a recurring expense." ng-show="e.type === 'fixed'"> ↺</span></td>
         <td class="pv2 ph3 ">{{ e.description }}</td>
-        <td class="pv2 ph3">{{ e.amount | formatCurrency:$storage.settings.currency }}</td>
+        <td class="pv2 ph3">{{ e.amount | formatCurrency:$storage.appData.settings.currency }}</td>
         <td class="pv2 ph3 ">{{ e.categoryName }}</td>
         <td class="pv2 ph3"><a ng-click="deleteExpense(e)"> delete</a></td>
       </tr>
@@ -57,10 +57,10 @@
         <th class="pv2 ph3 tl f6 fw6 ttu">Amount</th>
         <th class="pv2 ph3 tl f6 fw6 ttu">Actions</th>
       </tr>
-      <tr class="striped--near-white" ng-repeat="i in $storage.income | filter:updateView">
+      <tr class="striped--near-white" ng-repeat="i in $storage.appData.income | filter:updateView">
         <td class="pv2 ph3">{{ i.date | date }}</td>
         <td class="pv2 ph3">{{ i.description }}</td>
-        <td class="pv2 ph3">{{ i.amount | formatCurrency:$storage.settings.currency }}</td>
+        <td class="pv2 ph3">{{ i.amount | formatCurrency:$storage.appData.settings.currency }}</td>
         <td class="pv2 ph3"><a ng-click="deleteIncome(i)">delete</a></td>
       </tr>
     </tbody>

@@ -2,7 +2,7 @@
   <h1 class="fw4 f6 ttu tracked pb3">Overall</h1>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Balance</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="balance | formatCurrency:$storage.settings.currency"></dd>
+    <dd class="f3 f2-ns ml0" ng-bind="balance | formatCurrency:$storage.appData.settings.currency"></dd>
   </dl>
 </section>
 
@@ -10,19 +10,19 @@
   <h1 class="fw4 f6 ttu tracked pb3">This week</h1>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Income</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="weeklyIncome | formatCurrency:$storage.settings.currency"></dd>
+    <dd class="f3 f2-ns ml0" ng-bind="weeklyIncome | formatCurrency:$storage.appData.settings.currency"></dd>
   </dl>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Expenses</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="weeklyExpenses | formatCurrency:$storage.settings.currency">993</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="weeklyExpenses | formatCurrency:$storage.appData.settings.currency">993</dd>
   </dl>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Highest income</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="weeklyHighestIncome | formatCurrency:$storage.settings.currency"></dd>
+    <dd class="f3 f2-ns ml0" ng-bind="weeklyHighestIncome | formatCurrency:$storage.appData.settings.currency"></dd>
   </dl>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Highest expense</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="weeklyHighestExpense | formatCurrency:$storage.settings.currency"></dd>
+    <dd class="f3 f2-ns ml0" ng-bind="weeklyHighestExpense | formatCurrency:$storage.appData.settings.currency"></dd>
   </dl>
 </section>
 
@@ -30,19 +30,19 @@
   <h1 class="fw4 f6 ttu tracked pb3">This month</h1>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Income</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="monthlyIncome | formatCurrency:$storage.settings.currency"></dd>
+    <dd class="f3 f2-ns ml0" ng-bind="monthlyIncome | formatCurrency:$storage.appData.settings.currency"></dd>
   </dl>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Expenses</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="monthlyExpenses | formatCurrency:$storage.settings.currency">993</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="monthlyExpenses | formatCurrency:$storage.appData.settings.currency">993</dd>
   </dl>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Highest income</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="monthlyHighestIncome | formatCurrency:$storage.settings.currency"></dd>
+    <dd class="f3 f2-ns ml0" ng-bind="monthlyHighestIncome | formatCurrency:$storage.appData.settings.currency"></dd>
   </dl>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Highest expense</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="monthlyHighestExpense | formatCurrency:$storage.settings.currency"></dd>
+    <dd class="f3 f2-ns ml0" ng-bind="monthlyHighestExpense | formatCurrency:$storage.appData.settings.currency"></dd>
   </dl>
 </section>
 
@@ -50,18 +50,18 @@
   <h1 class="fw4 f6 ttu tracked pb3">This year</h1>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Income</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="yearlyIncome | formatCurrency:$storage.settings.currency"></dd>
+    <dd class="f3 f2-ns ml0" ng-bind="yearlyIncome | formatCurrency:$storage.appData.settings.currency"></dd>
   </dl>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Expenses</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="yearlyExpenses | formatCurrency:$storage.settings.currency">993</dd>
+    <dd class="f3 f2-ns ml0" ng-bind="yearlyExpenses | formatCurrency:$storage.appData.settings.currency">993</dd>
   </dl>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Highest income</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="yearlyHighestIncome | formatCurrency:$storage.settings.currency"></dd>
+    <dd class="f3 f2-ns ml0" ng-bind="yearlyHighestIncome | formatCurrency:$storage.appData.settings.currency"></dd>
   </dl>
   <dl class="dib mr5">
     <dd class="f6 f5-ns ml0 mb2">Highest expense</dd>
-    <dd class="f3 f2-ns ml0" ng-bind="yearlyHighestExpense | formatCurrency:$storage.settings.currency"></dd>
+    <dd class="f3 f2-ns ml0" ng-bind="yearlyHighestExpense | formatCurrency:$storage.appData.settings.currency"></dd>
   </dl>
 </section>

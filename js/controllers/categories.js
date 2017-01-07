@@ -13,30 +13,11 @@ angular.module('finances.categories', ['ngRoute'])
     const uuid = $filter('uuid')
 
     $scope.$storage = $localStorage
-    $scope.$storage.categories = $scope.$storage.categories || []
-    $scope.$storage.expenses = $scope.$storage.expenses || []
-    $scope.$storage.settings = $scope.$storage.settings || {}
 
-    if (!$scope.$storage.categories.length) {
-      dataService.fetchData('categories')
+    if (typeof $localStorage.appData === 'undefined') {
+      dataService.fetchData()
         .then(response => {
-          $scope.$storage.categories = response
-        })
-        .catch(error => console.error(error))
-    }
-
-    if (!$scope.$storage.expenses.length) {
-      dataService.fetchData('expenses')
-        .then(response => {
-          $scope.$storage.expenses = response
-        })
-        .catch(error => console.error(error))
-    }
-
-    if (angular.equals($scope.$storage.settings, {})) {
-      dataService.fetchData('settings')
-        .then(response => {
-          $scope.$storage.settings = response
+          $localStorage.appData = response
         })
         .catch(error => console.error(error))
     }
@@ -45,20 +26,8 @@ angular.module('finances.categories', ['ngRoute'])
       updateData()
     }, true)
 
-    function updateData () {
-      $scope.$storage.categories.map(category => {
-        category.spent = $scope.$storage.expenses
-          .filter(expense => expense.category === category.id)
-          .reduce((a, b) => {
-            return a + b.amount
-          }, 0)
-
-        return category
-      })
-    }
-
     $scope.addCategory = () => {
-      $scope.$storage.categories.push({
+      $localStorage.appData.categories.push({
         id: uuid(),
         name: $scope.category.name
       })
@@ -67,6 +36,18 @@ angular.module('finances.categories', ['ngRoute'])
     }
 
     $scope.deleteCategory = (category) => {
-      $scope.$storage.categories.splice($scope.$storage.categories.indexOf(category), 1)
+      $localStorage.appData.categories.splice($localStorage.appData.categories.indexOf(category), 1)
+    }
+
+    function updateData () {
+      $localStorage.appData.categories.map(category => {
+        category.spent = $localStorage.appData.expenses
+          .filter(expense => expense.category === category.id)
+          .reduce((a, b) => {
+            return a + b.amount
+          }, 0)
+
+        return category
+      })
     }
   }])

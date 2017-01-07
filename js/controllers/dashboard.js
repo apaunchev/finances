@@ -17,44 +17,11 @@ angular.module('finances.dashboard', ['ngRoute'])
     const now = new Date()
 
     $scope.$storage = $localStorage
-    $scope.$storage.expenses = $scope.$storage.expenses || []
-    $scope.$storage.income = $scope.$storage.income || []
-    $scope.$storage.categories = $scope.$storage.categories || []
-    $scope.$storage.settings = $scope.$storage.settings || {}
 
-    $scope.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    $scope.months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
-    $scope.selectedMonth = now.getMonth()
-    $scope.selectedYear = now.getFullYear()
-
-    if (!$scope.$storage.expenses.length) {
-      dataService.fetchData('expenses')
+    if (typeof $localStorage.appData === 'undefined') {
+      dataService.fetchData()
         .then(response => {
-          $scope.$storage.expenses = response
-        })
-        .catch(error => console.error(error))
-    }
-
-    if (!$scope.$storage.income.length) {
-      dataService.fetchData('income')
-        .then(response => {
-          $scope.$storage.income = response
-        })
-        .catch(error => console.error(error))
-    }
-
-    if (!$scope.$storage.categories.length) {
-      dataService.fetchData('categories')
-        .then(response => {
-          $scope.$storage.categories = response
-        })
-        .catch(error => console.error(error))
-    }
-
-    if (angular.equals($scope.$storage.settings, {})) {
-      dataService.fetchData('settings')
-        .then(response => {
-          $scope.$storage.settings = response
+          $localStorage.appData = response
         })
         .catch(error => console.error(error))
     }
@@ -63,12 +30,17 @@ angular.module('finances.dashboard', ['ngRoute'])
       updateData()
     }, true)
 
-    $scope.updateView = function (el) {
+    $scope.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+    $scope.months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+    $scope.selectedMonth = now.getMonth()
+    $scope.selectedYear = now.getFullYear()
+
+    $scope.updateView = (el) => {
       const elDate = new Date(el.date)
       return elDate.getMonth() === $scope.selectedMonth && elDate.getFullYear() === $scope.selectedYear
     }
 
-    $scope.addExpense = function () {
+    $scope.addExpense = () => {
       const newExpense = {
         id: uuid(),
         type: $scope.expense.isRecurring ? 'fixed' : 'variable',
@@ -78,10 +50,10 @@ angular.module('finances.dashboard', ['ngRoute'])
         category: $scope.expense.category ? parseInt($scope.expense.category) : 0
       }
 
-      $scope.$storage.expenses.push(newExpense)
+      $localStorage.appData.expenses.push(newExpense)
     }
 
-    $scope.addIncome = function () {
+    $scope.addIncome = () => {
       const newIncome = {
         id: uuid(),
         date: new Date($scope.income.date).getTime(),
@@ -89,25 +61,27 @@ angular.module('finances.dashboard', ['ngRoute'])
         amount: $scope.income.amount
       }
 
-      $scope.$storage.income.push(newIncome)
+      $localStorage.appData.income.push(newIncome)
     }
 
     $scope.deleteExpense = (expense) => {
-      $scope.$storage.expenses.splice($scope.$storage.expenses.indexOf(expense), 1)
+      $localStorage.appData.expenses.splice($localStorage.appData.expenses.indexOf(expense), 1)
     }
 
     $scope.deleteIncome = (income) => {
-      $scope.$storage.income.splice($scope.$storage.income.indexOf(income), 1)
+      $localStorage.appData.income.splice($localStorage.appData.income.indexOf(income), 1)
     }
 
     function updateData () {
-      const amountLeft = ((totalAmount($scope.$storage.income) - totalAmount($scope.$storage.expenses)) / daysInMonth(now.getMonth() + 1, now.getYear()))
+      if (typeof $localStorage.appData === 'undefined') return
+
+      const amountLeft = ((totalAmount($localStorage.appData.income) - totalAmount($localStorage.appData.expenses)) / daysInMonth(now.getMonth() + 1, now.getYear()))
       $scope.amountLeft = amountLeft > 0 ? amountLeft : 0
 
-      $scope.selectedCurrency = $scope.$storage.settings.currency
+      $scope.selectedCurrency = $localStorage.appData.settings.currency
 
-      $scope.years = _.chain($scope.$storage.expenses)
-        .union($scope.$storage.income)
+      $scope.years = _.chain($localStorage.appData.expenses)
+        .union($localStorage.appData.income)
         .groupBy(expense => new Date(expense.date).getFullYear())
         .keys()
         .map(year => parseInt(year))
@@ -119,8 +93,8 @@ angular.module('finances.dashboard', ['ngRoute'])
       $scope.income = {}
       $scope.income.date = now
 
-      $scope.$storage.expenses.map(expense => {
-        const category = $scope.$storage.categories.find(category => category.id === expense.category)
+      $localStorage.appData.expenses.map(expense => {
+        const category = $localStorage.appData.categories.find(category => category.id === expense.category)
         if (category) {
           expense.categoryName = category.name
           return expense

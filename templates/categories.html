@@ -13,9 +13,9 @@
         <th class="pv2 ph3 tl f6 fw6 ttu">Spent</th>
         <th class="pv2 ph3 tl f6 fw6 ttu">Actions</th>
       </tr>
-      <tr class="striped--near-white" ng-repeat="c in $storage.categories">
+      <tr class="striped--near-white" ng-repeat="c in $storage.appData.categories">
         <td class="pv2 ph3">{{ c.name }}</td>
-        <td class="pv2 ph3">{{ c.spent | formatCurrency:$storage.settings.currency }}</td>
+        <td class="pv2 ph3">{{ c.spent | formatCurrency:$storage.appData.settings.currency }}</td>
         <td class="pv2 ph3"><a ng-click="deleteCategory(c)">delete</a></td>
       </tr>
     </tbody>
