@@ -40,6 +40,8 @@ angular.module('finances.categories', ['ngRoute'])
     }
 
     function updateData () {
+      if (typeof $localStorage.appData === 'undefined') return
+
       $localStorage.appData.categories.map(category => {
         category.spent = $localStorage.appData.expenses
           .filter(expense => expense.category === category.id)
