@@ -9,3 +9,12 @@
 input[type=date] {
   box-sizing: border-box;
 }
+
+.tooltip {
+  cursor: help;
+}
+
+.dashboard-list-item {
+  overflow: hidden;
+  line-height: 2;
+}

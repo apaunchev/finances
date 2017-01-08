@@ -42,6 +42,15 @@ function formatCurrency (input, currency) {
   return `${input} ${currency}`
 }
 
+function objIsEmpty (obj) {
+  for (var foo in obj) {
+    if (obj.hasOwnProperty(foo)) {
+      return false
+    }
+  }
+  return true
+}
+
 angular.module('finances.filters', [])
   .filter('totalAmount', [() => totalAmount])
   .filter('findHighest', [() => findHighest])
@@ -49,3 +58,4 @@ angular.module('finances.filters', [])
   .filter('getWeekNumber', [() => getWeekNumber])
   .filter('uuid', [() => uuid])
   .filter('formatCurrency', [() => formatCurrency])
+  .filter('objIsEmpty', [() => objIsEmpty])

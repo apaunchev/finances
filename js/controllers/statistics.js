@@ -29,9 +29,9 @@ angular.module('finances.statistics', ['ngRoute'])
     const week = getWeekNumber(now)
     const year = now.getFullYear()
 
-    $scope.balance = totalAmount($localStorage.appData.income) - totalAmount($localStorage.appData.expenses)
+    $scope.balance = totalAmount($localStorage.appData.incomes) - totalAmount($localStorage.appData.expenses)
 
-    const weeklyIncome = $localStorage.appData.income.filter(income => getWeekNumber(new Date(income.date)) === week)
+    const weeklyIncome = $localStorage.appData.incomes.filter(income => getWeekNumber(new Date(income.date)) === week)
     $scope.weeklyIncome = totalAmount(weeklyIncome)
     $scope.weeklyHighestIncome = findHighest(weeklyIncome)
 
@@ -39,7 +39,7 @@ angular.module('finances.statistics', ['ngRoute'])
     $scope.weeklyExpenses = totalAmount(weeklyExpenses)
     $scope.weeklyHighestExpense = findHighest(weeklyExpenses)
 
-    const monthlyIncome = $localStorage.appData.income.filter(income => new Date(income.date).getMonth() === month)
+    const monthlyIncome = $localStorage.appData.incomes.filter(income => new Date(income.date).getMonth() === month)
     $scope.monthlyIncome = totalAmount(monthlyIncome)
     $scope.monthlyHighestIncome = findHighest(monthlyIncome)
 
@@ -47,7 +47,7 @@ angular.module('finances.statistics', ['ngRoute'])
     $scope.monthlyExpenses = totalAmount(monthlyExpenses)
     $scope.monthlyHighestExpense = findHighest(monthlyExpenses)
 
-    const yearlyIncome = $localStorage.appData.income.filter(income => new Date(income.date).getFullYear() === year)
+    const yearlyIncome = $localStorage.appData.incomes.filter(income => new Date(income.date).getFullYear() === year)
     $scope.yearlyIncome = totalAmount(yearlyIncome)
     $scope.yearlyHighestIncome = findHighest(yearlyIncome)
 

@@ -2,35 +2,33 @@
   "categories": [
     {
       "id": 0,
-      "name": "Unsorted"
+      "name": "Unsorted",
+      "colour": "dark-gray"
     },
     {
       "id": 1,
-      "name": "Groceries"
+      "name": "Groceries",
+      "colour": "green"
     },
     {
       "id": 2,
-      "name": "Travel"
-    },
-    {
-      "id": 3,
-      "name": "Car"
+      "name": "Transportation",
+      "colour": "yellow"
     },
     {
       "id": 4,
-      "name": "Clothes"
+      "name": "Personal",
+      "colour": "blue"
     },
     {
       "id": 5,
-      "name": "Entertainment"
-    },
-    {
-      "id": 6,
-      "name": "Electronics"
+      "name": "Entertainment",
+      "colour": "red"
     },
     {
       "id": 7,
-      "name": "Services"
+      "name": "Services",
+      "colour": "purple"
     }
   ],
   "expenses": [
@@ -51,7 +49,7 @@
       "category": 7
     }
   ],
-  "income": [
+  "incomes": [
     {
       "id": "a2da9e5e-afbf-49e2-93ab-ff32680ed81e",
       "amount": 1000,
