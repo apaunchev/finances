@@ -42,9 +42,9 @@ angular.module('finances.dashboard', ['ngRoute'])
         id: uuid(),
         type: $scope.expense.isRecurring ? 'fixed' : 'variable',
         date: new Date($scope.expense.date).getTime(),
-        description: $scope.expense.description,
+        description: $scope.expense.description ? $scope.expense.description : $scope.expense.category.name,
         amount: $scope.expense.amount,
-        category: $scope.expense.category ? parseInt($scope.expense.category) : 0
+        category: $scope.expense.category ? $scope.expense.category.id : 0
       }
 
       $localStorage.appData.expenses.push(newExpense)
@@ -69,12 +69,17 @@ angular.module('finances.dashboard', ['ngRoute'])
       $localStorage.appData.incomes.splice($localStorage.appData.incomes.indexOf(income), 1)
     }
 
+    $scope.hideExpenseForm = true
+    $scope.hideIncomesForm = true
+
     function updateData () {
       if (typeof $localStorage.appData === 'undefined') return
 
       let expenses = $localStorage.appData.expenses
       let incomes = $localStorage.appData.incomes
       let categories = $localStorage.appData.categories
+
+      $scope.categories = categories
 
       $scope.dailyExpenses = _.chain(expenses)
         .map(expense => {
@@ -131,6 +136,8 @@ angular.module('finances.dashboard', ['ngRoute'])
       // expense form
       $scope.expense = {}
       $scope.expense.date = now
+
+      $scope.expense.category = categories[0]
 
       // income form
       $scope.income = {}
