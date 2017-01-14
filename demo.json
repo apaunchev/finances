@@ -7,11 +7,16 @@
     },
     {
       "id": 1,
-      "name": "Groceries",
+      "name": "Eating Out",
       "colour": "green"
     },
     {
       "id": 2,
+      "name": "Groceries",
+      "colour": "orange"
+    },
+    {
+      "id": 3,
       "name": "Transportation",
       "colour": "yellow"
     },
@@ -26,7 +31,7 @@
       "colour": "red"
     },
     {
-      "id": 7,
+      "id": 6,
       "name": "Services",
       "colour": "purple"
     }
@@ -46,7 +51,7 @@
       "amount": 24.90,
       "description": "Phone Bill",
       "date": 1483282738000,
-      "category": 7
+      "category": 6
     }
   ],
   "incomes": [
@@ -58,6 +63,6 @@
     }
   ],
   "settings": {
-    "currency": "USD"
+    "currency": "BGN"
   }
 }
