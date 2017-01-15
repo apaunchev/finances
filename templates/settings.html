@@ -1,10 +1,7 @@
 <section class="bb b--black-10 pv4 ph3">
   <div class="mw7 center">
     <h1 class="fw4 f6 ttu tracked">Settings</h1>
-    <dl>
-      <dt class="dib">Currency</dt>
-      <dd class="dib ml2"><select ng-options="c for c in currencies" ng-model="selectedCurrency" ng-change="updateCurrency()"></select></dd>
-    </dl>
+    Currency: <select ng-options="c for c in currencies" ng-model="selectedCurrency" ng-change="updateCurrency()"></select></dd>
     <p><a class="f5 no-underline black bg-animate hover-bg-black hover-white pa3 ba w-100 db tc" ng-click="resetData()">Reset data</a></p>
   </div>
 </section>
