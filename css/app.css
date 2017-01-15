@@ -18,3 +18,7 @@ input[type=date] {
   overflow: hidden;
   line-height: 2;
 }
+
+.link:focus {
+  outline: none;
+}
