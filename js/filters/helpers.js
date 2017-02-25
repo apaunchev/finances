@@ -37,9 +37,10 @@ function formatCurrency (input, currency) {
     return input
   }
 
-  input = Math.round(input)
+  const language = window.navigator.userLanguage || window.navigator.language
+  input = new Intl.NumberFormat(language, { style: 'currency', currency: `${currency}` }).format(input)
 
-  return `${input} ${currency}`
+  return `${input}`
 }
 
 function objIsEmpty (obj) {
