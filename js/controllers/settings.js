@@ -24,6 +24,30 @@ angular.module('finances.settings', ['ngRoute'])
       updateData()
     }, true)
 
+    $scope.exportData = function (target) {
+      const link = target
+      const appDataJson = angular.toJson($localStorage.appData)
+      const blob = new window.Blob([appDataJson], { type: 'application/json' })
+      link.href = window.URL.createObjectURL(blob)
+      link.download = `finances_${new Date().getTime()}.json`
+    }
+
+    $scope.importData = function (event) {
+      const reader = new window.FileReader()
+      const files = event.target.files
+
+      if (!files.length) {
+        return
+      }
+
+      reader.readAsText(files[0])
+      reader.onload = () => {
+        $localStorage.appData = JSON.parse(reader.result)
+        $location.path('/')
+        $scope.$apply()
+      }
+    }
+
     $scope.updateCurrency = function () {
       $localStorage.appData.settings.currency = $scope.selectedCurrency
     }
@@ -37,6 +61,10 @@ angular.module('finances.settings', ['ngRoute'])
     $scope.resetData = () => {
       delete $localStorage.appData
       $location.path('/')
+    }
+
+    $scope.openImportDialog = () => {
+      document.querySelector('#importDialog').click()
     }
 
     function updateData () {

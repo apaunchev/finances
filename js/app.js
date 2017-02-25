@@ -11,6 +11,17 @@ angular.module('finances', [
   'finances.filters'
 ])
 
-  .config(['$locationProvider', '$routeProvider', function ($locationProvider, $routeProvider) {
+  .config(['$locationProvider', '$routeProvider', '$compileProvider', function ($locationProvider, $routeProvider, $compileProvider) {
     $routeProvider.otherwise({ redirectTo: '/' })
+    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/)
   }])
+
+  .directive('customOnChange', function () {
+    return {
+      restrict: 'A',
+      link: function (scope, element, attrs) {
+        const onChangeHandler = scope.$eval(attrs.customOnChange)
+        element.bind('change', onChangeHandler)
+      }
+    }
+  })
