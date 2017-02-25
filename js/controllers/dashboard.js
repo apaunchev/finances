@@ -43,7 +43,7 @@ angular.module('finances.dashboard', ['ngRoute'])
         type: $scope.expense.isRecurring ? 'fixed' : 'variable',
         date: new Date($scope.expense.date).getTime(),
         description: $scope.expense.description ? $scope.expense.description : $scope.expense.category.name,
-        amount: $scope.expense.amount,
+        amount: parseFloat($scope.expense.amount),
         category: $scope.expense.category ? $scope.expense.category.id : 0
       }
 
@@ -55,7 +55,7 @@ angular.module('finances.dashboard', ['ngRoute'])
         id: uuid(),
         date: new Date($scope.income.date).getTime(),
         description: $scope.income.description,
-        amount: $scope.income.amount
+        amount: parseFloat($scope.income.amount)
       }
 
       $localStorage.appData.incomes.push(newIncome)
