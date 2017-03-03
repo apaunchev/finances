@@ -11,10 +11,6 @@ function findHighest (collection) {
   return highest
 }
 
-function daysInMonth (month, year) {
-  return new Date(year, month, 0).getDate()
-}
-
 function getWeekNumber (d) {
   d = new Date(+d)
   d.setMilliseconds(0)
@@ -55,7 +51,6 @@ function objIsEmpty (obj) {
 angular.module('finances.filters', [])
   .filter('totalAmount', [() => totalAmount])
   .filter('findHighest', [() => findHighest])
-  .filter('daysInMonth', [() => daysInMonth])
   .filter('getWeekNumber', [() => getWeekNumber])
   .filter('uuid', [() => uuid])
   .filter('formatCurrency', [() => formatCurrency])

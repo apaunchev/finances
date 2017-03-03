@@ -12,7 +12,6 @@ angular.module('finances.dashboard', ['ngRoute'])
 
   .controller('DashboardCtrl', ['$scope', '$localStorage', '$filter', 'dataService', function ($scope, $localStorage, $filter, dataService) {
     const totalAmount = $filter('totalAmount')
-    const daysInMonth = $filter('daysInMonth')
     const uuid = $filter('uuid')
     const now = new Date()
 
@@ -129,9 +128,6 @@ angular.module('finances.dashboard', ['ngRoute'])
         .value()
 
       $scope.selectedCurrency = $localStorage.appData.settings.currency
-
-      const amountLeft = ((totalAmount(incomes) - totalAmount(expenses)) / daysInMonth(now.getMonth() + 1, now.getYear()))
-      $scope.amountLeft = amountLeft > 0 ? amountLeft : 0
 
       // expense form
       $scope.expense = {}
