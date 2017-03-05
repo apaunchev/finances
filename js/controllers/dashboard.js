@@ -94,11 +94,11 @@ angular.module('finances.dashboard', ['ngRoute'])
           return date.getFullYear() === $scope.selectedYear && date.getMonth() === $scope.selectedMonth
         })
         .groupBy(expense => new Date(expense.date).getDate())
-        .mapObject(day => {
-          const date = new Date(day[0].date)
+        .mapObject(daily => {
+          const date = new Date(daily[0].date)
           return {
-            expenses: [...day],
-            totalAmount: totalAmount(day),
+            expenses: [...daily],
+            totalAmount: totalAmount(daily),
             dayOfWeek: days[date.getDay()]
           }
         })
