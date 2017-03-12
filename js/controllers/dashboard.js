@@ -32,7 +32,6 @@ angular.module('finances.dashboard', ['ngRoute'])
 
     const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
     $scope.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-    $scope.months = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
     $scope.selectedMonth = now.getMonth()
     $scope.selectedYear = now.getFullYear()
 
@@ -120,11 +119,18 @@ angular.module('finances.dashboard', ['ngRoute'])
         })
         .value()
 
-      $scope.years = _.chain(expenses)
-        .union(incomes)
+      const allEntries = _.chain(expenses).union(incomes).value()
+
+      $scope.years = _.chain(allEntries)
         .groupBy(entry => new Date(entry.date).getFullYear())
         .keys()
         .map(year => parseInt(year))
+        .value()
+
+      $scope.months = _.chain(allEntries)
+        .groupBy(entry => new Date(entry.date).getMonth())
+        .keys()
+        .map(month => parseInt(month))
         .value()
 
       $scope.selectedCurrency = $localStorage.appData.settings.currency
@@ -132,7 +138,6 @@ angular.module('finances.dashboard', ['ngRoute'])
       // expense form
       $scope.expense = {}
       $scope.expense.date = now
-
       $scope.expense.category = categories[0]
 
       // income form
