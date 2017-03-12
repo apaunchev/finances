@@ -29,7 +29,8 @@ angular.module('finances.categories', ['ngRoute'])
     $scope.addCategory = () => {
       $localStorage.appData.categories.push({
         id: uuid(),
-        name: $scope.category.name
+        name: $scope.category.name,
+        colour: $scope.category.colour
       })
 
       $scope.category = {}
@@ -41,15 +42,5 @@ angular.module('finances.categories', ['ngRoute'])
 
     function updateData () {
       if (typeof $localStorage.appData === 'undefined') return
-
-      $localStorage.appData.categories.map(category => {
-        category.spent = $localStorage.appData.expenses
-          .filter(expense => expense.category === category.id)
-          .reduce((a, b) => {
-            return a + b.amount
-          }, 0)
-
-        return category
-      })
     }
   }])
