@@ -1,15 +1,17 @@
 {
   "name": "finances",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "scripts": {
-    "start": "browser-sync start --server --files '**/*.css, **/*.html, **/*.js'"
+    "start": "browser-sync start --server public --files public"
   },
   "devDependencies": {
     "browser-sync": "^2.12.5"
   },
   "dependencies": {
+    "firebase": "^3.7.2",
     "angular": "^1.6.1",
     "angular-route": "^1.6.1",
+    "angularfire": "^2.3.0",
     "ngstorage": "^0.3.11",
     "underscore": "^1.8.3"
   }

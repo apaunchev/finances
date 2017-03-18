@@ -1,4 +1,14 @@
-/* global angular */
+/* global angular, firebase */
+
+var config = {
+  apiKey: "AIzaSyDO5aGZX4nztCKYpqFY2PgE-XpJrJB9fwg",
+  authDomain: "finances-app-1191e.firebaseapp.com",
+  databaseURL: "https://finances-app-1191e.firebaseio.com",
+  storageBucket: "finances-app-1191e.appspot.com",
+  messagingSenderId: "1006685798394"
+};
+
+firebase.initializeApp(config);
 
 angular.module('finances', [
   'ngRoute',
