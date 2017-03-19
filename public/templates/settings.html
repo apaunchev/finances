@@ -1,10 +1,6 @@
 <section class="bb b--black-10 pv4 ph3">
   <div class="mw6 center">
     <h1 class="fw4 f6 ttu tracked">Settings</h1>
-    Currency: <select ng-options="c for c in currencies" ng-model="selectedCurrency" ng-change="updateCurrency()"></select></dd>
-    <p><a class="f5 no-underline black bg-animate hover-bg-black hover-white pa3 ba w-100 db tc" ng-click="exportData($event.target)">Export data</a></p>
-    <p><a class="f5 no-underline black bg-animate hover-bg-black hover-white pa3 ba w-100 db tc" ng-click="openImportDialog()">Import data</a></p>
-    <input type="file" accept="application/json" custom-on-change="importData" class="dn" id="importDialog">
-    <p><a class="f5 no-underline black bg-animate hover-bg-black hover-white pa3 ba w-100 db tc" ng-click="resetData()">Reset data</a></p>
+    Currency: <select ng-options="c for c in currencies" ng-model="selectedCurrency" ng-change="setCurrency()"></select></dd>
   </div>
 </section>

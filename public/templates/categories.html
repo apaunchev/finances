@@ -14,7 +14,7 @@
           <th class="pv2 ph3 tl f6 fw6 ttu">Category</th>
           <th class="pv2 ph3 tl f6 fw6 ttu">Actions</th>
         </tr>
-        <tr class="striped--near-white" ng-repeat="c in $storage.appData.categories">
+        <tr class="striped--near-white" ng-repeat="c in categories">
           <td class="pv2 ph3 {{ c.colour }}">{{ c.name }}</td>
           <td class="pv2 ph3"><a ng-click="deleteCategory(c)">delete</a></td>
         </tr>
