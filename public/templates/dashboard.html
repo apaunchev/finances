@@ -5,9 +5,9 @@
       <select ng-options="monthNames[m] for m in months" ng-model="selectedMonth"></select>
     </div>
 
-    <h1 class="fw4 f6 ttu tracked">Transactions <a class="fr gray" ng-click="hideForm = !hideForm">(+)</a></h1>
+    <h1 class="mb3 fw4 f6 ttu tracked">Transactions <a class="fr gray" title="Add transaction" ng-click="hideForm = !hideForm" ng-bind="hideForm ? '(+)' : '(-)'"></a></h1>
 
-    <form class="mv4" ng-class="{dn: hideForm}" ng-submit="addTransaction()">
+    <form class="mv3" ng-class="{dn: hideForm}" ng-submit="addTransaction()">
       <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="date" ng-model="transaction.date" required>
       <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" placeholder="Description" ng-model="transaction.description">
       <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" placeholder="Amount" ng-model="transaction.amount" required>
@@ -24,12 +24,11 @@
           <span class="fr ph2" ng-bind="daily.totalAmount | formatCurrency:settings.currency"></span>
         </h4>
         <ol class="list pl0 mv2">
-          <li class="dashboard-list-item pa0 mt2" ng-repeat="transaction in daily.transactions">
-            {{ transaction.description }}
-            <a class="dib ml2 gray" title="Delete" ng-click="transactions.$remove(transaction)">(x)</a>
-            <span class="fr ph2 br3 white bg-{{transaction.categoryColour}}">
-              <span class="tooltip" title="This is a recurring transaction." ng-show="transaction.type === 'fixed'">↺</span>
-              {{ transaction.amount | formatCurrency:settings.currency }}
+          <li class="dashboard-list-item pa0 mt2" ng-repeat="t in daily.transactions">
+            {{ t.description }}
+            <a class="dib ml2 gray" title="Delete transaction" ng-click="deleteTransaction(t)">(x)</a>
+            <span class="fr ph2 br3 white bg-{{t.categoryColour}}">
+              {{ t.amount | formatCurrency:settings.currency }}
             </span>
           </li>
         </ol>

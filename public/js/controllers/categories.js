@@ -10,6 +10,8 @@ function CategoriesCtrlConfig ($routeProvider) {
 function CategoriesCtrl ($scope, firebaseDataService) {
   $scope.categories = firebaseDataService.categories
 
+  $scope.hideForm = true
+
   $scope.addCategory = () => {
     $scope.categories.$add({
       name: $scope.category.name,
@@ -19,7 +21,9 @@ function CategoriesCtrl ($scope, firebaseDataService) {
   }
 
   $scope.deleteCategory = (category) => {
-    $scope.categories.$remove(category)
+    if (window.confirm('Are you sure you want to delete this category?')) {
+      $scope.categories.$remove(category)
+    }
   }
 }
 

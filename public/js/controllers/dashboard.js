@@ -29,20 +29,20 @@ function DashboardCtrl ($scope, $timeout, $filter, firebaseDataService) {
   $scope.categories.$loaded()
     .then(categories => {
       $scope.transaction.category = categories[0]
-    })
-    .catch(error => console.error(error))
 
-  $scope.transactions.$loaded()
-    .then(transactions => {
-      if (transactions.length === 0) {
-        transactions.$add({
-          date: firebase.database.ServerValue.TIMESTAMP,
-          description: 'Demo transaction',
-          amount: -10,
-          category: '-KfX8vv9iXVQ1f7mQzFD'
+      $scope.transactions.$loaded()
+        .then(transactions => {
+          if (transactions.length === 0) {
+            transactions.$add({
+              date: firebase.database.ServerValue.TIMESTAMP,
+              description: 'Demo transaction',
+              amount: -10,
+              category: '-KfX8vv9iXVQ1f7mQzFD'
+            })
+          }
+          updateData(transactions)
         })
-      }
-      updateData(transactions)
+        .catch(error => console.error(error))
     })
     .catch(error => console.error(error))
 
@@ -56,6 +56,12 @@ function DashboardCtrl ($scope, $timeout, $filter, firebaseDataService) {
       amount: parseFloat($scope.transaction.amount),
       category: $scope.transaction.category.$id
     })
+  }
+
+  $scope.deleteTransaction = (transaction) => {
+    if (window.confirm('Are you sure you want to delete this transaction?')) {
+      $scope.transactions.$remove(transaction)
+    }
   }
 
   function updateData (transactions) {
