@@ -16,10 +16,10 @@
     </form>
 
     <div class="mb4" id="transactions-list">
-      <p ng-show="dailyTransactions | objIsEmpty">No content here.</p>
-      <div class="mb3" ng-repeat="(day, daily) in dailyTransactions">
+      <p ng-show="!dailyTransactions.length">No content here.</p>
+      <div class="mb3" ng-repeat="daily in dailyTransactions">
         <h4 class="fw3 mb0 pb2 bb b--black-20">
-          {{ day }}
+          {{ daily.date }}
           <span class="f6 gray" ng-bind="daily.dayOfWeek"></span>
           <span class="fr ph2" ng-bind="daily.totalAmount | formatCurrency:settings.currency"></span>
         </h4>

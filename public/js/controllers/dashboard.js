@@ -81,12 +81,16 @@ function DashboardCtrl ($scope, $timeout, $filter, firebaseDataService) {
       .groupBy(transaction => new Date(transaction.date).getDate())
       .mapObject(daily => {
         const date = new Date(daily[0].date)
+        const transactions = _.chain(daily).sortBy(date).reverse().value()
         return {
-          transactions: [...daily],
+          transactions,
           totalAmount: totalAmount(daily),
+          date: date.getDate(),
           dayOfWeek: days[date.getDay()]
         }
       })
+      .sortBy('date')
+      .reverse()
       .value()
 
     $scope.years = _.chain(transactions)
