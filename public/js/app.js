@@ -16,7 +16,6 @@ angular.module('finances', [
   'finances.services',
   'finances.dashboard',
   'finances.statistics',
-  'finances.categories',
   'finances.settings',
   'finances.filters'
 ])
