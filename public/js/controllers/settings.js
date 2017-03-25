@@ -9,9 +9,13 @@ function SettingsCtrlConfig ($routeProvider) {
 
 function SettingsCtrl ($scope, $location, firebaseDataService) {
   $scope.settings = firebaseDataService.currentUserSettings
+  $scope.loading = true
 
   $scope.settings.$loaded()
-    .then(settings => updateData())
+    .then(settings => {
+      $scope.loading = false
+      updateData()
+    })
     .catch(error => console.error(error))
 
   $scope.currencies = [

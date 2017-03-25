@@ -11,6 +11,12 @@ function CategoriesCtrl ($scope, firebaseDataService) {
   $scope.categories = firebaseDataService.categories
 
   $scope.hideForm = true
+  $scope.loading = true
+
+  $scope.categories.$loaded()
+    .then(categories => {
+      $scope.loading = false
+    })
 
   $scope.addCategory = () => {
     $scope.categories.$add({

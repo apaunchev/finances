@@ -1,5 +1,6 @@
-<section class="bb b--black-10 pv4 ph3">
-  <div class="mw6 center">
+<section class="pv4 ph3">
+  <div class="spinner" ng-show="loading"></div>
+  <div class="mw6 center" ng-show="!loading">
     <h1 class="mb3 fw4 f6 ttu tracked">Categories <a class="fr gray" title="Add category" ng-click="hideForm = !hideForm" ng-bind="hideForm ? '(+)' : '(-)'"></a></h1>
 
     <form class="mv3" ng-class="{dn: hideForm}" ng-submit="addCategory()">

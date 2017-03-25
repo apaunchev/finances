@@ -25,6 +25,7 @@ function DashboardCtrl ($scope, $timeout, $filter, firebaseDataService) {
   $scope.transaction.date = now
 
   $scope.hideForm = true
+  $scope.loading = true
 
   $scope.categories.$loaded()
     .then(categories => {
@@ -32,6 +33,8 @@ function DashboardCtrl ($scope, $timeout, $filter, firebaseDataService) {
 
       $scope.transactions.$loaded()
         .then(transactions => {
+          $scope.loading = false
+
           if (transactions.length === 0) {
             transactions.$add({
               date: firebase.database.ServerValue.TIMESTAMP,

@@ -19,9 +19,13 @@ function StatisticsCtrl ($scope, $filter, firebaseDataService) {
 
   $scope.transactions = currentUserTransactions
   $scope.settings = currentUserSettings
+  $scope.loading = true
 
   $scope.transactions.$loaded()
-    .then(transactions => updateData(transactions))
+    .then(transactions => {
+      $scope.loading = false
+      updateData(transactions)
+    })
     .catch(error => console.error(error))
 
   function updateData (transactions) {
