@@ -4,6 +4,7 @@
     <div class="mb4">
       <select ng-options="y for y in years" ng-model="selectedYear"></select>
       <select ng-options="monthNames[m] for m in months" ng-model="selectedMonth"></select>
+      <input type="search" ng-model="searchQuery" placeholder="Search">
     </div>
 
     <h1 class="mb3 fw4 f6 ttu tracked">Transactions <a class="fr gray" title="Add transaction" ng-click="hideForm = !hideForm" ng-bind="hideForm ? '(+)' : '(-)'"></a></h1>
@@ -18,7 +19,7 @@
 
     <div class="mb4" id="transactions-list">
       <p ng-show="!dailyTransactions.length">No content here.</p>
-      <div class="mb3" ng-repeat="daily in dailyTransactions">
+      <div class="mb3" ng-repeat="daily in dailyTransactions | filter:searchQuery">
         <h4 class="fw3 mb0 pb2 bb b--black-20">
           {{ daily.date }}
           <span class="f6 gray" ng-bind="daily.dayOfWeek"></span>
