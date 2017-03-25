@@ -8,15 +8,34 @@ function SettingsCtrlConfig ($routeProvider) {
 }
 
 function SettingsCtrl ($scope, $location, firebaseDataService) {
+  $scope.categories = firebaseDataService.categories
   $scope.settings = firebaseDataService.currentUserSettings
+  $scope.hideForm = true
   $scope.loading = true
 
   $scope.settings.$loaded()
     .then(settings => {
-      $scope.loading = false
-      updateData()
+      $scope.categories.$loaded()
+        .then(categories => {
+          $scope.loading = false
+          updateData()
+        })
     })
     .catch(error => console.error(error))
+
+  $scope.addCategory = () => {
+    $scope.categories.$add({
+      name: $scope.category.name,
+      colour: $scope.category.colour
+    })
+    $scope.category = {}
+  }
+
+  $scope.deleteCategory = (category) => {
+    if (window.confirm('Are you sure you want to delete this category?')) {
+      $scope.categories.$remove(category)
+    }
+  }
 
   $scope.currencies = [
     'EUR', 'AUD', 'BGN', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'GBP', 'GEL', 'HKD', 'HUF',
