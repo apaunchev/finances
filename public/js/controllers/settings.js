@@ -3,25 +3,32 @@
 function SettingsCtrlConfig ($routeProvider) {
   $routeProvider.when('/settings', {
     templateUrl: 'templates/settings.html',
-    controller: 'SettingsCtrl'
+    controller: 'SettingsCtrl',
+    resolve: {
+      'currentAuth': ['authService', function (authService) {
+        return authService.requireSignIn()
+      }]
+    }
   })
 }
 
-function SettingsCtrl ($scope, $location, firebaseDataService) {
-  $scope.categories = firebaseDataService.categories
-  $scope.settings = firebaseDataService.currentUserSettings
+function SettingsCtrl ($scope, $q, $location, firebaseDataService) {
+  const { categories, settings } = firebaseDataService
+  $scope.categories = categories
+  $scope.settings = settings
+
   $scope.hideForm = true
   $scope.loading = true
 
-  $scope.settings.$loaded()
-    .then(settings => {
-      $scope.categories.$loaded()
-        .then(categories => {
-          $scope.loading = false
-          updateData()
-        })
+  $q.all([
+    $scope.settings.$loaded(),
+    $scope.categories.$loaded()
+  ])
+    .then(() => {
+      $scope.currency = $scope.settings.currency
+      $scope.loading = false
     })
-    .catch(error => console.error(error))
+    .catch(err => console.error(err))
 
   $scope.addCategory = () => {
     $scope.categories.$add({
@@ -44,15 +51,11 @@ function SettingsCtrl ($scope, $location, firebaseDataService) {
   ]
 
   $scope.setCurrency = () => {
-    $scope.settings.currency = $scope.selectedCurrency
+    $scope.settings.currency = $scope.currency
     $scope.settings.$save()
-  }
-
-  function updateData () {
-    $scope.selectedCurrency = $scope.settings.currency
   }
 }
 
 angular.module('finances.settings', ['ngRoute'])
   .config(['$routeProvider', SettingsCtrlConfig])
-  .controller('SettingsCtrl', ['$scope', '$location', 'firebaseDataService', SettingsCtrl])
+  .controller('SettingsCtrl', ['$scope', '$q', '$location', 'firebaseDataService', SettingsCtrl])

@@ -20,19 +20,19 @@
     </form>
 
     <div class="mb4" id="transactions-list">
-      <p ng-show="!dailyTransactions.length">No content here.</p>
+      <p ng-show="!dailyTransactions.length">No transactions yet.</p>
       <div class="mb3" ng-repeat="daily in dailyTransactions | filter:searchQuery">
         <h4 class="fw3 mb0 pb2 bb b--black-20">
           {{ daily.date }}
           <span class="f6 gray" ng-bind="daily.dayOfWeek"></span>
-          <span class="fr ph2" ng-bind="daily.totalAmount | formatCurrency:settings.currency"></span>
+          <span class="fr ph2" ng-bind="daily.totalAmount | formatCurrency:currency"></span>
         </h4>
         <ol class="list pl0 mv2">
           <li class="dashboard-list-item pa0 mt2" ng-repeat="t in daily.transactions">
             {{ t.description }}
             <a class="dib ml2 gray" title="Delete transaction" ng-click="deleteTransaction(t)">(x)</a>
             <span class="fr ph2 br3 white bg-{{t.categoryColour}}">
-              {{ t.amount | formatCurrency:settings.currency }}
+              {{ t.amount | formatCurrency:currency }}
             </span>
           </li>
         </ol>

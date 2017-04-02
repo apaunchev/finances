@@ -1,16 +1,15 @@
 /* global angular, firebase */
 
-function firebaseDataService ($firebaseObject, $firebaseArray) {
+function firebaseDataService ($firebaseObject, $firebaseArray, authService) {
   const root = firebase.database().ref()
+  const currentUser = authService.isSignedIn()
 
   return {
-    users: $firebaseArray(root.child('users')),
-    categories: $firebaseArray(root.child('categories')),
-    currentUser: $firebaseObject(root.child('users').child('-KfXA4Zez0CyzWEd4UFz')),
-    currentUserTransactions: $firebaseArray(root.child('users').child('-KfXA4Zez0CyzWEd4UFz').child('transactions')),
-    currentUserSettings: $firebaseObject(root.child('users').child('-KfXA4Zez0CyzWEd4UFz').child('settings'))
+    categories: $firebaseArray(root.child('categories').child(currentUser.uid)),
+    settings: $firebaseObject(root.child('settings').child(currentUser.uid)),
+    transactions: $firebaseArray(root.child('transactions').child(currentUser.uid))
   }
 }
 
 angular.module('finances.services', ['firebase'])
-  .factory('firebaseDataService', ['$firebaseObject', '$firebaseArray', firebaseDataService])
+  .factory('firebaseDataService', ['$firebaseObject', '$firebaseArray', 'authService', firebaseDataService])

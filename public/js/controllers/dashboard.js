@@ -1,24 +1,31 @@
-/* global _, angular, firebase */
+/* global _, angular */
 
 function DashboardCtrlConfig ($routeProvider) {
-  $routeProvider.when('/', {
+  $routeProvider.when('/dashboard', {
     templateUrl: 'templates/dashboard.html',
-    controller: 'DashboardCtrl'
+    controller: 'DashboardCtrl',
+    resolve: {
+      'currentAuth': ['authService', function (authService) {
+        return authService.requireSignIn()
+      }]
+    }
   })
 }
 
-function DashboardCtrl ($scope, $timeout, $filter, firebaseDataService) {
-  const { categories, currentUserTransactions, currentUserSettings } = firebaseDataService
+function DashboardCtrl ($scope, $timeout, $filter, $q, firebaseDataService) {
+  const { transactions, settings, categories } = firebaseDataService
   const totalAmount = $filter('totalAmount')
   const now = new Date()
 
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+  const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
   $scope.monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  $scope.months = [...Array(12).keys()]
+  $scope.years = fillYears()
   $scope.selectedMonth = now.getMonth()
   $scope.selectedYear = now.getFullYear()
 
-  $scope.transactions = currentUserTransactions
-  $scope.settings = currentUserSettings
+  $scope.transactions = transactions
+  $scope.settings = settings
   $scope.categories = categories
 
   $scope.transaction = {}
@@ -27,27 +34,31 @@ function DashboardCtrl ($scope, $timeout, $filter, firebaseDataService) {
   $scope.hideForm = true
   $scope.loading = true
 
-  $scope.categories.$loaded()
-    .then(categories => {
-      $scope.transaction.category = categories[0]
+  $q.all([
+    $scope.categories.$loaded(),
+    $scope.settings.$loaded(),
+    $scope.transactions.$loaded()
+  ])
+    .then(() => {
+      if (!$scope.settings.currency) {
+        $scope.settings.currency = 'EUR'
+        $scope.settings.$save()
+      }
 
-      $scope.transactions.$loaded()
-        .then(transactions => {
-          $scope.loading = false
-
-          if (transactions.length === 0) {
-            transactions.$add({
-              date: firebase.database.ServerValue.TIMESTAMP,
-              description: 'Demo transaction',
-              amount: -10,
-              category: '-KfX8vv9iXVQ1f7mQzFD'
-            })
-          }
-          updateData(transactions)
+      if ($scope.categories.length === 0) {
+        $scope.categories.$add({
+          name: 'Unsorted',
+          colour: 'dark-gray'
         })
-        .catch(error => console.error(error))
+      }
+
+      $scope.loading = false
+      $scope.transaction.category = $scope.categories[0]
+      $scope.currency = $scope.settings.currency
+
+      updateData($scope.transactions)
     })
-    .catch(error => console.error(error))
+    .catch(err => console.error(err))
 
   $scope.transactions.$watch(() => updateData($scope.transactions))
   $scope.$watchGroup(['selectedYear', 'selectedMonth'], () => updateData($scope.transactions))
@@ -89,27 +100,28 @@ function DashboardCtrl ($scope, $timeout, $filter, firebaseDataService) {
           transactions,
           totalAmount: totalAmount(daily),
           date: date.getDate(),
-          dayOfWeek: days[date.getDay()]
+          dayOfWeek: weekDays[date.getDay()]
         }
       })
       .sortBy('date')
       .reverse()
       .value()
+  }
 
-    $scope.years = _.chain(transactions)
-      .groupBy(entry => new Date(entry.date).getFullYear())
-      .keys()
-      .map(year => parseInt(year))
-      .value()
+  function fillYears () {
+    const currentYear = now.getFullYear()
+    let startYear = currentYear - 10
+    let years = []
 
-    $scope.months = _.chain(transactions)
-      .groupBy(entry => new Date(entry.date).getMonth())
-      .keys()
-      .map(month => parseInt(month))
-      .value()
+    while (startYear <= currentYear) {
+      years.push(startYear)
+      startYear = startYear + 1
+    }
+
+    return years
   }
 }
 
 angular.module('finances.dashboard', ['ngRoute', 'firebase'])
   .config(['$routeProvider', DashboardCtrlConfig])
-  .controller('DashboardCtrl', ['$scope', '$timeout', '$filter', 'firebaseDataService', DashboardCtrl])
+  .controller('DashboardCtrl', ['$scope', '$timeout', '$filter', '$q', 'firebaseDataService', DashboardCtrl])

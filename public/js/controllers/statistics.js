@@ -3,12 +3,17 @@
 function StatisticsCtrlConfig ($routeProvider) {
   $routeProvider.when('/statistics', {
     templateUrl: 'templates/statistics.html',
-    controller: 'StatisticsCtrl'
+    controller: 'StatisticsCtrl',
+    resolve: {
+      'currentAuth': ['authService', function (authService) {
+        return authService.requireSignIn()
+      }]
+    }
   })
 }
 
-function StatisticsCtrl ($scope, $filter, firebaseDataService) {
-  const { currentUserTransactions, currentUserSettings } = firebaseDataService
+function StatisticsCtrl ($scope, $filter, $q, firebaseDataService) {
+  const { transactions, settings } = firebaseDataService
   const totalAmount = $filter('totalAmount')
   const findHighest = $filter('findHighest')
   const getWeekNumber = $filter('getWeekNumber')
@@ -17,16 +22,20 @@ function StatisticsCtrl ($scope, $filter, firebaseDataService) {
   const week = getWeekNumber(now)
   const year = now.getFullYear()
 
-  $scope.transactions = currentUserTransactions
-  $scope.settings = currentUserSettings
+  $scope.transactions = transactions
+  $scope.settings = settings
   $scope.loading = true
 
-  $scope.transactions.$loaded()
-    .then(transactions => {
+  $q.all([
+    $scope.transactions.$loaded(),
+    $scope.settings.$loaded()
+  ])
+    .then(() => {
+      $scope.currency = $scope.settings.currency
       $scope.loading = false
-      updateData(transactions)
+      updateData($scope.transactions)
     })
-    .catch(error => console.error(error))
+    .catch(err => console.error(err))
 
   function updateData (transactions) {
     const incomes = transactions.filter(transaction => transaction.amount > 0)
@@ -60,4 +69,4 @@ function StatisticsCtrl ($scope, $filter, firebaseDataService) {
 
 angular.module('finances.statistics', ['ngRoute'])
   .config(['$routeProvider', StatisticsCtrlConfig])
-  .controller('StatisticsCtrl', ['$scope', '$filter', 'firebaseDataService', StatisticsCtrl])
+  .controller('StatisticsCtrl', ['$scope', '$filter', '$q', 'firebaseDataService', StatisticsCtrl])
