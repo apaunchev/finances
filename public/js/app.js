@@ -9,7 +9,7 @@
       'ngRoute',
       'finances.auth',
       'finances.services',
-      'finances.home',
+      'finances.nav',
       'finances.dashboard',
       'finances.statistics',
       'finances.settings',
