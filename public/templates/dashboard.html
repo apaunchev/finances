@@ -1,65 +1,38 @@
 <section class="pv4 ph3">
-  <div class="mw6 center">
-    <div class="mb4" ng-show="years.length > 0">
-      <select ng-options="y for y in years" ng-model="selectedYear"></select>
-      <select ng-options="monthNames[m] for m in months" ng-model="selectedMonth"></select>
-    </div>
-
-    <h1 class="fw4 f6 ttu tracked">Expenses <a class="fr gray" ng-click="hideExpenseForm = !hideExpenseForm">(+)</a></h1>
-
-    <form class="mb4" ng-class="{dn: hideExpenseForm}" ng-submit="addExpense()">
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="date" ng-model="expense.date" required>
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" placeholder="Description" ng-model="expense.description">
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" placeholder="Amount" ng-model="expense.amount" required>
-      <select class="ba b--black-20 pa2 mb2 db w-100" ng-options="c.name for c in categories track by c.id" ng-model="expense.category" required></select>
-      <!--<input id="expense-isRecurring" type="checkbox" ng-model="expense.isRecurring"> recurring?-->
-      <input class="f5 no-underline pointer black bg-white bg-animate hover-bg-black hover-white pa2 ba border-box w-100 center" type="submit" value="Add">
-    </form>
-
-    <div class="mb4" id="expenses-list">
-      <p ng-show="dailyExpenses | objIsEmpty">No content here.</p>
-      <div class="mb3" ng-repeat="(day, daily) in dailyExpenses">
-        <h4 class="fw3 mb0 pb2 bb b--black-20">
-          {{ day }}
-          <span class="f6 gray" ng-bind="daily.dayOfWeek"></span>
-          <span class="fr ph2" ng-bind="daily.totalAmount | formatCurrency:selectedCurrency"></span>
-        </h4>
-        <ol class="list pl0 mv2">
-          <li class="dashboard-list-item pa0 mt2" ng-repeat="expense in daily.expenses">
-            {{ expense.description }}
-            <a class="dib ml2 gray" title="Delete" ng-click="deleteExpense(expense)">(x)</a>
-            <span class="fr ph2 br3 white bg-{{expense.categoryColour}}">
-              <span class="tooltip" title="This is a recurring expense." ng-show="expense.type === 'fixed'">↺</span>
-              {{ expense.amount | formatCurrency:selectedCurrency }}
-            </span>
-          </li>
-        </ol>
+  <div class="spinner" ng-show="loading"></div>
+  <div class="mw6 center" ng-show="!loading">
+    <div class="mb4">
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="search" ng-model="searchQuery" placeholder="Search">
+      <div class="flex">
+        <select class="flex-auto mr1" ng-options="y for y in years" ng-model="selectedYear"></select>
+        <select class="flex-auto ml1" ng-options="monthNames[m] for m in months" ng-model="selectedMonth"></select>
       </div>
     </div>
 
-    <h1 class="fw4 f6 ttu tracked">Incomes  <a class="fr gray" ng-click="hideIncomesForm = !hideIncomesForm">(+)</a></h1>
+    <h1 class="mb3 fw4 f6 ttu tracked">Transactions <a class="fr gray" title="Add transaction" ng-click="hideForm = !hideForm" ng-bind="hideForm ? '(+)' : '(-)'"></a></h1>
 
-    <form class="mb4" ng-class="{dn: hideIncomesForm}" ng-submit="addIncome()">
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" id="income-date" type="date" ng-model="income.date" required>
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" id="income-description" type="text" placeholder="Description" ng-model="income.description" required>
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" id="income-amount" type="text" placeholder="Amount" ng-model="income.amount" required>
+    <form class="mv3" ng-class="{dn: hideForm}" ng-submit="addTransaction()">
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="date" ng-model="transaction.date" required>
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" placeholder="Description" ng-model="transaction.description">
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" step="0.01" placeholder="Amount" ng-model="transaction.amount" required>
+      <select class="ba b--black-20 pa2 mb2 db w-100" ng-options="c.name for c in categories" ng-model="transaction.category" required></select>
       <input class="f5 no-underline pointer black bg-white bg-animate hover-bg-black hover-white pa2 ba border-box w-100 center" type="submit" value="Add">
     </form>
 
-    <div class="mb4" id="income-list">
-      <p ng-show="dailyIncomes | objIsEmpty">No content here.</p>
-      <div class="mb3" ng-repeat="(day, daily) in dailyIncomes">
+    <div class="mb4" id="transactions-list">
+      <p ng-show="!dailyTransactions.length">No transactions yet.</p>
+      <div class="mb3" ng-repeat="daily in dailyTransactions | filter:searchQuery">
         <h4 class="fw3 mb0 pb2 bb b--black-20">
-          {{ day }}
+          {{ daily.date }}
           <span class="f6 gray" ng-bind="daily.dayOfWeek"></span>
-          <span class="fr ph2" ng-bind="daily.totalAmount | formatCurrency:selectedCurrency"></span>
+          <span class="fr ph2" ng-bind="daily.totalAmount | formatCurrency:currency"></span>
         </h4>
         <ol class="list pl0 mv2">
-          <li class="dashboard-list-item pa0 mt2" ng-repeat="income in daily.income">
-            {{ income.description }}
-            <a class="dib ml2 gray" title="Delete" ng-click="deleteIncome(income)">(x)</a>
-            <span class="fr ph2 br3 white bg-gray">
-              {{ income.amount | formatCurrency:selectedCurrency }}
+          <li class="dashboard-list-item pa0 mt2" ng-repeat="t in daily.transactions">
+            {{ t.description }}
+            <a class="dib ml2 gray" title="Delete transaction" ng-click="deleteTransaction(t)">(x)</a>
+            <span class="fr ph2 br3 white bg-{{t.categoryColour}}">
+              {{ t.amount | formatCurrency:currency }}
             </span>
           </li>
         </ol>

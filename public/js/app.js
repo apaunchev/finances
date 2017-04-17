@@ -1,35 +1,57 @@
 /* global angular, firebase */
+(function () {
+  'use strict'
 
-angular.module('finances', [
-  'ngRoute',
-  'ngStorage',
-  'finances.services',
-  'finances.dashboard',
-  'finances.statistics',
-  'finances.categories',
-  'finances.settings',
-  'finances.filters'
-])
+  window.openFirebaseConnections = []
 
-  .config(['$locationProvider', '$routeProvider', '$compileProvider', function ($locationProvider, $routeProvider, $compileProvider) {
+  angular
+    .module('finances', [
+      'ngRoute',
+      'finances.auth',
+      'finances.services',
+      'finances.home',
+      'finances.dashboard',
+      'finances.statistics',
+      'finances.settings',
+      'finances.filters'
+    ])
+    .config(configFunction)
+    .run(runFunction)
+
+  configFunction.$inject = ['$provide', '$routeProvider']
+
+  function configFunction ($provide, $routeProvider) {
     $routeProvider.otherwise({ redirectTo: '/' })
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|tel|file|blob):/)
-    var config = {
+
+    firebase.initializeApp({
       apiKey: 'AIzaSyDO5aGZX4nztCKYpqFY2PgE-XpJrJB9fwg',
       authDomain: 'finances-app-1191e.firebaseapp.com',
       databaseURL: 'https://finances-app-1191e.firebaseio.com',
       storageBucket: 'finances-app-1191e.appspot.com',
       messagingSenderId: '1006685798394'
-    }
-    firebase.initializeApp(config)
-  }])
+    })
 
-  .directive('customOnChange', function () {
-    return {
-      restrict: 'A',
-      link: function (scope, element, attrs) {
-        const onChangeHandler = scope.$eval(attrs.customOnChange)
-        element.bind('change', onChangeHandler)
+    firebaseDecorator.$inject = ['$delegate']
+
+    $provide.decorator('$firebaseArray', firebaseDecorator)
+    $provide.decorator('$firebaseObject', firebaseDecorator)
+
+    function firebaseDecorator ($delegate) {
+      return function (ref) {
+        const list = $delegate(ref)
+        window.openFirebaseConnections.push(list)
+        return list
       }
     }
-  })
+  }
+
+  runFunction.$inject = ['$rootScope', '$location']
+
+  function runFunction ($rootScope, $location) {
+    $rootScope.$on('$routeChangeError', (event, next, previous, error) => {
+      if (error === 'AUTH_REQUIRED') {
+        $location.path('/')
+      }
+    })
+  }
+})()

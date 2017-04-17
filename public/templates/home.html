@@ -1,0 +1,12 @@
+<section class="pv4 ph3">
+  <div class="mw6 center">
+    <div ng-show="!user">
+      <div>not logged in</div>
+      <button ng-click="signIn()">Sign in with Google</button>
+    </div>
+    <div ng-show="user">
+      <div>logged in</div>
+      <button ng-click="signOut()">Sign Out</button>
+    </div>
+  </div>
+</section>

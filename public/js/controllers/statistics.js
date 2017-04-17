@@ -1,57 +1,72 @@
 /* global angular */
 
-angular.module('finances.statistics', ['ngRoute'])
-
-  .config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/statistics', {
-      templateUrl: 'templates/statistics.html',
-      controller: 'StatisticsCtrl'
-    })
-  }])
-
-  .controller('StatisticsCtrl', ['$scope', '$localStorage', '$filter', 'dataService', function ($scope, $localStorage, $filter, dataService) {
-    const totalAmount = $filter('totalAmount')
-    const findHighest = $filter('findHighest')
-    const getWeekNumber = $filter('getWeekNumber')
-
-    $scope.$storage = $localStorage
-
-    if (typeof $localStorage.appData === 'undefined') {
-      dataService.fetchData()
-        .then(response => {
-          $localStorage.appData = response
-        })
-        .catch(error => console.error(error))
+function StatisticsCtrlConfig ($routeProvider) {
+  $routeProvider.when('/statistics', {
+    templateUrl: 'templates/statistics.html',
+    controller: 'StatisticsCtrl',
+    resolve: {
+      'currentAuth': ['authService', function (authService) {
+        return authService.requireSignIn()
+      }]
     }
+  })
+}
 
-    const now = new Date()
-    const month = now.getMonth()
-    const week = getWeekNumber(now)
-    const year = now.getFullYear()
+function StatisticsCtrl ($scope, $filter, $q, firebaseDataService) {
+  const { transactions, settings } = firebaseDataService
+  const totalAmount = $filter('totalAmount')
+  const findHighest = $filter('findHighest')
+  const getWeekNumber = $filter('getWeekNumber')
+  const now = new Date()
+  const month = now.getMonth()
+  const week = getWeekNumber(now)
+  const year = now.getFullYear()
 
-    $scope.balance = totalAmount($localStorage.appData.incomes) - totalAmount($localStorage.appData.expenses)
+  $scope.transactions = transactions
+  $scope.settings = settings
+  $scope.loading = true
 
-    const weeklyIncome = $localStorage.appData.incomes.filter(income => getWeekNumber(new Date(income.date)) === week)
+  $q.all([
+    $scope.transactions.$loaded(),
+    $scope.settings.$loaded()
+  ])
+    .then(() => {
+      $scope.currency = $scope.settings.currency
+      $scope.loading = false
+      updateData($scope.transactions)
+    })
+    .catch(err => console.error(err))
+
+  function updateData (transactions) {
+    const incomes = transactions.filter(transaction => transaction.amount > 0)
+    const expenses = transactions.filter(transaction => transaction.amount < 0)
+
+    const weeklyIncome = incomes.filter(income => getWeekNumber(new Date(income.date)) === week)
     $scope.weeklyIncome = totalAmount(weeklyIncome)
-    $scope.weeklyHighestIncome = findHighest(weeklyIncome)
+    $scope.weeklyHighestIncome = findHighest(weeklyIncome, 'max')
 
-    const weeklyExpenses = $localStorage.appData.expenses.filter(expense => getWeekNumber(new Date(expense.date)) === week)
+    const weeklyExpenses = expenses.filter(expense => getWeekNumber(new Date(expense.date)) === week)
     $scope.weeklyExpenses = totalAmount(weeklyExpenses)
-    $scope.weeklyHighestExpense = findHighest(weeklyExpenses)
+    $scope.weeklyHighestExpense = findHighest(weeklyExpenses, 'min')
 
-    const monthlyIncome = $localStorage.appData.incomes.filter(income => new Date(income.date).getMonth() === month)
+    const monthlyIncome = incomes.filter(income => new Date(income.date).getMonth() === month)
     $scope.monthlyIncome = totalAmount(monthlyIncome)
-    $scope.monthlyHighestIncome = findHighest(monthlyIncome)
+    $scope.monthlyHighestIncome = findHighest(monthlyIncome, 'max')
 
-    const monthlyExpenses = $localStorage.appData.expenses.filter(expense => new Date(expense.date).getMonth() === month)
+    const monthlyExpenses = expenses.filter(expense => new Date(expense.date).getMonth() === month)
     $scope.monthlyExpenses = totalAmount(monthlyExpenses)
-    $scope.monthlyHighestExpense = findHighest(monthlyExpenses)
+    $scope.monthlyHighestExpense = findHighest(monthlyExpenses, 'min')
 
-    const yearlyIncome = $localStorage.appData.incomes.filter(income => new Date(income.date).getFullYear() === year)
+    const yearlyIncome = incomes.filter(income => new Date(income.date).getFullYear() === year)
     $scope.yearlyIncome = totalAmount(yearlyIncome)
-    $scope.yearlyHighestIncome = findHighest(yearlyIncome)
+    $scope.yearlyHighestIncome = findHighest(yearlyIncome, 'max')
 
-    const yearlyExpenses = $localStorage.appData.expenses.filter(expense => new Date(expense.date).getFullYear() === year)
+    const yearlyExpenses = expenses.filter(expense => new Date(expense.date).getFullYear() === year)
     $scope.yearlyExpenses = totalAmount(yearlyExpenses)
-    $scope.yearlyHighestExpense = findHighest(yearlyExpenses)
-  }])
+    $scope.yearlyHighestExpense = findHighest(yearlyExpenses, 'min')
+  }
+}
+
+angular.module('finances.statistics', ['ngRoute'])
+  .config(['$routeProvider', StatisticsCtrlConfig])
+  .controller('StatisticsCtrl', ['$scope', '$filter', '$q', 'firebaseDataService', StatisticsCtrl])

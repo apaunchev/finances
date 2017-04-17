@@ -1,10 +1,24 @@
-<section class="bb b--black-10 pv4 ph3">
-  <div class="mw6 center">
-    <h1 class="fw4 f6 ttu tracked">Settings</h1>
-    Currency: <select ng-options="c for c in currencies" ng-model="selectedCurrency" ng-change="updateCurrency()"></select></dd>
-    <p><a class="f5 no-underline black bg-animate hover-bg-black hover-white pa3 ba w-100 db tc" ng-click="exportData($event.target)">Export data</a></p>
-    <p><a class="f5 no-underline black bg-animate hover-bg-black hover-white pa3 ba w-100 db tc" ng-click="openImportDialog()">Import data</a></p>
-    <input type="file" accept="application/json" custom-on-change="importData" class="dn" id="importDialog">
-    <p><a class="f5 no-underline black bg-animate hover-bg-black hover-white pa3 ba w-100 db tc" ng-click="resetData()">Reset data</a></p>
+<section class="pv4 ph3">
+  <div class="spinner" ng-show="loading"></div>
+  <div class="mw6 center" ng-show="!loading">
+    <h1 class="mb3 fw4 f6 ttu tracked">Categories <a class="fr gray" title="Add category" ng-click="hideForm = !hideForm" ng-bind="hideForm ? '(+)' : '(-)'"></a></h1>
+    
+    <form class="mv3" ng-class="{dn: hideForm}" ng-submit="addCategory()">
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" placeholder="Name" ng-model="category.name" required>
+      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" placeholder="Colour" ng-model="category.colour" required>
+      <input class="f5 no-underline pointer black bg-white bg-animate hover-bg-black hover-white pa2 ba border-box w-100 center"
+        type="submit" value="Add">
+    </form>
+    
+    <ol class="list pl0 mv2">
+      <li class="dashboard-list-item pa0 mt2" ng-repeat="c in categories">
+        <span class="pa2 br3 white bg-{{c.colour}}" ng-bind="c.name"></span>
+        <a class="fr ml2 gray" title="Delete category" ng-click="deleteCategory(c)">(x)</a>
+      </li>
+    </ol>
+
+    <h1 class="mb3 fw4 f6 ttu tracked mt3">Currency</h1>
+
+    <select class="w-100" ng-options="c for c in currencies" ng-model="currency" ng-change="setCurrency()"></select></dd>
   </div>
 </section>
