@@ -1,8 +1,7 @@
 /* global angular, firebase */
+
 (function () {
   'use strict'
-
-  window.openFirebaseConnections = []
 
   angular
     .module('finances', [
@@ -17,6 +16,8 @@
     ])
     .config(configFunction)
     .run(runFunction)
+
+  window.openFirebaseConnections = []
 
   configFunction.$inject = ['$provide', '$routeProvider']
 
