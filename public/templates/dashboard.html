@@ -1,39 +1,37 @@
-<section class="pv4 ph3">
+<section class="dashboard">
   <div class="spinner" ng-show="loading"></div>
-  <div class="mw6 center" ng-show="!loading">
-    <div class="mb4">
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="search" ng-model="searchQuery" placeholder="Search">
-      <div class="flex">
-        <select class="flex-auto mr1" ng-options="y for y in years" ng-model="selectedYear"></select>
-        <select class="flex-auto ml1" ng-options="monthNames[m] for m in months" ng-model="selectedMonth"></select>
+  <div class="content" ng-hide="loading">
+    <div>
+      <input type="search" ng-model="searchQuery" placeholder="Search">
+      <div>
+        <select ng-options="y for y in years" ng-model="selectedYear"></select>
+        <select ng-options="monthNames[m] for m in months" ng-model="selectedMonth"></select>
       </div>
     </div>
 
-    <h1 class="mb3 fw4 f6 ttu tracked">Transactions <a class="fr gray" title="Add transaction" ng-click="hideForm = !hideForm" ng-bind="hideForm ? '(+)' : '(-)'"></a></h1>
+    <h1>Transactions <a title="Add transaction" ng-click="hideForm = !hideForm" ng-bind="hideForm ? '(+)' : '(-)'"></a></h1>
 
-    <form class="mv3" ng-class="{dn: hideForm}" ng-submit="addTransaction()">
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="date" ng-model="transaction.date" required>
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="text" placeholder="Description" ng-model="transaction.description">
-      <input class="input-reset ba b--black-20 pa2 mb2 db w-100" type="number" step="0.01" placeholder="Amount" ng-model="transaction.amount" required>
-      <select class="ba b--black-20 pa2 mb2 db w-100" ng-options="c.name for c in categories" ng-model="transaction.category" required></select>
-      <input class="f5 no-underline pointer black bg-white bg-animate hover-bg-black hover-white pa2 ba border-box w-100 center" type="submit" value="Add">
+    <form ng-class="{dn: hideForm}" ng-submit="addTransaction()">
+      <input type="date" ng-model="transaction.date" required>
+      <input type="text" placeholder="Description" ng-model="transaction.description">
+      <input type="number" step="0.01" placeholder="Amount" ng-model="transaction.amount" required>
+      <select ng-options="c.name for c in categories" ng-model="transaction.category" required></select>
+      <input type="submit" value="Add">
     </form>
 
-    <div class="mb4" id="transactions-list">
-      <p ng-show="!dailyTransactions.length">No transactions yet.</p>
-      <div class="mb3" ng-repeat="daily in dailyTransactions | filter:searchQuery">
-        <h4 class="fw3 mb0 pb2 bb b--black-20">
+    <div>
+      <p ng-hide="dailyTransactions.length">No transactions yet.</p>
+      <div ng-repeat="daily in dailyTransactions | filter:searchQuery">
+        <h4>
           {{ daily.date }}
-          <span class="f6 gray" ng-bind="daily.dayOfWeek"></span>
-          <span class="fr ph2" ng-bind="daily.totalAmount | formatCurrency:currency"></span>
+          <span ng-bind="daily.dayOfWeek"></span>
+          <span ng-bind="daily.totalAmount | formatCurrency:currency"></span>
         </h4>
-        <ol class="list pl0 mv2">
-          <li class="dashboard-list-item pa0 mt2" ng-repeat="t in daily.transactions">
+        <ol>
+          <li ng-repeat="t in daily.transactions">
             {{ t.description }}
-            <a class="dib ml2 gray" title="Delete transaction" ng-click="deleteTransaction(t)">(x)</a>
-            <span class="fr ph2 br3 white bg-{{t.categoryColour}}">
-              {{ t.amount | formatCurrency:currency }}
-            </span>
+            <a title="Delete transaction" ng-click="deleteTransaction(t)">(x)</a>
+            <span>{{ t.amount | formatCurrency:currency }}</span>
           </li>
         </ol>
       </div>
