@@ -3,10 +3,8 @@
   <div class="content" ng-hide="loading">
     <div>
       <input type="search" ng-model="searchQuery" placeholder="Search">
-      <div>
-        <select ng-options="y for y in years" ng-model="selectedYear"></select>
-        <select ng-options="monthNames[m] for m in months" ng-model="selectedMonth"></select>
-      </div>
+      <select ng-options="y for y in years" ng-model="selectedYear"></select>
+      <select ng-options="monthNames[m] for m in months" ng-model="selectedMonth"></select>
     </div>
 
     <h1>Transactions <a title="Add transaction" ng-click="hideForm = !hideForm" ng-bind="hideForm ? '(+)' : '(-)'"></a></h1>
