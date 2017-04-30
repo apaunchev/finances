@@ -2,7 +2,7 @@
   "name": "finances",
   "version": "0.1.0",
   "scripts": {
-    "start": "browser-sync start --server public --files public"
+    "start": "browser-sync start --config bs-config.js"
   },
   "devDependencies": {
     "browser-sync": "^2.12.5"
