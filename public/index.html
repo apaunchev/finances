@@ -3,26 +3,13 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
     <title>Finances</title>
-
     <link rel="stylesheet" href="../node_modules/normalize.css/normalize.css">
     <link rel="stylesheet" href="css/app.css">
   </head>
 
   <body>
-    <header class="app-header">
-      <nav class="app-nav" ng-controller="NavCtrl" ng-cloak>
-        <a ng-class="{active: isActive('/dashboard')}" href="#!/dashboard">dashboard</a>
-        <a ng-class="{active: isActive('/statistics')}" href="#!/statistics">statistics</a>
-        <a ng-class="{active: isActive('/settings')}" href="#!/settings">settings</a>
-        <a href="#/" ng-click="signIn()" ng-hide="user">sign in</a>
-        <a href="#/" ng-click="signOut()" ng-show="user">sign out</a>
-      </nav>
-    </header>
-
     <div ng-view></div>
-
     <script src="../node_modules/underscore/underscore.js"></script>
     <script src="../node_modules/angular/angular.js"></script>
     <script src="../node_modules/angular-route/angular-route.js"></script>

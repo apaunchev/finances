@@ -8,6 +8,7 @@
     </div>
 
     <h1>Transactions <a title="Add transaction" ng-click="hideForm = !hideForm" ng-bind="hideForm ? '(+)' : '(-)'"></a></h1>
+<div ng-include src="'templates/header.html'"></div>
 
     <form ng-class="{dn: hideForm}" ng-submit="addTransaction()">
       <input type="date" ng-model="transaction.date" required>
@@ -36,3 +37,4 @@
     </div>
   </div>
 </section>
+<div ng-include src="'templates/overlay.html'"></div>
