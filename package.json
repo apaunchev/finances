@@ -2,7 +2,7 @@
   "name": "finances",
   "version": "0.1.0",
   "scripts": {
-    "start": "browser-sync start --config bs-config.js"
+    "start": "gulp"
   },
   "devDependencies": {
     "browser-sync": "^2.12.5",
