@@ -1,41 +1,44 @@
-<section class="statistics">
-  <div class="spinner" ng-show="loading"></div>
-  <div class="content" ng-hide="loading">
-    <h1>This month</h1>
-    <dl>
-      <dt>Income</dt>
-      <dd ng-bind="monthlyIncome | formatCurrency:currency"></dd>
-    </dl>
-    <dl>
-      <dt>Expenses</dt>
-      <dd ng-bind="monthlyExpenses | formatCurrency:currency"></dd>
-    </dl>
-    <dl>
-      <dt>Highest income</dt>
-      <dd ng-bind="monthlyHighestIncome | formatCurrency:currency"></dd>
-    </dl>
-    <dl>
-      <dt>Highest expense</dt>
-      <dd ng-bind="monthlyHighestExpense | formatCurrency:currency"></dd>
-    </dl>
 <div ng-include src="'templates/header.html'"></div>
 
-    <h1>This year</h1>
-    <dl>
-      <dt>Income</dt>
-      <dd ng-bind="yearlyIncome | formatCurrency:currency"></dd>
-    </dl>
-    <dl>
-      <dt>Expenses</dt>
-      <dd ng-bind="yearlyExpenses | formatCurrency:currency"></dd>
-    </dl>
-    <dl>
-      <dt>Highest income</dt>
-      <dd ng-bind="yearlyHighestIncome | formatCurrency:currency"></dd>
-    </dl>
-    <dl>
-      <dt>Highest expense</dt>
-      <dd ng-bind="yearlyHighestExpense | formatCurrency:currency"></dd>
-    </dl>
-  </div>
-</section>
+<div class="app-content">
+  <section class="statistics" ng-controller="StatisticsCtrl as stats">
+    <div class="spinner" ng-show="stats.loading"></div>
+    <div class="content" ng-hide="stats.loading">
+      <!--<h1>This month</h1>
+      <dl>
+        <dt>Income</dt>
+        <dd ng-bind="monthlyIncome | formatCurrency:currency"></dd>
+      </dl>
+      <dl>
+        <dt>Expenses</dt>
+        <dd ng-bind="monthlyExpenses | formatCurrency:currency"></dd>
+      </dl>
+      <dl>
+        <dt>Highest income</dt>
+        <dd ng-bind="monthlyHighestIncome | formatCurrency:currency"></dd>
+      </dl>
+      <dl>
+        <dt>Highest expense</dt>
+        <dd ng-bind="monthlyHighestExpense | formatCurrency:currency"></dd>
+      </dl>
+
+      <h1>This year</h1>
+      <dl>
+        <dt>Income</dt>
+        <dd ng-bind="yearlyIncome | formatCurrency:currency"></dd>
+      </dl>
+      <dl>
+        <dt>Expenses</dt>
+        <dd ng-bind="yearlyExpenses | formatCurrency:currency"></dd>
+      </dl>
+      <dl>
+        <dt>Highest income</dt>
+        <dd ng-bind="yearlyHighestIncome | formatCurrency:currency"></dd>
+      </dl>
+      <dl>
+        <dt>Highest expense</dt>
+        <dd ng-bind="yearlyHighestExpense | formatCurrency:currency"></dd>
+      </dl>-->
+    </div>
+  </section>
+</div>
