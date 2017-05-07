@@ -9,6 +9,10 @@
       'finances.auth',
       'finances.services',
       'finances.nav',
+      'finances.signIn',
+      'finances.signOut',
+      'finances.add',
+      'finances.edit',
       'finances.dashboard',
       'finances.statistics',
       'finances.settings',
@@ -20,9 +24,8 @@
   window.openFirebaseConnections = []
 
   configFunction.$inject = ['$provide', '$routeProvider']
-
   function configFunction ($provide, $routeProvider) {
-    $routeProvider.otherwise({ redirectTo: '/' })
+    $routeProvider.otherwise({ redirectTo: '/dashboard' })
 
     firebase.initializeApp({
       apiKey: 'AIzaSyDO5aGZX4nztCKYpqFY2PgE-XpJrJB9fwg',
@@ -47,7 +50,6 @@
   }
 
   runFunction.$inject = ['$rootScope', '$location']
-
   function runFunction ($rootScope, $location) {
     $rootScope.$on('$routeChangeError', (event, next, previous, error) => {
       if (error === 'AUTH_REQUIRED') {
