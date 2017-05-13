@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  pre= h.dump(transactions)
+  h2 #{title}
+  if transactions
+    each transaction in transactions
+      p #{transaction.description}
+        a(href=`/transactions/${transaction._id}/edit`) edit
