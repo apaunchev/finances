@@ -8,6 +8,14 @@ html
       nav
         a(href="/") home
         a(href="/add") add
+      nav
+        if user
+          a(href="/logout") logout
+          a(href="/account")
+            img(src=user.gravatar + 'd=retro')
+        else
+          a(href="/login") login
+          a(href="/register") register
     
     block messages
       if locals.flashes
