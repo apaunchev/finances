@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Transaction = mongoose.model('Transaction');
 
 exports.getTransactions = async (req, res) => {
-  const transactions = await Transaction.find();
+  const transactions = await Transaction.find({ user: req.user });
   res.render('transactions', { title: 'Transactions', transactions });
 };
 
