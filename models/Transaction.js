@@ -10,6 +10,11 @@ const transactionSchema = new mongoose.Schema({
   amount: {
     type: Number,
     required: 'Please provide a valid amount.'
+  },
+  user: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'User',
+    required: true
   }
 });
 

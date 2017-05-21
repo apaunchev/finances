@@ -10,12 +10,20 @@ exports.addTransaction = (req, res) => {
   res.render('editTransaction', { title: 'Add transaction' });
 };
 
+const confirmOwner = (transaction, user) => {
+  if (!transaction.user.equals(user._id)) {
+    throw Error('Transaction not found.');
+  }
+};
+
 exports.editTransaction = async (req, res) => {
   const transaction = await Transaction.findOne({ _id: req.params.id });
+  confirmOwner(transaction, req.user);
   res.render('editTransaction', { title: 'Edit transaction', transaction });
 };
 
 exports.createTransaction = async (req, res) => {
+  req.body.user = req.user._id;
   const transaction = await (new Transaction(req.body)).save();
   res.redirect('/');
 };

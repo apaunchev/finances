@@ -6,4 +6,5 @@ block content
   if transactions
     each transaction in transactions
       p #{transaction.description}
-        a(href=`/transactions/${transaction._id}/edit`) edit
+        if user && transaction.user.equals(user._id)
+          a(href=`/transactions/${transaction._id}/edit`) edit
