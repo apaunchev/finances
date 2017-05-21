@@ -9,6 +9,7 @@ mongoose.connection.on('error', (err) => {
 })
 
 require('./models/Transaction');
+require('./models/Category');
 require('./models/User');
 
 const app = require('./app');
