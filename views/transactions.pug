@@ -4,6 +4,9 @@ block content
   h2 #{title}
   if transactions
     each t in transactions
-      p #{t.description} #{t.amount} #{t.date}
+      ul
+        li #{t.description}
+        li #{t.amount}
+        li: time(datetime=t.date)= h.moment(t.date).fromNow()
         if user && t.user.equals(user._id)
-          a(href=`/transactions/${t._id}/edit`) edit
+          li: a(href=`/transactions/${t._id}/edit`) edit

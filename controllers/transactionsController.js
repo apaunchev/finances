@@ -2,7 +2,12 @@ const mongoose = require('mongoose');
 const Transaction = mongoose.model('Transaction');
 
 exports.getTransactions = async (req, res) => {
-  const transactions = await Transaction.find({ user: req.user }).sort('-date').limit(20);
+  const limit = 10;
+  const transactions = await Transaction
+    .find({ user: req.user })
+    .sort({ date: 'desc' })
+    .limit(limit);
+
   res.render('transactions', { title: 'Transactions', transactions });
 };
 
