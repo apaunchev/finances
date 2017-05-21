@@ -18,4 +18,8 @@ const transactionSchema = new mongoose.Schema({
   }
 });
 
+transactionSchema.index({
+  description: 'text'
+});
+
 module.exports = mongoose.model('Transaction', transactionSchema);

@@ -32,3 +32,18 @@ exports.updateTransaction = async (req, res) => {
   const transaction = await Transaction.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true }).exec();
   res.redirect('/');
 };
+
+exports.search = async (req, res) => {
+  const transactions = await Transaction.find({
+    $text: {
+      $search: req.query.q
+    }
+  }, {
+    score: { $meta: 'textScore' }
+  })
+  .sort({
+    score: { $meta: 'textScore' }
+  })
+  .limit(5);
+  res.json(transactions);
+};
