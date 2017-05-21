@@ -1,9 +1,16 @@
 {
   "name": "finances",
   "version": "0.1.0",
+  "private": true,
+  "engines": {
+    "node": ">= 7.10.0"
+  },
   "scripts": {
-    "prod": "node ./start.js",
-    "watch": "nodemon ./start.js --ignore public/"
+    "start": "node ./start.js",
+    "dev": "nodemon ./start.js --ignore public/"
+  },
+  "now": {
+    "dotenv": "variables.env.now"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
@@ -18,6 +25,7 @@
     "html-to-text": "^3.2.0",
     "juice": "^4.1.0",
     "md5": "^2.2.1",
+    "moment": "^2.18.1",
     "mongoose": "^4.8.7",
     "mongoose-mongodb-errors": "0.0.2",
     "nodemailer": "^4.0.1",
