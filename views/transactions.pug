@@ -1,10 +1,9 @@
 extends layout
 
 block content
-  pre= h.dump(transactions)
   h2 #{title}
   if transactions
-    each transaction in transactions
-      p #{transaction.description}
-        if user && transaction.user.equals(user._id)
-          a(href=`/transactions/${transaction._id}/edit`) edit
+    each t in transactions
+      p #{t.description} #{t.amount} #{t.date}
+        if user && t.user.equals(user._id)
+          a(href=`/transactions/${t._id}/edit`) edit
