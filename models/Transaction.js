@@ -11,6 +11,11 @@ const transactionSchema = new mongoose.Schema({
     type: Number,
     required: 'Please provide a valid amount.'
   },
+  category: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Category',
+    required: true
+  },
   user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',
