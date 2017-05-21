@@ -5,6 +5,7 @@ const transactionSchema = new mongoose.Schema({
   description: String,
   date: {
     type: Date,
+    default: Date.now,
     required: 'Please provide a valid date.'
   },
   amount: {
