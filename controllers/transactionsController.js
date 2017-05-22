@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Transaction = mongoose.model('Transaction');
+const Category = mongoose.model('Category');
 
 exports.getTransactions = async (req, res) => {
   const limit = 10;
@@ -11,8 +12,9 @@ exports.getTransactions = async (req, res) => {
   res.render('transactions', { title: 'Transactions', transactions });
 };
 
-exports.addTransaction = (req, res) => {
-  res.render('editTransaction', { title: 'Add transaction' });
+exports.addTransaction = async (req, res) => {
+  const categories = await Category.find();
+  res.render('editTransaction', { title: 'Add transaction', categories });
 };
 
 const confirmOwner = (transaction, user) => {
@@ -28,6 +30,9 @@ exports.editTransaction = async (req, res) => {
 };
 
 exports.createTransaction = async (req, res) => {
+  const category = req.body.category.split('|');
+  req.body.category = category[0];
+  req.body.description = req.body.description || category[1];
   req.body.user = req.user._id;
   const transaction = await (new Transaction(req.body)).save();
   res.redirect('/');

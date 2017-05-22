@@ -2,6 +2,10 @@ mixin transactionForm(transaction = {})
   form(action=`/add/${transaction._id || ''}` method="POST")
     label(for="description") Description
     input(type="text" name="description" value=transaction.description)
+    label(for="category") Category
+    select(name="category")
+      each c in categories
+        option(value=`${c._id}|${c.name}`) #{c.name}
     label(for="date") Date
     input(type="date" name="date" value=transaction.date)
     label(for="amount") Amount

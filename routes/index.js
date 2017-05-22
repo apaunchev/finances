@@ -8,7 +8,7 @@ const { catchErrors } = require('../handlers/errorHandlers');
 router.get('/', catchErrors(transactionsController.getTransactions));
 
 router.get('/transactions', catchErrors(transactionsController.getTransactions));
-router.get('/add', authController.isLoggedIn, transactionsController.addTransaction);
+router.get('/add', authController.isLoggedIn, catchErrors(transactionsController.addTransaction));
 router.post('/add', catchErrors(transactionsController.createTransaction));
 router.post('/add/:id', catchErrors(transactionsController.updateTransaction));
 router.get('/transactions/:id/edit', catchErrors(transactionsController.editTransaction));
