@@ -33,6 +33,8 @@ exports.createTransaction = async (req, res) => {
   const category = req.body.category.split('|');
   req.body.category = category[0];
   req.body.description = req.body.description || category[1];
+  req.body.date = req.body.date || Date.now();
+  req.body.amount = parseFloat(req.body.amount);
   req.body.user = req.user._id;
   const transaction = await (new Transaction(req.body)).save();
   res.redirect('/');

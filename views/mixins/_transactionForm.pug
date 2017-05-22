@@ -9,5 +9,5 @@ mixin transactionForm(transaction = {})
     label(for="date") Date
     input(type="date" name="date" value=transaction.date)
     label(for="amount") Amount
-    input(type="number" name="amount" value=transaction.amount)
+    input(type="number" name="amount" step="0.01" value=transaction.amount required)
     input(type="submit" value="Save →" class="button")
