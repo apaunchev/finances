@@ -11,3 +11,4 @@ block content
         li: time(datetime=t.date)= h.moment(t.date).fromNow()
         if user && t.user.equals(user._id)
           li: a(href=`/transactions/${t._id}/edit`) edit
+          li: a(href=`/transactions/${t._id}/remove`) remove

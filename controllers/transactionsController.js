@@ -9,7 +9,6 @@ exports.getTransactions = async (req, res) => {
     .populate('category')
     .sort({ date: 'desc' })
     .limit(limit);
-
   res.render('transactions', { title: 'Transactions', transactions });
 };
 
@@ -48,6 +47,11 @@ exports.createTransaction = async (req, res) => {
 
 exports.updateTransaction = async (req, res) => {
   const transaction = await Transaction.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true }).exec();
+  res.redirect('/');
+};
+
+exports.removeTransaction = async (req, res) => {
+  const transaction = await Transaction.remove({ _id: req.params.id });
   res.redirect('/');
 };
 
