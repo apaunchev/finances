@@ -6,6 +6,7 @@ exports.getTransactions = async (req, res) => {
   const limit = 10;
   const transactions = await Transaction
     .find({ user: req.user })
+    .populate('category')
     .sort({ date: 'desc' })
     .limit(limit);
 

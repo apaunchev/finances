@@ -7,6 +7,7 @@ block content
       ul
         li #{t.description}
         li #{t.amount}
+        li #{t.category.name}
         li: time(datetime=t.date)= h.moment(t.date).fromNow()
         if user && t.user.equals(user._id)
           li: a(href=`/transactions/${t._id}/edit`) edit
