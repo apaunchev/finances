@@ -5,9 +5,11 @@ mixin transactionForm(transaction = {})
     label(for="category") Category
     select(name="category")
       each c in categories
-        option(value=`${c._id}|${c.name}`) #{c.name}
+        - const selected = transaction.category ? transaction.category.toString() === c._id.toString() : false
+        option(value=`${c._id}|${c.name}` selected=selected) #{c.name}
     label(for="date") Date
-    input(type="date" name="date" value=transaction.date)
+    - const date = h.moment(transaction.date).format('YYYY-MM-DD')
+    input(type="date" name="date" value=date)
     label(for="amount") Amount
     input(type="number" name="amount" step="0.01" value=transaction.amount required)
     input(type="submit" value="Save →" class="button")
