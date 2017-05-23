@@ -25,17 +25,22 @@ const confirmOwner = (transaction, user) => {
 
 exports.editTransaction = async (req, res) => {
   const transaction = await Transaction.findOne({ _id: req.params.id });
+  const categories = await Category.find();
   confirmOwner(transaction, req.user);
-  res.render('editTransaction', { title: 'Edit transaction', transaction });
+  res.render('editTransaction', { title: 'Edit transaction', transaction, categories });
 };
 
-exports.createTransaction = async (req, res) => {
+exports.processTransaction = (req, res, next) => {
   const category = req.body.category.split('|');
   req.body.category = category[0];
   req.body.description = req.body.description || category[1];
   req.body.date = req.body.date || Date.now();
   req.body.amount = parseFloat(req.body.amount);
   req.body.user = req.user._id;
+  next();
+};
+
+exports.createTransaction = async (req, res) => {
   const transaction = await (new Transaction(req.body)).save();
   res.redirect('/');
 };
@@ -46,16 +51,9 @@ exports.updateTransaction = async (req, res) => {
 };
 
 exports.search = async (req, res) => {
-  const transactions = await Transaction.find({
-    $text: {
-      $search: req.query.q
-    }
-  }, {
-    score: { $meta: 'textScore' }
-  })
-  .sort({
-    score: { $meta: 'textScore' }
-  })
-  .limit(5);
+  const transactions = await Transaction
+    .find({ $text: { $search: req.query.q }}, { score: { $meta: 'textScore' } })
+    .sort({ score: { $meta: 'textScore' } })
+    .limit(5);
   res.json(transactions);
 };
