@@ -13,7 +13,6 @@ require('./models/Category');
 require('./models/User');
 
 const app = require('./app');
-app.set('port', process.env.PORT || 1234);
-const server = app.listen(app.get('port'), () => {
+const server = app.listen(process.env.PORT || 1234, () => {
   console.log(`💻 → PORT ${server.address().port}`);
 })
