@@ -11,7 +11,7 @@ router.get('/transactions', catchErrors(transactionsController.getTransactions))
 router.get('/add', authController.isLoggedIn, catchErrors(transactionsController.addTransaction));
 router.post('/add', transactionsController.processTransaction, catchErrors(transactionsController.createTransaction));
 router.post('/add/:id', transactionsController.processTransaction, catchErrors(transactionsController.updateTransaction));
-router.get('/transactions/:id/edit', catchErrors(transactionsController.editTransaction));
+router.get('/transactions/:id/edit', authController.isLoggedIn, catchErrors(transactionsController.editTransaction));
 
 router.get('/login', userController.loginForm);
 router.post('/login', authController.login);
