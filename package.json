@@ -2,6 +2,9 @@
   "name": "finances",
   "version": "0.1.1",
   "private": true,
+  "engines": {
+    "node": ">= 7.10.0"
+  },
   "scripts": {
     "start": "node ./start.js",
     "dev": "nodemon ./start.js --ignore public/"
