@@ -1,16 +1,10 @@
 {
   "name": "finances",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
-  "engines": {
-    "node": ">= 7.10.0"
-  },
   "scripts": {
     "start": "node ./start.js",
     "dev": "nodemon ./start.js --ignore public/"
-  },
-  "now": {
-    "dotenv": "variables.env.now"
   },
   "dependencies": {
     "body-parser": "^1.17.1",
