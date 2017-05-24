@@ -2,26 +2,31 @@ const mongoose = require('mongoose');
 const Transaction = mongoose.model('Transaction');
 const Category = mongoose.model('Category');
 const _ = require('lodash');
+const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 exports.getTransactions = async (req, res) => {
-  const limit = 10;
-  const transactions = await Transaction
-    .find({ user: req.user })
-    .populate('category')
-    .sort({ date: 'desc' })
-    .limit(limit);
-  res.render('transactions', { title: 'Transactions', transactions });
+  const transactions = await Transaction.getTransactionsByMonth(req.user, new Date());
+  const transactionsByDate = _.chain(transactions)
+    .groupBy(t => new Date(t.date).getDate())
+    .mapValues(daily => {
+      const date = new Date(daily[0].date)
+      const transactions = _.chain(daily).sortBy(date).reverse().value()
+      return {
+        transactions,
+        totalAmount: totalAmount(daily),
+        date: date.getDate(),
+        dayOfWeek: weekDays[date.getDay()]
+      }
+    })
+    .sortBy('date')
+    .reverse()
+    .value();
+  res.render('transactions', { title: 'Transactions', transactions: transactionsByDate });
 };
 
 exports.addTransaction = async (req, res) => {
   const categories = await Category.find();
   res.render('editTransaction', { title: 'Add transaction', categories });
-};
-
-const confirmOwner = (transaction, user) => {
-  if (!transaction.user.equals(user._id)) {
-    throw Error('Transaction not found.');
-  }
 };
 
 exports.editTransaction = async (req, res) => {
@@ -58,8 +63,21 @@ exports.removeTransaction = async (req, res) => {
 
 exports.search = async (req, res) => {
   const transactions = await Transaction
-    .find({ $text: { $search: req.query.q }}, { score: { $meta: 'textScore' } })
+    .find({ $text: { $search: req.query.q } }, { score: { $meta: 'textScore' } })
     .sort({ score: { $meta: 'textScore' } })
     .limit(5);
   res.json(transactions);
+};
+
+const totalAmount = (collection) => {
+  if (!collection.length) {
+    return 0;
+  }
+  return collection.reduce((a, b) => a + b.amount, 0);
+};
+
+const confirmOwner = (transaction, user) => {
+  if (!transaction.user.equals(user._id)) {
+    throw Error('Transaction not found.');
+  }
 };
