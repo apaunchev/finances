@@ -1,31 +1,29 @@
 doctype html
 html
   head
-    title= `${title}`
+    meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
+    title= `${title}`
+    link(rel="stylesheet" href="/dist/style.css")
+
   body
     block header
-      nav
-        a(href="/") home
-        a(href="/add") add
-      nav
-        if user
-          a(href="/logout") logout
-          a(href="/account")
-            img(src=user.gravatar + 'd=retro')
-        else
-          a(href="/login") login
-          a(href="/register") register
+      if user
+        header.header
+          nav.nav
+            a.nav__link(href="/" class=(currentPath === '/' ? 'nav__link--active' : '')) dashboard
+            a.nav__link(href="/statistics" class=(currentPath === '/statistics' ? 'nav__link--active' : '')) statistics
     
     block messages
       if locals.flashes
-        .inner
-          .flash-messages
-            - const categories = Object.keys(locals.flashes)
-            each category in categories
-              each message in flashes[category]
-                .flash(class=`flash--${category}`)
-                  p.flash__text!= message
-                  button.flash__remove(onClick="this.parentElement.remove()") &times;
+        .flash-messages
+          - const categories = Object.keys(locals.flashes)
+          each category in categories
+            each message in flashes[category]
+              .flash(class=`flash--${category}`)
+                p.flash__text!= message
+                button.flash__remove(onClick="this.parentElement.remove()") &times;
 
     block content
+
+  script(src="/js/app.js")

@@ -2,6 +2,7 @@ extends layout
 
 block content
   h2 Edit your account
+  img(src=user.gravatar + 'd=retro')
   form(action="/account" method="POST")
     label(for="name") Name
     input(type="text" name="name" value=user.name)

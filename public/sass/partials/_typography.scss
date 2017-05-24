@@ -1,0 +1,39 @@
+a {
+  color: #333;
+  text-decoration: none;
+  &:hover,
+  &:active,
+  &:focus {
+    text-decoration: none;
+  }
+  &:active {
+    background-color: #f5f8fa;
+  }
+}
+
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+input[type=text],
+input[type=search],
+input[type=number],
+input[type=date],
+input[type=submit],
+select,
+button,
+label {
+  display: block;
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  -webkit-appearance: none;
+  border-width: 1px;
+  border-color: rgba(black, 0.2);
+}
+
+input[type=submit],
+button {
+  background-color: white;
+}

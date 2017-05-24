@@ -1,0 +1,51 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, Helvetica, Arial, sans-serif;
+}
+
+.content {
+  @extend .container;
+  position: relative;
+  padding: 72px 12px 24px;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.overlay {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.btn__add {
+  position: relative;
+  display: block;
+  float: right;
+  bottom: 32px;
+  right: 32px;
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+  box-shadow: 1px 1px 4px rgba(101, 119, 134, .75);
+  background-color: $blue;
+  color: white;
+  text-align: center;
+  font-size: 24px;
+  line-height: 48px;
+
+  &:active {
+    background-color: darken($blue, 10);
+  }
+
+  @media screen and (min-width: 480px) {
+    right: -72px;
+  }
+}

@@ -1,14 +1,20 @@
 extends layout
 
 block content
-  h2 #{title}
-  if transactions
-    each t in transactions
-      ul
-        li #{t.description}
-        li #{t.amount}
-        li #{t.category.name}
-        li: time(datetime=t.date)= h.moment(t.date).fromNow()
-        if user && t.user.equals(user._id)
-          li: a(href=`/transactions/${t._id}/edit`) edit
-          li: a(href=`/transactions/${t._id}/remove`) remove
+  .content
+    if transactions
+      .transactions
+        each day in transactions
+          .transactions__day
+            h4.transactions__title= day.date
+              span.day= day.dayOfWeek
+              span.amount= day.totalAmount
+            ol.transactions__list
+              each t in day.transactions
+                li.transactions__item
+                  a(href=`/transactions/${t._id}/edit`)= t.description
+                    span.amount(style=`background-color: ${t.category.color}`)= `${t.amount}`
+
+  .overlay
+    .container
+      a.btn__add(href="/add") +

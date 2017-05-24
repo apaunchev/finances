@@ -1,0 +1,32 @@
+.header {
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  background-color: white;
+  box-shadow: 0 0 4px #657786;
+}
+
+.nav {
+  @extend .container;
+  display: flex;
+}
+
+.nav__link {
+  flex: 1;
+  position: relative;
+  padding: 15px 0;
+  color: #657786;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+
+  &.nav__link--active:after {
+    content: '';
+    background-color: #1da1f2;
+    height: 2px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+  }
+}

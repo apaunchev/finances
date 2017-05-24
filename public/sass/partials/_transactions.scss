@@ -1,0 +1,42 @@
+.transactions__day {
+  margin-bottom: 24px;
+}
+
+.transactions__title {
+  margin-bottom: 0;
+  padding-bottom: 8px;
+  font-weight: 300;
+  border-bottom: 1px solid rgba(0, 0, 0, .2);
+  .day {
+    padding-left: 4px;
+    color: gray;
+  }
+  .amount {
+    float: right;
+  }
+}
+
+.transactions__list {
+  margin: 8px 0;
+  padding-left: 0;
+  list-style-type: none;
+}
+
+.transactions__item {
+  margin-top: 8px;
+  overflow: hidden;
+  line-height: 2;
+  > a {
+    display: block;
+  }
+  .amount {
+    float: right;
+    background-color: #333;
+    border-radius: 8px;
+    color: white;
+  }
+}
+
+.amount {
+  padding: 0 8px;
+}
