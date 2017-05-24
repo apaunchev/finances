@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Transaction = mongoose.model('Transaction');
 const Category = mongoose.model('Category');
+const _ = require('lodash');
 
 exports.getTransactions = async (req, res) => {
   const limit = 10;
