@@ -22,7 +22,7 @@
 
   &.nav__link--active:after {
     content: '';
-    background-color: #1da1f2;
+    background-color: $blue;
     height: 2px;
     position: absolute;
     bottom: 0;
