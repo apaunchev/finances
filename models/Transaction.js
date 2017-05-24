@@ -28,4 +28,26 @@ transactionSchema.index({
   description: 'text'
 });
 
+transactionSchema.statics.getTransactionsByMonth = function (user, month) {
+  return this.aggregate([
+    { $match: {
+        user: user._id,
+        date: {
+          $gte: new Date(month.getFullYear(), month.getMonth(), 1),
+          $lte: new Date(month.getFullYear(), month.getMonth(), 31)
+        },
+        amount: {
+          $lt: 0
+        }
+    } },
+    { $lookup: {
+      from: 'categories',
+      localField: 'category',
+      foreignField: '_id',
+      as: 'category'
+    } },
+    { $unwind: '$category' }
+  ]);
+};
+
 module.exports = mongoose.model('Transaction', transactionSchema);
