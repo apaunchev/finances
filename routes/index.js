@@ -5,7 +5,7 @@ const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
-router.get('/', catchErrors(transactionsController.getTransactions));
+router.get('/', authController.isLoggedIn, catchErrors(transactionsController.getTransactions));
 
 router.get('/transactions', catchErrors(transactionsController.getTransactions));
 router.get('/add', authController.isLoggedIn, catchErrors(transactionsController.addTransaction));
