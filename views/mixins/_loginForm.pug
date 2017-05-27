@@ -1,8 +1,6 @@
 mixin loginForm()
   form(action="/login" method="POST")
-    label(for="email") Email
-    input(type="email" name="email")
-    label(for="password") Password
-    input(type="password" name="password")
-    input(type="submit" value="Log in")
+    input(type="email" placeholder="Email" name="email")
+    input(type="password"  placeholder="Password" name="password")
+    input(type="submit" value="Log in →")
   
