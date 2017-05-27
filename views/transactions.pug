@@ -13,7 +13,3 @@ block content
               li.transactions__item
                 a(href=`/transactions/${t._id}/edit`)= t.description
                   span.amount(style=`background-color: ${t.category.color}`)= `${t.amount}`
-
-  .overlay
-    .container
-      a.btn__add(href="/add") +
