@@ -16,20 +16,42 @@ pre {
   word-wrap: break-word;
 }
 
-input,
-select,
-button,
 label {
   display: block;
-  width: 100%;
-  padding: 8px;
   margin-bottom: 8px;
+}
+
+select,
+input,
+button {
+  display: block;
+  margin-bottom: 16px;
+  padding: 8px;
+  width: 100%;
+}
+
+select {
   -webkit-appearance: none;
+  border-color: rgba(black, 0.2);
+  background-color: white;
+}
+
+input[type=radio] {
+  display: inline-block;
+  width: auto;
+  margin-bottom: 16px;
+}
+
+input[type=submit],
+input[type=button],
+button {
+  background-color: white;
   border-width: 1px;
   border-color: rgba(black, 0.2);
 }
 
-input[type=submit],
-button {
-  background-color: white;
+form {
+  span {
+    margin: 0 8px;
+  }
 }
