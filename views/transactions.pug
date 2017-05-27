@@ -7,7 +7,7 @@ block content
         .transactions__day
           h4.transactions__title= day.date
             span.day= day.dayOfWeek
-            span.amount= day.totalAmount
+            span.amount= Math.round(day.totalAmount * 100) / 100
           ol.transactions__list
             each t in day.transactions
               li.transactions__item
