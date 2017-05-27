@@ -1,19 +1,18 @@
 extends layout
 
 block content
-  .content
-    if transactions
-      .transactions
-        each day in transactions
-          .transactions__day
-            h4.transactions__title= day.date
-              span.day= day.dayOfWeek
-              span.amount= day.totalAmount
-            ol.transactions__list
-              each t in day.transactions
-                li.transactions__item
-                  a(href=`/transactions/${t._id}/edit`)= t.description
-                    span.amount(style=`background-color: ${t.category.color}`)= `${t.amount}`
+  if transactions
+    .transactions
+      each day in transactions
+        .transactions__day
+          h4.transactions__title= day.date
+            span.day= day.dayOfWeek
+            span.amount= day.totalAmount
+          ol.transactions__list
+            each t in day.transactions
+              li.transactions__item
+                a(href=`/transactions/${t._id}/edit`)= t.description
+                  span.amount(style=`background-color: ${t.category.color}`)= `${t.amount}`
 
   .overlay
     .container

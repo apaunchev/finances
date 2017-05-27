@@ -13,17 +13,16 @@ html
           nav.nav
             a.nav__link(href="/" class=(currentPath === '/' ? 'nav__link--active' : '')) dashboard
             a.nav__link(href="/statistics" class=(currentPath === '/statistics' ? 'nav__link--active' : '')) statistics
-    
-    block messages
-      if locals.flashes
-        .flash-messages
-          - const categories = Object.keys(locals.flashes)
-          each category in categories
-            each message in flashes[category]
-              .flash(class=`flash--${category}`)
-                p.flash__text!= message
-                button.flash__remove(onClick="this.parentElement.remove()") &times;
+      
+      .content
+        block messages
+          if locals.flashes
+            - const categories = Object.keys(locals.flashes)
+            each category in categories
+              each message in flashes[category]
+                .flash(class=`flash--${category}`)
+                  p!= message
 
-    block content
+        block content
 
   script(src="/dist/app.js")
