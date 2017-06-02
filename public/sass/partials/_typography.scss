@@ -30,13 +30,17 @@ button {
   width: 100%;
 }
 
-select {
+select,
+input[type=date] {
   -webkit-appearance: none;
   border-color: rgba(black, 0.2);
+  border-width: 1px;
+  border-radius: 0;
   background-color: white;
 }
 
-input[type=radio] {
+input[type=radio],
+input[type=checkbox] {
   display: inline-block;
   width: auto;
   margin-bottom: 16px;
