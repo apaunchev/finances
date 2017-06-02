@@ -2,10 +2,14 @@ const mongoose = require('mongoose');
 const Transaction = mongoose.model('Transaction');
 const Category = mongoose.model('Category');
 const _ = require('lodash');
+const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 exports.getTransactions = async (req, res) => {
-  const transactions = await Transaction.getTransactionsByMonth(req.user, new Date());
+  const now = new Date();
+  const month = req.params.month || now.getMonth();
+  const year = req.params.year || now.getFullYear();
+  const transactions = await Transaction.getTransactionsByDate(req.user, new Date(year, month));
   const transactionsByDate = _.chain(transactions)
     .groupBy(t => new Date(t.date).getDate())
     .mapValues(daily => {
@@ -16,7 +20,7 @@ exports.getTransactions = async (req, res) => {
         totalAmount: totalAmount(daily),
         date: date.getDate(),
         dayOfWeek: weekDays[date.getDay()]
-      }
+      };
     })
     .sortBy('date')
     .reverse()

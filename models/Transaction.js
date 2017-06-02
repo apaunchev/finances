@@ -28,24 +28,25 @@ transactionSchema.index({
   description: 'text'
 });
 
-transactionSchema.statics.getTransactionsByMonth = function (user, month) {
+transactionSchema.statics.getTransactionsByDate = function (user, date) {
   return this.aggregate([
-    { $match: {
+    {
+      $match: {
         user: user._id,
         date: {
-          $gte: new Date(month.getFullYear(), month.getMonth(), 1),
-          $lte: new Date(month.getFullYear(), month.getMonth(), 31)
-        },
-        amount: {
-          $lt: 0
+          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
+          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
         }
-    } },
-    { $lookup: {
-      from: 'categories',
-      localField: 'category',
-      foreignField: '_id',
-      as: 'category'
-    } },
+      }
+    },
+    {
+      $lookup: {
+        from: 'categories',
+        localField: 'category',
+        foreignField: '_id',
+        as: 'category'
+      }
+    },
     { $unwind: '$category' }
   ]);
 };
