@@ -7,9 +7,9 @@ block content
         .transactions__day
           h4.transactions__title= day.date
             span.day= day.dayOfWeek
-            span.amount= Math.round(day.totalAmount * 100) / 100
+            span.amount= day.totalAmount.toFixed(2)
           ol.transactions__list
             each t in day.transactions
               li.transactions__item
                 a(href=`/transaction/${t._id}/edit`)= t.description
-                  span.amount(style=`background-color: ${t.category.color}`)= `${t.amount}`
+                  span.amount(style=`background-color: ${t.category.color}`)= `${t.amount.toFixed(2)}`
