@@ -11,5 +11,5 @@ block content
           ol.transactions__list
             each t in day.transactions
               li.transactions__item
-                a(href=`/transactions/${t._id}/edit`)= t.description
+                a(href=`/transaction/${t._id}/edit`)= t.description
                   span.amount(style=`background-color: ${t.category.color}`)= `${t.amount}`
