@@ -51,4 +51,24 @@ transactionSchema.statics.getTransactionsByDate = function (user, date) {
   ]);
 };
 
+transactionSchema.statics.getTransactionsByMonth = function (user) {
+  return this.aggregate([
+    {
+      $match: {
+        user: user._id
+      }
+    },
+    {
+      $group: {
+        _id: { year: { $year: '$date' }, month: { $month: '$date' } },
+        balance: { $sum: '$amount' },
+        count: { $sum: 1 }
+      }
+    },
+    {
+      $sort: { '_id': -1 }
+    }
+  ]);
+};
+
 module.exports = mongoose.model('Transaction', transactionSchema);

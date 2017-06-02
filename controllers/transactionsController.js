@@ -28,6 +28,11 @@ exports.getTransactions = async (req, res) => {
   res.render('transactions', { title: 'Transactions', transactions: transactionsByDate });
 };
 
+exports.getAllTransactions = async (req, res) => {
+  const transactions = await Transaction.getTransactionsByMonth(req.user);
+  res.render('all', { title: 'Transactions', transactions, monthNames });
+};
+
 exports.addTransaction = async (req, res) => {
   const categories = await Category.find();
   res.render('editTransaction', { title: 'Add transaction', categories });
