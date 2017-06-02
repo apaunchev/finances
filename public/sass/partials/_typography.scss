@@ -28,15 +28,15 @@ button {
   margin-bottom: 16px;
   padding: 8px;
   width: 100%;
+  border-color: rgba(black, 0.2);
+  border-width: 1px;
+  border-radius: 0;
+  background-color: white;
 }
 
 select,
 input[type=date] {
   -webkit-appearance: none;
-  border-color: rgba(black, 0.2);
-  border-width: 1px;
-  border-radius: 0;
-  background-color: white;
 }
 
 input[type=radio],
@@ -44,18 +44,4 @@ input[type=checkbox] {
   display: inline-block;
   width: auto;
   margin-bottom: 16px;
-}
-
-input[type=submit],
-input[type=button],
-button {
-  background-color: white;
-  border-width: 1px;
-  border-color: rgba(black, 0.2);
-}
-
-form {
-  span {
-    margin: 0 8px;
-  }
 }
