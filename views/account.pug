@@ -4,8 +4,6 @@ block content
   h2 Edit your account
   img(src=user.gravatar + 'd=retro')
   form(action="/account" method="POST")
-    label(for="name") Name
-    input(type="text" name="name" value=user.name)
-    label(for="email") Email
-    input(type="email" name="email" value=user.email)
+    input(type="text" name="name" placeholder="name" value=user.name)
+    input(type="email" name="email" placeholder="email" value=user.email)
     input(type="submit" value="Save →")
