@@ -31,15 +31,15 @@ body {
   float: right;
   bottom: 32px;
   right: 32px;
-  width: 48px;
-  height: 48px;
+  width: 60px;
+  height: 60px;
   border-radius: 100%;
   box-shadow: 1px 1px 4px rgba(101, 119, 134, .75);
   background-color: $blue;
   color: white;
   text-align: center;
   font-size: 24px;
-  line-height: 48px;
+  line-height: 60px;
 
   &:active {
     background-color: darken($blue, 10);

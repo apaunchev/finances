@@ -25,15 +25,15 @@ body {
   float: right;
   bottom: 32px;
   right: 32px;
-  width: 48px;
-  height: 48px;
+  width: 60px;
+  height: 60px;
   border-radius: 100%;
   box-shadow: 1px 1px 4px rgba(101, 119, 134, 0.75);
   background-color: #1da1f2;
   color: white;
   text-align: center;
   font-size: 24px;
-  line-height: 48px; }
+  line-height: 60px; }
   .btn__add:active {
     background-color: #0c85d0; }
   @media screen and (min-width: 480px) {
