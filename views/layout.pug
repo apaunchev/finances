@@ -13,8 +13,8 @@ html
       if user
         header.header
           nav.nav
-            a.nav__link(href="/transactions" class=(currentPath === '/transactions' ? 'nav__link--active' : '')) transactions
             a.nav__link(href="/" class=(currentPath === '/' ? 'nav__link--active' : '')) dashboard
+            a.nav__link(href="/transactions" class=(currentPath.includes('/transaction') ? 'nav__link--active' : '')) browse
             a.nav__link(href="/account" class=(currentPath === '/account' ? 'nav__link--active' : '')) account
       
       .content
