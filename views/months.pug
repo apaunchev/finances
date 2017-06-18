@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  if months
+    ul.transactions__list
+      each month in months
+        li.transactions__item
+          a(href=`/transactions/${month._id.year}/${month._id.month}`)= `${h.getMonthName(month._id.month)} ${month._id.year}`
+            span.amount= month.balance.toFixed(2)
