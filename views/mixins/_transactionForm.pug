@@ -10,4 +10,4 @@ mixin transactionForm(transaction = {})
     input(type="number" name="amount" step="0.01" placeholder="Amount" value=transaction.amount required)
     input(type="submit" value="Save →" class="button")
     if transaction._id
-      a(href=`/transaction/${transaction._id}/remove` onclick="return confirm('Are you sure you want to remove this transaction?')") Remove →
+      a.btn(href=`/transaction/${transaction._id}/remove` onclick="return confirm('Are you sure you want to remove this transaction?')") Remove →

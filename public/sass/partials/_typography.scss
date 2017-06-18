@@ -1,13 +1,25 @@
 a {
   color: #333;
   text-decoration: none;
+  
   &:hover,
   &:active,
   &:focus {
     text-decoration: none;
   }
+
   &:active {
     background-color: #f5f8fa;
+  }
+
+  &.btn {
+    display: block;
+    width: 100%;
+    margin: 16px auto 0;
+    padding: 8px;
+    border: 1px solid rgba(black, 0.2);
+    background-color: white;
+    text-align: center;
   }
 }
 
@@ -44,4 +56,8 @@ input[type=checkbox] {
   display: inline-block;
   width: auto;
   margin-bottom: 16px;
+}
+
+input[type=submit] {
+  cursor: pointer;
 }

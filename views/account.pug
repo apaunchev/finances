@@ -1,10 +1,9 @@
 extends layout
 
 block content
-  h2 Edit your account
-  img(src=user.gravatar + 'd=retro')
+  //- img(src=user.gravatar + 'd=retro')
   form(action="/account" method="POST")
     input(type="text" name="name" placeholder="name" value=user.name)
     input(type="email" name="email" placeholder="email" value=user.email)
     input(type="submit" value="Save →")
-  a(href="/logout") Logout →
+  a.btn(href="/logout") Logout →
