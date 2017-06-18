@@ -6,10 +6,12 @@
   padding: 8px 0;
   font-weight: 300;
   border-bottom: 1px solid rgba(0, 0, 0, .2);
+
   .day {
     padding-left: 4px;
     color: gray;
   }
+  
   .amount {
     float: right;
   }
@@ -25,17 +27,20 @@
   margin-top: 8px;
   overflow: hidden;
   line-height: 2;
+  
   > a {
     display: block;
   }
+  
   .amount {
+    @extend .pill;
     float: right;
-    background-color: #333;
-    border-radius: 8px;
-    color: white;
   }
 }
 
-.amount {
+.pill {
   padding: 0 8px;
+  background-color: slategray;
+  border-radius: 8px;
+  color: white;
 }

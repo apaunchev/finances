@@ -483,21 +483,26 @@ template {
   .transactions__item > a {
     display: block; }
   .transactions__item .amount {
-    float: right;
-    background-color: #333;
-    border-radius: 8px;
+    float: right; }
+
+.pill, .transactions__item .amount {
+  padding: 0 8px;
+  background-color: slategray;
+  border-radius: 8px;
+  color: white; }
+
+.categories {
+  display: flex;
+  flex-wrap: wrap; }
+
+.category {
+  flex: 0 0 50%; }
+  .category > a {
+    display: block;
+    padding: 16px 8px;
     color: white; }
-
-.amount {
-  padding: 0 8px; }
-
-.circle {
-  display: block;
-  float: right;
-  width: 1rem;
-  height: 1rem;
-  line-height: 1rem;
-  border-radius: 100%; }
+    .category > a:active, .category > a:focus {
+      opacity: 0.8; }
 
 .flash {
   margin: 16px 0; }
@@ -509,6 +514,14 @@ a {
     text-decoration: none; }
   a:active {
     background-color: #f5f8fa; }
+  a.btn {
+    display: block;
+    width: 100%;
+    margin: 16px auto 0;
+    padding: 8px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    background-color: white;
+    text-align: center; }
 
 pre {
   white-space: pre-wrap;
@@ -539,3 +552,6 @@ input[type=checkbox] {
   display: inline-block;
   width: auto;
   margin-bottom: 16px; }
+
+input[type=submit] {
+  cursor: pointer; }
