@@ -2,35 +2,23 @@ const mongoose = require('mongoose');
 const Transaction = mongoose.model('Transaction');
 const Category = mongoose.model('Category');
 const _ = require('lodash');
-const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
 exports.getTransactions = async (req, res) => {
   const now = new Date();
-  const month = req.params.month || now.getMonth();
-  const year = req.params.year || now.getFullYear();
+  let month = parseInt(req.params.month) - 1;
+  let year = req.params.year;
+  if (isNaN(month) || isNaN(year)) {
+    month = now.getMonth();
+    year = now.getFullYear();
+  }
   const transactions = await Transaction.getTransactionsByDate(req.user, new Date(year, month));
-  const transactionsByDate = _.chain(transactions)
-    .groupBy(t => new Date(t.date).getDate())
-    .mapValues(daily => {
-      const date = new Date(daily[0].date)
-      const transactions = _.chain(daily).sortBy(date).reverse().value()
-      return {
-        transactions,
-        totalAmount: totalAmount(daily),
-        date: date.getDate(),
-        dayOfWeek: weekDays[date.getDay()]
-      };
-    })
-    .sortBy('date')
-    .reverse()
-    .value();
-  res.render('transactions', { title: 'Transactions', transactions: transactionsByDate });
+  const dailyTransactions = formatDailyTransactions(transactions);
+  res.render('transactions', { title: 'Transactions', transactions: dailyTransactions });
 };
 
-exports.browseTransactions = async (req, res) => {
-  const transactions = await Transaction.getTransactionsByMonth(req.user);
-  res.render('browse', { title: 'Transactions', transactions, monthNames });
+exports.getMonthlyTransactions = async (req, res) => {
+  const months = await Transaction.getMonthlyTransactions(req.user);
+  res.render('months', { title: 'Transactions', months });
 };
 
 exports.addTransaction = async (req, res) => {
@@ -76,6 +64,25 @@ exports.search = async (req, res) => {
     .sort({ score: { $meta: 'textScore' } })
     .limit(5);
   res.json(transactions);
+};
+
+const formatDailyTransactions = (transactions) => {
+  const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  return _.chain(transactions)
+    .groupBy(t => new Date(t.date).getDate())
+    .mapValues(daily => {
+      const date = new Date(daily[0].date)
+      const transactions = _.chain(daily).sortBy(date).reverse().value()
+      return {
+        transactions,
+        totalAmount: totalAmount(daily),
+        date: date.getDate(),
+        dayOfWeek: weekDays[date.getDay()]
+      };
+    })
+    .sortBy('date')
+    .reverse()
+    .value();
 };
 
 const totalAmount = (collection) => {

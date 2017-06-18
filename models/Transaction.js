@@ -47,11 +47,13 @@ transactionSchema.statics.getTransactionsByDate = function (user, date) {
         as: 'category'
       }
     },
-    { $unwind: '$category' }
+    {
+      $unwind: '$category'
+    }
   ]);
 };
 
-transactionSchema.statics.getTransactionsByMonth = function (user) {
+transactionSchema.statics.getMonthlyTransactions = function (user) {
   return this.aggregate([
     {
       $match: {
