@@ -2,9 +2,9 @@ extends layout
 
 block content
   if categories
-    each category in categories
-      a.transactions__day(href=`/category/${category._id}/edit`)
-        h4.transactions__title= category.name
-          span.circle(style=`background-color: ${category.color}`) &nbsp;
-  <br />
-  a(href="/categories/add") New category →
+    .categories
+      each category in categories
+        .category
+          a(href=`/category/${category._id}/edit` style=`background-color: ${category.color}`)= category.name
+
+    a.btn(href="/categories/add") New category →

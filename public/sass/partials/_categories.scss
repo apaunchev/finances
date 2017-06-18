@@ -1,11 +1,19 @@
 .categories {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.circle {
-  display: block;
-  float: right;
-  width: 1rem;
-  height: 1rem;
-  line-height: 1rem;
-  border-radius: 100%;
+.category {
+  flex: 0 0 50%;
+
+  > a {
+    display: block;
+    padding: 16px 8px;
+    color: white;
+
+    &:active,
+    &:focus {
+      opacity: 0.8;
+    }
+  }
 }
