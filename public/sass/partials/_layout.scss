@@ -49,3 +49,11 @@ body {
     right: -72px;
   }
 }
+
+section {
+  margin: 16px 0;
+
+  &:first-child {
+    margin-top: 0;
+  }
+}

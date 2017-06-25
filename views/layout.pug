@@ -3,7 +3,7 @@ html
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
-    title= `${title}`
+    title= `${title || 'My Finances'}`
     link(rel="stylesheet" href="/dist/style.css")
     link(rel="icon" sizes="192x192" href="/images/icons/app-icon.png")
     link(rel="apple-touch-icon" sizes="192x192" href="/images/icons/app-icon.png")
@@ -15,8 +15,7 @@ html
           nav.nav
             a.nav__link(href="/" class=(currentPath === '/' ? 'nav__link--active' : '')) dashboard
             a.nav__link(href="/transactions" class=(currentPath.includes('/transaction') ? 'nav__link--active' : '')) transactions
-            a.nav__link(href="/categories" class=(currentPath === '/categories' ? 'nav__link--active' : '')) categories
-            a.nav__link(href="/account" class=(currentPath === '/account' ? 'nav__link--active' : '')) account
+            a.nav__link(href="/account" class=(currentPath === '/account' ? 'nav__link--active' : '')) settings
       
       .content
         block messages

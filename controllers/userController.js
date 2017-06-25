@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
+const Category = mongoose.model('Category');
 const promisify = require('es6-promisify');
 
 exports.loginForm = (req, res) => {
@@ -40,8 +41,9 @@ exports.register = async (req, res, next) => {
   next();
 };
 
-exports.account = (req, res) => {
-  res.render('account', { title: 'Edit your account' });
+exports.account = async (req, res) => {
+  const categories = await Category.find();
+  res.render('account', { title: 'Edit your account', categories });
 };
 
 exports.updateAccount = async (req, res) => {
