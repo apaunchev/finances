@@ -21,6 +21,32 @@ exports.getMonthlyTransactions = async (req, res) => {
   res.render('months', { title: 'Transactions', months });
 };
 
+exports.getGroupedTransactions = async (req, res) => {
+  const now = new Date();
+  let month = parseInt(req.params.month) - 1;
+  let year = req.params.year;
+  if (isNaN(month) || isNaN(year)) {
+    month = now.getMonth();
+    year = now.getFullYear();
+  }
+  const categories = await Transaction.getGroupedTransactions(req.user, new Date(year, month));
+  res.render('categories', { categories, month: req.params.month, year: req.params.year });
+};
+
+exports.getTransactionsByCategory = async (req, res) => {
+  const now = new Date();
+  let month = parseInt(req.params.month) - 1;
+  let year = req.params.year;
+  if (isNaN(month) || isNaN(year)) {
+    month = now.getMonth();
+    year = now.getFullYear();
+  }
+  const category = await Category.findOne({ _id: req.params.category });
+  const transactions = await Transaction.getTransactionsByDateAndCategory(req.user, new Date(year, month), category);
+  const dailyTransactions = formatDailyTransactions(transactions);
+  res.render('transactions', { transactions: dailyTransactions, month: req.params.month, year: req.params.year, category });
+};
+
 exports.addTransaction = async (req, res) => {
   const categories = await Category.find();
   res.render('editTransaction', { title: 'Add transaction', categories });
@@ -61,8 +87,7 @@ exports.removeTransaction = async (req, res) => {
 exports.search = async (req, res) => {
   const transactions = await Transaction
     .find({ $text: { $search: req.query.q } }, { score: { $meta: 'textScore' } })
-    .sort({ score: { $meta: 'textScore' } })
-    .limit(5);
+    .sort({ score: { $meta: 'textScore' }, date: -1 });
   res.json(transactions);
 };
 

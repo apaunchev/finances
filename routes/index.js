@@ -9,7 +9,8 @@ const { catchErrors } = require('../handlers/errorHandlers');
 router.get('/', authController.isLoggedIn, catchErrors(transactionsController.getTransactions));
 
 router.get('/transactions', catchErrors(transactionsController.getMonthlyTransactions));
-router.get('/transactions/:year/:month', catchErrors(transactionsController.getTransactions));
+router.get('/transactions/:year/:month', catchErrors(transactionsController.getGroupedTransactions));
+router.get('/transactions/:year/:month/:category', catchErrors(transactionsController.getTransactionsByCategory));
 router.get('/transaction/:id/edit', authController.isLoggedIn, catchErrors(transactionsController.editTransaction));
 router.get('/transaction/:id/remove', authController.isLoggedIn, catchErrors(transactionsController.removeTransaction));
 

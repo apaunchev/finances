@@ -28,11 +28,37 @@ transactionSchema.index({
   description: 'text'
 });
 
-transactionSchema.statics.getTransactionsByDate = function (user, date) {
+transactionSchema.statics.getTransactionsByDate = function (user, date, category) {
   return this.aggregate([
     {
       $match: {
         user: user._id,
+        date: {
+          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
+          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+        }
+      }
+    },
+    {
+      $lookup: {
+        from: 'categories',
+        localField: 'category',
+        foreignField: '_id',
+        as: 'category'
+      }
+    },
+    {
+      $unwind: '$category'
+    }
+  ]);
+};
+
+transactionSchema.statics.getTransactionsByDateAndCategory = function (user, date, category) {
+  return this.aggregate([
+    {
+      $match: {
+        user: user._id,
+        category: category._id,
         date: {
           $gte: new Date(date.getFullYear(), date.getMonth(), 1),
           $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
@@ -69,6 +95,39 @@ transactionSchema.statics.getMonthlyTransactions = function (user) {
     },
     {
       $sort: { '_id': -1 }
+    }
+  ]);
+};
+
+transactionSchema.statics.getGroupedTransactions = function (user, date) {
+  return this.aggregate([
+    {
+      $match: {
+        user: user._id,
+        date: {
+          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
+          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+        }
+      }
+    },
+    {
+      $lookup: {
+        from: 'categories',
+        localField: 'category',
+        foreignField: '_id',
+        as: 'category'
+      }
+    },
+    {
+      $unwind: '$category'
+    },
+    {
+      $group: {
+        _id: '$category._id',
+        name: { '$first': '$category.name' },
+        color: { '$first': '$category.color' },
+        total: { $sum: '$amount' }
+      }
     }
   ]);
 };
