@@ -1,45 +1,3 @@
-* {
-  margin: 0;
-  box-sizing: border-box; }
-
-body {
-  font-family: -apple-system, Helvetica, Arial, sans-serif; }
-
-.content {
-  position: relative;
-  padding: 72px 12px 24px; }
-
-.container, .content, .nav {
-  max-width: 480px;
-  margin: 0 auto; }
-
-.overlay {
-  position: fixed;
-  right: 0;
-  bottom: 0;
-  left: 0; }
-
-.btn__add {
-  position: relative;
-  display: block;
-  float: right;
-  bottom: 32px;
-  right: 32px;
-  width: 60px;
-  height: 60px;
-  border-radius: 100%;
-  box-shadow: 1px 1px 4px rgba(101, 119, 134, 0.75);
-  background-color: #1da1f2;
-  color: white;
-  text-align: center;
-  font-size: 24px;
-  line-height: 60px; }
-  .btn__add:active {
-    background-color: #0c85d0; }
-  @media screen and (min-width: 480px) {
-    .btn__add {
-      right: -72px; } }
-
 /*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */
 /* Document
    ========================================================================== */
@@ -431,6 +389,69 @@ template {
 [hidden] {
   display: none; }
 
+* {
+  margin: 0;
+  box-sizing: border-box; }
+
+body {
+  font-family: -apple-system, Helvetica, Arial, sans-serif; }
+
+.content {
+  position: relative;
+  padding: 72px 12px 24px; }
+
+.container, .content, .nav {
+  max-width: 480px;
+  margin: 0 auto; }
+
+.overlay {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0; }
+
+.btn__add {
+  position: relative;
+  display: block;
+  float: right;
+  bottom: 32px;
+  right: 32px;
+  width: 60px;
+  height: 60px;
+  border-radius: 100%;
+  box-shadow: 1px 1px 4px rgba(101, 119, 134, 0.75);
+  background-color: #1da1f2;
+  color: white;
+  text-align: center;
+  font-size: 24px;
+  line-height: 60px; }
+  .btn__add:active {
+    background-color: #0c85d0; }
+  @media screen and (min-width: 480px) {
+    .btn__add {
+      right: -72px; } }
+
+section {
+  margin: 16px 0; }
+  section:first-child {
+    margin-top: 0; }
+
+.page-nav {
+  display: flex;
+  margin-bottom: 24px;
+  color: #666; }
+  .page-nav > div {
+    flex: 1; }
+    .page-nav > div.left {
+      text-align: left; }
+    .page-nav > div.center {
+      text-align: center;
+      font-weight: 600; }
+    .page-nav > div.right {
+      text-align: right; }
+  .page-nav a {
+    color: #1da1f2; }
+
 .header {
   position: fixed;
   width: 100%;
@@ -522,6 +543,10 @@ a {
     border: 1px solid rgba(0, 0, 0, 0.2);
     background-color: white;
     text-align: center; }
+
+h4 {
+  color: #666;
+  margin-bottom: 16px; }
 
 pre {
   white-space: pre-wrap;

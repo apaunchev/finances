@@ -1,6 +1,12 @@
 extends layout
 
 block content
+  if year && month
+    nav.page-nav
+      .left
+        a(href=`/transactions/${year}/${month}`)= `← ${h.getMonthName(month)} ${year}`
+      .center= `${category.name}`
+      .right &nbsp;
   if transactions
     .transactions
       each day in transactions

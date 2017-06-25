@@ -1,0 +1,26 @@
+.page-nav {
+  display: flex;
+  margin-bottom: 24px;
+  color: #666;
+
+  > div {
+    flex: 1;
+
+    &.left {
+      text-align: left;
+    }
+
+    &.center {
+      text-align: center;
+      font-weight: 600;
+    }
+
+    &.right {
+      text-align: right;
+    }
+  }
+
+  a {
+    color: $blue;
+  }
+}
