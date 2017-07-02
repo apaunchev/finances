@@ -1,6 +1,11 @@
 mixin loginForm()
-  form(action="/login" method="POST")
-    input(type="email" placeholder="Email" name="email")
-    input(type="password"  placeholder="Password" name="password")
-    input(type="submit" value="Log in →")
+  form(action="/login" method="POST" class="form")
+    section.form__inputs
+      input(type="email" placeholder="Email" name="email")
+    
+    section.form__inputs
+      input(type="password"  placeholder="Password" name="password")
+    
+    section.form__inputs
+      input(type="submit" value="Log in →")
   

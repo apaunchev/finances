@@ -18,7 +18,7 @@ exports.getTransactions = async (req, res) => {
 
 exports.getMonthlyTransactions = async (req, res) => {
   const months = await Transaction.getMonthlyTransactions(req.user);
-  res.render('months', { title: 'Transactions', months });
+  res.render('months', { title: 'Choose a month', months });
 };
 
 exports.getGroupedTransactions = async (req, res) => {
@@ -30,7 +30,11 @@ exports.getGroupedTransactions = async (req, res) => {
     year = now.getFullYear();
   }
   const categories = await Transaction.getGroupedTransactions(req.user, new Date(year, month));
-  res.render('categories', { categories, month: req.params.month, year: req.params.year });
+  let expenses = await Transaction.getMonthlyExpensesAmount(req.user, new Date(year, month));
+  expenses = (expenses[0] && expenses[0].totalAmount) || 0;
+  let incomes = await Transaction.getMonthlyIncomesAmount(req.user, new Date(year, month));
+  incomes = (incomes[0] && incomes[0].totalAmount) || 0;
+  res.render('dashboard', { categories, expenses, incomes, month, year });
 };
 
 exports.getTransactionsByCategory = async (req, res) => {
@@ -44,7 +48,7 @@ exports.getTransactionsByCategory = async (req, res) => {
   const category = await Category.findOne({ _id: req.params.category });
   const transactions = await Transaction.getTransactionsByDateAndCategory(req.user, new Date(year, month), category);
   const dailyTransactions = formatDailyTransactions(transactions);
-  res.render('transactions', { transactions: dailyTransactions, month: req.params.month, year: req.params.year, category });
+  res.render('transactions', { transactions: dailyTransactions, month, year, category });
 };
 
 exports.addTransaction = async (req, res) => {

@@ -107,7 +107,8 @@ transactionSchema.statics.getGroupedTransactions = function (user, date) {
         date: {
           $gte: new Date(date.getFullYear(), date.getMonth(), 1),
           $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
-        }
+        },
+        amount: { $lt: 0 }
       }
     },
     {
@@ -126,7 +127,54 @@ transactionSchema.statics.getGroupedTransactions = function (user, date) {
         _id: '$category._id',
         name: { '$first': '$category.name' },
         color: { '$first': '$category.color' },
-        total: { $sum: '$amount' }
+        totalAmount: { $sum: '$amount' }
+      }
+    },
+    {
+      $sort: { 'totalAmount': 1 }
+    }
+  ]);
+};
+
+transactionSchema.statics.getMonthlyExpensesAmount = function (user, date) {
+  return this.aggregate([
+    {
+      $match: {
+        user: user._id,
+        date: {
+          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
+          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+        },
+        amount: { $lt: 0 }
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalAmount: { $sum: '$amount' },
+        count: { $sum: 1 }
+      }
+    }
+  ]);
+};
+
+transactionSchema.statics.getMonthlyIncomesAmount = function (user, date) {
+  return this.aggregate([
+    {
+      $match: {
+        user: user._id,
+        date: {
+          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
+          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+        },
+        amount: { $gte: 0 }
+      }
+    },
+    {
+      $group: {
+        _id: null,
+        totalAmount: { $sum: '$amount' },
+        count: { $sum: 1 }
       }
     }
   ]);

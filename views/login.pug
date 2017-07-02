@@ -4,4 +4,10 @@ include mixins/_loginForm
 include mixins/_forgot
 
 block content
-  +loginForm()
+  nav.app-nav
+    a.align--left &nbsp;
+    a.align--center= title
+    a.align--right &nbsp;
+
+  div.app-page
+    +loginForm()

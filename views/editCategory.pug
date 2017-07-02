@@ -3,4 +3,10 @@ extends layout
 include mixins/_categoryForm
 
 block content
-  +categoryForm(category)
+  nav.app-nav
+    a.align--left(href='/') ← Back
+    a.align--center= title
+    a.align--right &nbsp;
+
+  div.app-page
+    +categoryForm(category)

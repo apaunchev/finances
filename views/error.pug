@@ -1,5 +1,11 @@
 extends layout
 
 block content
-  p= `${message}`
-  pre.error!= stackHighlighted
+  nav.app-nav
+    a.align--left(href='/') ← Back
+    a.align--center= title
+    a.align--right &nbsp;
+
+  div.app-page
+    p= `${message}`
+    pre.error!= stackHighlighted

@@ -1,8 +1,18 @@
 extends layout
 
 block content
-  form(method="POST")
-    h2 Reset your password
-    input(type="password" placeholder="Password" name="password")
-    input(type="password" placeholder="Confirm password" name="password-confirm")
-    input(type="submit" value="Reset →")
+  nav.app-nav
+    a.align--left &nbsp;
+    a.align--center= title
+    a.align--right &nbsp;
+
+  div.app-page
+    form(method="POST" class="form")
+      section.form__inputs
+        input(type="password" placeholder="Password" name="password")
+      
+      section.form__inputs
+        input(type="password" placeholder="Confirm password" name="password-confirm")
+      
+      section.form__inputs
+        input(type="submit" value="Reset →")

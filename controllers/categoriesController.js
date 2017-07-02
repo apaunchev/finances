@@ -1,11 +1,6 @@
 const mongoose = require('mongoose');
 const Category = mongoose.model('Category');
 
-exports.getCategories = async (req, res) => {
-  const categories = await Category.find();
-  res.render('categories', { title: 'Categories', categories });
-};
-
 exports.addCategory = async (req, res) => {
   res.render('editCategory', { title: 'Add category' });
 };

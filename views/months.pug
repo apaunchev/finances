@@ -1,9 +1,17 @@
 extends layout
 
 block content
-  if months
-    ul.transactions__list
-      each month in months
-        li.transactions__item
-          a(href=`/transactions/${month._id.year}/${month._id.month}`)= `${h.getMonthName(month._id.month)} ${month._id.year}`
-            span.amount= month.balance.toFixed(2)
+  nav.app-nav
+    a.align--left(href='/') ← Back
+    a.align--center= title
+    a.align--right &nbsp;
+  
+  div.app-page
+    if months
+      section.transactions
+        ol.transactions__list
+          each month in months
+            - const colorClass = month.balance >= 0 ? 'transaction__amount--positive' : 'transaction__amount--negative'
+            li.transaction
+              a(href=`/transactions/${month._id.year}/${month._id.month}`)= `${h.getMonthName(month._id.month - 1)} ${month._id.year}`
+                span(class=`transaction__amount ${colorClass}`)= month.balance.toFixed(2)

@@ -9,28 +9,14 @@ html
     link(rel="apple-touch-icon" sizes="192x192" href="/images/icons/app-icon.png")
 
   body
-    block header
-      if user
-        header.header
-          nav.nav
-            a.nav__link(href="/" class=(currentPath === '/' ? 'nav__link--active' : '')) dashboard
-            a.nav__link(href="/transactions" class=(currentPath.includes('/transaction') ? 'nav__link--active' : '')) transactions
-            a.nav__link(href="/account" class=(currentPath === '/account' ? 'nav__link--active' : '')) settings
-      
-      .content
-        block messages
-          if locals.flashes
-            - const categories = Object.keys(locals.flashes)
-            each category in categories
-              each message in flashes[category]
-                .flash(class=`flash--${category}`)
-                  p!= message
+    //- block messages
+    //-   if locals.flashes
+    //-     - const categories = Object.keys(locals.flashes)
+    //-     each category in categories
+    //-       each message in flashes[category]
+    //-         .flash(class=`flash--${category}`)
+    //-           p!= message
 
-        block content
-
-        block overlay
-          .overlay
-            .container
-              a.btn__add(href="/add") +
+    block content
 
   script(src="/dist/app.js")

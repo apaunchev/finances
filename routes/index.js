@@ -6,7 +6,7 @@ const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
-router.get('/', authController.isLoggedIn, catchErrors(transactionsController.getTransactions));
+router.get('/', authController.isLoggedIn, catchErrors(transactionsController.getGroupedTransactions));
 
 router.get('/transactions', catchErrors(transactionsController.getMonthlyTransactions));
 router.get('/transactions/:year/:month', catchErrors(transactionsController.getGroupedTransactions));
@@ -20,7 +20,6 @@ router.get('/add', authController.isLoggedIn, catchErrors(transactionsController
 router.post('/add', transactionsController.processTransaction, catchErrors(transactionsController.createTransaction));
 router.post('/add/:id', transactionsController.processTransaction, catchErrors(transactionsController.updateTransaction));
 
-router.get('/categories', catchErrors(categoriesController.getCategories));
 router.get('/categories/add', authController.isLoggedIn, catchErrors(categoriesController.addCategory));
 router.post('/categories/add', catchErrors(categoriesController.createCategory));
 router.post('/categories/add/:id', catchErrors(categoriesController.updateCategory));

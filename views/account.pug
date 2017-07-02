@@ -1,20 +1,34 @@
 extends layout
 
 block content
-  section
-    h4 Account
-    //- img(src=user.gravatar + 'd=retro')
-    form(action="/account" method="POST")
-      input(type="text" name="name" placeholder="name" value=user.name)
-      input(type="email" name="email" placeholder="email" value=user.email)
-      input(type="submit" value="Save →")
-    a.btn(href="/logout") Logout →
+  nav.app-nav
+    a.align--left(href='/') ← Back
+    a.align--center= title
+    a.align--right &nbsp;
 
-  if categories
+  div.app-page
+    section
+      h4 Account
+      //- img(src=user.gravatar + 'd=retro')
+      form(action="/account" method="POST" class="form")
+        section.form__inputs
+          input(type="text" name="name" placeholder="name" value=user.name)
+        
+        section.form__inputs
+          input(type="email" name="email" placeholder="email" value=user.email)
+        
+        section.form__inputs
+          input(type="submit" value="Save →")
+      
+        section.form__inputs
+          a.form__button(href="/logout") Logout →
+
     section
       h4 Categories
       .categories
         each category in categories
           .category
             a(href=`/category/${category._id}/edit` style=`background-color: ${category.color}`)= category.name
-      a.btn(href="/categories/add") New category →
+      
+      section.form__inputs
+        a.form__button(href="/categories/add") New category →

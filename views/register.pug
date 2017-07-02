@@ -3,4 +3,10 @@ extends layout
 include mixins/_registerForm
 
 block content
-  +registerForm()
+  nav.app-nav
+    a.align--left &nbsp;
+    a.align--center= title
+    a.align--right &nbsp;
+
+  div.app-page
+    +registerForm()

@@ -1,0 +1,36 @@
+.form__inputs {
+  padding: 10px 0;
+}
+
+select,
+input,
+button,
+.form__button {
+  box-sizing: border-box;
+  display: block;
+  padding: 8px;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid rgba(black, 0.2);
+  background-color: white;
+}
+
+.form__button {
+  text-align: center;
+}
+
+select,
+input[type=date] {
+  -webkit-appearance: none;
+}
+
+input[type=radio],
+input[type=checkbox] {
+  display: inline-block;
+  width: auto;
+  margin-bottom: 16px;
+}
+
+input[type=submit] {
+  cursor: pointer;
+}

@@ -3,4 +3,10 @@ extends layout
 include mixins/_transactionForm
 
 block content
-  +transactionForm(transaction)
+  nav.app-nav
+    a.align--left(href='/') ← Back
+    a.align--center= title
+    a.align--right &nbsp;
+
+  div.app-page
+    +transactionForm(transaction)

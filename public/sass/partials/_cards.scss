@@ -1,0 +1,44 @@
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 10px;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: calc(50% - 35px);
+  height: 150px;
+  margin: 10px 0 0 10px;
+  padding: 10px;
+
+  &.card--expenses {
+    background-color: $c-expenses;
+    color: white;
+  }
+
+  &.card--incomes {
+    background-color: $c-incomes;
+    color: white;
+  }
+
+  &.card--other {
+    background-color: $c-others;
+    color: grey;
+  }
+}
+
+.card__title {
+  margin: 0;
+  font-size: 16px;
+}
+
+.card__content {
+  display: flex;
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  font-size: 24px;
+}
