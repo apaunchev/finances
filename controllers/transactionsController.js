@@ -51,6 +51,32 @@ exports.getTransactionsByCategory = async (req, res) => {
   res.render('transactions', { transactions: dailyTransactions, month, year, category });
 };
 
+exports.getMonthlyExpenses = async (req, res) => {
+  const now = new Date();
+  let month = parseInt(req.params.month) - 1;
+  let year = req.params.year;
+  if (isNaN(month) || isNaN(year)) {
+    month = now.getMonth();
+    year = now.getFullYear();
+  }
+  const transactions = await Transaction.getExpensesByDate(req.user, new Date(year, month));
+  const dailyTransactions = formatDailyTransactions(transactions);
+  res.render('transactions', { transactions: dailyTransactions, month, year });
+};
+
+exports.getMonthlyIncomes = async (req, res) => {
+  const now = new Date();
+  let month = parseInt(req.params.month) - 1;
+  let year = req.params.year;
+  if (isNaN(month) || isNaN(year)) {
+    month = now.getMonth();
+    year = now.getFullYear();
+  }
+  const transactions = await Transaction.getIncomesByDate(req.user, new Date(year, month));
+  const dailyTransactions = formatDailyTransactions(transactions);
+  res.render('transactions', { transactions: dailyTransactions, month, year });
+};
+
 exports.addTransaction = async (req, res) => {
   const categories = await Category.find();
   res.render('editTransaction', { title: 'Add transaction', categories });

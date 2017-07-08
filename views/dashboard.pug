@@ -3,7 +3,7 @@ extends layout
 block content
   nav.app-nav
     a.align--left(href="/account") Settings
-    a.align--center(href="/transactions")= `${h.getMonthName(month)} ${year} ⌄`
+    a.align--center(href="/transactions")= `${h.getMonthName(month)} ${year} ↓`
     a.align--right(href="/add") Add
 
   section.overview
@@ -11,10 +11,10 @@ block content
       span.overview__label Monthly balance
 
   section.cards
-    a.card.card--expenses
+    a.card.card--expenses(href=`/transactions/${year}/${month + 1}/all/expenses`)
       h1.card__title Expenses
       h2.card__content= `${expenses.toFixed(2)}`
-    a.card.card--incomes
+    a.card.card--incomes(href=`/transactions/${year}/${month + 1}/all/incomes`)
       h1.card__title Incomes
       h2.card__content= `${incomes.toFixed(2)}`
     each c in categories

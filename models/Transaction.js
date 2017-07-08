@@ -53,6 +53,64 @@ transactionSchema.statics.getTransactionsByDate = function (user, date, category
   ]);
 };
 
+transactionSchema.statics.getExpensesByDate = function (user, date, category) {
+  return this.aggregate([
+    {
+      $match: {
+        user: user._id,
+        amount: { $lt: 0 },
+        date: {
+          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
+          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+        }
+      }
+    },
+    {
+      $lookup: {
+        from: 'categories',
+        localField: 'category',
+        foreignField: '_id',
+        as: 'category'
+      }
+    },
+    {
+      $unwind: '$category'
+    },
+    {
+      $sort: { 'date': -1 }
+    }
+  ]);
+};
+
+transactionSchema.statics.getIncomesByDate = function (user, date, category) {
+  return this.aggregate([
+    {
+      $match: {
+        user: user._id,
+        amount: { $gte: 0 },
+        date: {
+          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
+          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
+        }
+      }
+    },
+    {
+      $lookup: {
+        from: 'categories',
+        localField: 'category',
+        foreignField: '_id',
+        as: 'category'
+      }
+    },
+    {
+      $unwind: '$category'
+    },
+    {
+      $sort: { 'date': -1 }
+    }
+  ]);
+};
+
 transactionSchema.statics.getTransactionsByDateAndCategory = function (user, date, category) {
   return this.aggregate([
     {
