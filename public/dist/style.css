@@ -563,7 +563,8 @@ h1, h2, h3, h4, h5, h6 {
 
 a {
   color: #333;
-  text-decoration: none; }
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent; }
 
 pre {
   white-space: pre-wrap;
