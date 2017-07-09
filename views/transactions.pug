@@ -1,10 +1,9 @@
 extends layout
 
+include mixins/_appNav
+
 block content
-  nav.app-nav
-    a.align--left(href=`/transactions/${year}/${month + 1}`)= `← ${h.getMonthName(month)}`
-    a.align--center= `${category ? category.name : 'Transactions'}`
-    a.align--right &nbsp;
+  +appNav(category ? category.name : 'Transactions')
 
   div.app-page
     if transactions.length > 0

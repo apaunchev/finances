@@ -4,24 +4,38 @@
   right: 0;
   left: 0;
   display: flex;
+  align-items: center;
   padding: 10px;
   background-color: rgba($c-overview-background, 0.9);
   z-index: 1;
   line-height: 2;
+  color: $c-links-nav;
 
-  > a {
+
+  a {
     color: $c-links-nav;
+  }
 
+  > div {
     &:nth-child(1) {
       flex: 1;
+
+      svg {
+        float: left;
+      }
     }
 
     &:nth-child(2) {
       flex: 2;
+      text-align: center;
     }
 
     &:nth-child(3) {
       flex: 1;
+
+      svg {
+        float: right;
+      }
     }
   }
 }

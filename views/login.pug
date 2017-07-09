@@ -1,13 +1,11 @@
 extends layout
 
+include mixins/_appNav
 include mixins/_loginForm
 include mixins/_forgot
 
 block content
-  nav.app-nav
-    a.align--left &nbsp;
-    a.align--center= title
-    a.align--right &nbsp;
+  +appNav()
 
   div.app-page
     +loginForm()

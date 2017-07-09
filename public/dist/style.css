@@ -395,33 +395,31 @@ body {
 .app-page {
   padding: 52px 10px 0; }
 
-.align--left {
-  text-align: left; }
-
-.align--center {
-  text-align: center; }
-
-.align--right {
-  text-align: right; }
-
 .app-nav {
   position: fixed;
   top: 0;
   right: 0;
   left: 0;
   display: flex;
+  align-items: center;
   padding: 10px;
   background-color: rgba(29, 161, 242, 0.9);
   z-index: 1;
-  line-height: 2; }
-  .app-nav > a {
+  line-height: 2;
+  color: #dde9f7; }
+  .app-nav a {
     color: #dde9f7; }
-    .app-nav > a:nth-child(1) {
-      flex: 1; }
-    .app-nav > a:nth-child(2) {
-      flex: 2; }
-    .app-nav > a:nth-child(3) {
-      flex: 1; }
+  .app-nav > div:nth-child(1) {
+    flex: 1; }
+    .app-nav > div:nth-child(1) svg {
+      float: left; }
+  .app-nav > div:nth-child(2) {
+    flex: 2;
+    text-align: center; }
+  .app-nav > div:nth-child(3) {
+    flex: 1; }
+    .app-nav > div:nth-child(3) svg {
+      float: right; }
 
 .overview {
   display: flex;

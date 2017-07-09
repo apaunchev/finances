@@ -1,0 +1,9 @@
+mixin appNav(pageTitle)
+  nav.app-nav
+    div
+      a(href='/')
+        i(data-feather='arrow-left')
+    div
+      span= title || pageTitle
+    div
+      span &nbsp;

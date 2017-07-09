@@ -1,10 +1,9 @@
 extends layout
 
+include mixins/_appNav
+
 block content
-  nav.app-nav
-    a.align--left &nbsp;
-    a.align--center= title
-    a.align--right &nbsp;
+  +appNav()
 
   div.app-page
     form(method="POST" class="form")

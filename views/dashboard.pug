@@ -2,9 +2,14 @@ extends layout
 
 block content
   nav.app-nav
-    a.align--left(href="/account") Settings
-    a.align--center(href="/transactions")= `${h.getMonthName(month)} ${year} ↓`
-    a.align--right(href="/add") Add
+    div
+      a(href="/account")
+        i(data-feather="settings")
+    div
+      a(href="/transactions")= `${h.getMonthName(month)} ${year} ↓`
+    div
+      a(href="/add")
+        i(data-feather="plus-circle")
 
   section.overview
     h1.overview__number= `${incomes + expenses}`
