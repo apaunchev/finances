@@ -12,3 +12,7 @@ NodeList.prototype.on = NodeList.prototype.addEventListener = function (name, fn
     elem.on(name, fn);
   });
 };
+
+///
+
+feather.replace();
