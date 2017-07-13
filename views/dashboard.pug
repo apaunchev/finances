@@ -12,7 +12,7 @@ block content
         i(data-feather="plus-circle")
 
   section.overview
-    h1.overview__number= `${incomes + expenses}`
+    h1.overview__number= `${(incomes + expenses).toFixed(2)}`
       span.overview__label Monthly balance
 
   section.cards
