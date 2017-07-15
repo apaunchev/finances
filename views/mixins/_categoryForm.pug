@@ -7,6 +7,9 @@ mixin categoryForm(category = {})
       input(type="text" name="color" placeholder="Color" value=category.color required)
     
     section.form__inputs
+      input(type="text" name="icon" placeholder="Icon" value=category.icon required)
+    
+    section.form__inputs
       input(type="submit" value="Save →" class="button")
     
     if category._id

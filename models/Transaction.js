@@ -185,6 +185,7 @@ transactionSchema.statics.getGroupedTransactions = function (user, date) {
         _id: '$category._id',
         name: { '$first': '$category.name' },
         color: { '$first': '$category.color' },
+        icon: { '$first': '$category.icon' },
         totalAmount: { $sum: '$amount' }
       }
     },
