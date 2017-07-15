@@ -3,7 +3,16 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav(category ? category.name : 'Transactions')
+  nav.app-nav
+    div
+      a(href="/")
+        i(data-feather="arrow-left")
+    div
+      span Transactions
+    div
+      span
+        a(href="/add")
+          i(data-feather="plus-circle")
 
   div.app-page
     if transactions.length > 0
@@ -17,7 +26,10 @@ block content
               each t in day.transactions
                 - const colorClass = t.amount >= 0 ? 'transaction__amount--positive' : 'transaction__amount--negative'
                 li.transaction
-                  a(href=`/transaction/${t._id}/edit`)= t.description
+                  a(href=`/transaction/${t._id}/edit`)
+                    span.transaction__icon
+                      i(data-feather=`${t.category.icon}`)
+                    span.transaction__decsription= t.description
                     span.transaction__amount(class=`${colorClass}`)= `${t.amount.toFixed(2)}`
     else
       p No transactions yet.

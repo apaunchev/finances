@@ -471,10 +471,19 @@ body {
 .card__content {
   display: flex;
   flex: 1;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0;
-  font-size: 24px; }
+  margin: 0; }
+
+.card__icon {
+  margin-bottom: 16px; }
+  .card__icon > svg {
+    height: 48px;
+    width: 48px; }
+
+.card__amount {
+  color: tomato; }
 
 .transactions__day {
   margin-bottom: 24px; }
@@ -504,12 +513,18 @@ body {
   .transaction > a {
     display: block; }
 
+.transaction__icon {
+  float: left;
+  margin: 3px 6px 0 0; }
+
 .transaction__amount {
   float: right; }
-  .transaction__amount.transaction__amount--positive {
-    color: mediumseagreen; }
-  .transaction__amount.transaction__amount--negative {
-    color: tomato; }
+
+.transaction__amount--positive {
+  color: mediumseagreen; }
+
+.transaction__amount--negative {
+  color: tomato; }
 
 .categories {
   display: flex;
