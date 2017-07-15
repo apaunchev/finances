@@ -15,4 +15,6 @@ NodeList.prototype.on = NodeList.prototype.addEventListener = function (name, fn
 
 ///
 
-feather.replace();
+feather.replace({
+  'stroke-width': 1
+});
