@@ -31,7 +31,7 @@ router.get('/category/:id/remove', authController.isLoggedIn, catchErrors(catego
 router.get('/login', userController.loginForm);
 router.post('/login', authController.login);
 router.get('/register', userController.registerForm);
-router.post('/register', userController.validateRegister, userController.register, authController.login);
+router.post('/register', userController.validateRegister, catchErrors(userController.register), authController.login);
 router.get('/logout', authController.logout);
 
 router.get('/account', authController.isLoggedIn, userController.account);
