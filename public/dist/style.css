@@ -403,7 +403,7 @@ body {
   display: flex;
   align-items: center;
   padding: 10px;
-  background-color: rgba(29, 161, 242, 0.9);
+  background-color: rgba(0, 164, 244, 0.9);
   z-index: 1;
   line-height: 2;
   color: #dde9f7; }
@@ -427,7 +427,7 @@ body {
   justify-content: center;
   height: 150px;
   padding: 52px 10px 20px;
-  background-color: #1da1f2;
+  background-color: #00a4f4;
   color: white;
   text-align: center; }
 
@@ -453,12 +453,13 @@ body {
   width: calc(50% - 35px);
   height: 150px;
   margin: 10px 0 0 10px;
-  padding: 10px; }
+  padding: 10px;
+  border-radius: 4px; }
   .card.card--expenses {
-    background-color: tomato;
+    background-color: #FB5C5C;
     color: white; }
   .card.card--incomes {
-    background-color: mediumseagreen;
+    background-color: #62D266;
     color: white; }
   .card.card--other {
     background-color: whitesmoke;
@@ -481,9 +482,6 @@ body {
   .card__icon > svg {
     height: 48px;
     width: 48px; }
-
-.card__amount {
-  color: tomato; }
 
 .transactions__day {
   margin-bottom: 24px; }
@@ -521,10 +519,10 @@ body {
   float: right; }
 
 .transaction__amount--positive {
-  color: mediumseagreen; }
+  color: #62D266; }
 
 .transaction__amount--negative {
-  color: tomato; }
+  color: #FB5C5C; }
 
 .categories {
   display: flex;
