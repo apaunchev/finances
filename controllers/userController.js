@@ -4,10 +4,16 @@ const Category = mongoose.model('Category');
 const promisify = require('es6-promisify');
 
 exports.loginForm = (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect('back');
+  }
   res.render('login', { title: 'Login' });
 };
 
 exports.registerForm = (req, res) => {
+  if (req.isAuthenticated()) {
+    res.redirect('back');
+  }
   res.render('register', { title: 'Register' });
 };
 
