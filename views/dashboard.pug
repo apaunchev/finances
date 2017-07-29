@@ -19,14 +19,10 @@ block content
     a.card.card--expenses(href=`/transactions/${year}/${month + 1}/all/expenses`)
       h1.card__title Expenses
       div.card__content
-        span.card__icon
-          i(data-feather="plus")
         span.card__amount= `${expenses.toFixed(2)}`
     a.card.card--incomes(href=`/transactions/${year}/${month + 1}/all/incomes`)
       h1.card__title Incomes
       div.card__content
-        span.card__icon
-          i(data-feather="minus")
         span.card__amount= `${incomes.toFixed(2)}`
     each c in categories
       - const colorClass = c.totalAmount >= 0 ? 'transaction__amount--positive' : 'transaction__amount--negative'
