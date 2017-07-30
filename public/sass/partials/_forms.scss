@@ -1,11 +1,14 @@
 .form__inputs {
   padding: 10px 0;
+
+  select,
+  input {
+    margin: 0 0 20px;
+  }
 }
 
 select,
-input,
-button,
-.form__button {
+input {
   box-sizing: border-box;
   display: block;
   padding: 8px;
@@ -16,7 +19,24 @@ button,
 }
 
 .form__button {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid $c-others;
+  border-radius: $s-border-radius;
+  color: white;
   text-align: center;
+  cursor: pointer;
+  @include setBackgroundColor($c-incomes);
+  
+  &.form__button--danger {
+    @include setBackgroundColor($c-expenses);
+  }
+}
+
+button,
+input[type=submit] {
+  @extend .form__button;
 }
 
 select,
@@ -29,8 +49,4 @@ input[type=checkbox] {
   display: inline-block;
   width: auto;
   margin-bottom: 16px;
-}
-
-input[type=submit] {
-  cursor: pointer;
 }

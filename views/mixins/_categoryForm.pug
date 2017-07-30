@@ -2,16 +2,8 @@ mixin categoryForm(category = {})
   form(action=`/categories/add/${category._id || ''}` method="POST" class="form")
     section.form__inputs
       input(type="text" name="name" placeholder="Name" value=category.name required)
-    
-    section.form__inputs
-      input(type="text" name="color" placeholder="Color" value=category.color required)
-    
-    section.form__inputs
       input(type="text" name="icon" placeholder="Icon" value=category.icon required)
-    
-    section.form__inputs
-      input(type="submit" value="Save →" class="button")
-    
-    if category._id
-      section.form__inputs
-        a.form__button(href=`/category/${category._id}/remove` onclick="return confirm('Are you sure you want to remove this category?')") Remove →
+      input(type="submit" value="Save" class="button")
+
+      if category._id
+        a.form__button.form__button--danger(href=`/category/${category._id}/remove` onclick="return confirm('Are you sure you want to remove this category?')") Remove

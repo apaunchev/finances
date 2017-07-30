@@ -2,16 +2,7 @@ mixin registerForm()
   form(action="/register" method="POST" class="form")
     section.form__inputs
       input(type="text" name="name" placeholder="Name" required)
-    
-    section.form__inputs
       input(type="email" name="email" placeholder="Email" required)
-    
-    section.form__inputs
       input(type="password" name="password" placeholder="Password" required)
-    
-    section.form__inputs
       input(type="password" name="password-confirm" placeholder="Confirm password" required)
-    
-    section.form__inputs
-      input(type="submit" value="Register →")
-  
+      input(type="submit" value="Register")
