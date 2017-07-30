@@ -3,7 +3,6 @@ mongoose.Promise = global.Promise;
 
 const categorySchema = new mongoose.Schema({
   name: String,
-  color: String,
   icon: String
 });
 
