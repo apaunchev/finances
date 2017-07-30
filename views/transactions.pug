@@ -1,12 +1,10 @@
 extends layout
 
-include mixins/_appNav
-
 block content
   nav.app-nav
     div
-      a(href="/")
-        i(data-feather="arrow-left")
+      a(href="/" onclick="window.history.go(-1); return false;")
+        i(data-feather="chevron-left")
     div
       span Transactions
     div

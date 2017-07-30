@@ -1,9 +1,11 @@
-mixin appNav(pageTitle)
+mixin appNav(backHref = "/", forwardHref, pageTitle)
   nav.app-nav
     div
-      a(href="/")
-        i(data-feather="arrow-left")
+      a(href=`${backHref}`)
+        i(data-feather="chevron-left")
     div
       span= title || pageTitle
     div
-      span &nbsp;
+      if forwardHref
+        a(href=`${forwardHref}`)
+          i(data-feather="chevron-right")
