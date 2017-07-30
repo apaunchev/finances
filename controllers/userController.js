@@ -52,6 +52,10 @@ exports.account = async (req, res) => {
   res.render('account', { title: 'Edit your account', categories });
 };
 
+exports.settings = (req, res) => {
+  res.render('settings', { title: 'Settings' });
+};
+
 exports.updateAccount = async (req, res) => {
   const updates = {
     name: req.body.name,

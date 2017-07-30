@@ -22,6 +22,7 @@ router.get('/add', authController.isLoggedIn, catchErrors(transactionsController
 router.post('/add', transactionsController.processTransaction, catchErrors(transactionsController.createTransaction));
 router.post('/add/:id', transactionsController.processTransaction, catchErrors(transactionsController.updateTransaction));
 
+router.get('/categories', catchErrors(categoriesController.categories));
 router.get('/categories/add', authController.isLoggedIn, catchErrors(categoriesController.addCategory));
 router.post('/categories/add', catchErrors(categoriesController.createCategory));
 router.post('/categories/add/:id', catchErrors(categoriesController.updateCategory));
@@ -33,6 +34,8 @@ router.post('/login', authController.login);
 router.get('/register', userController.registerForm);
 router.post('/register', userController.validateRegister, catchErrors(userController.register), authController.login);
 router.get('/logout', authController.logout);
+
+router.get('/settings', userController.settings);
 
 router.get('/account', authController.isLoggedIn, userController.account);
 router.post('/account', catchErrors(userController.updateAccount));

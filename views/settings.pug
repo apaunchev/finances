@@ -1,0 +1,26 @@
+extends layout
+
+include mixins/_appNav
+
+block content
+  +appNav()
+  
+  div.app-page
+    ul.content__list
+      li.content__item
+        a(href="/account")
+          span.content__item__icon
+            i(data-feather="user")
+          span.content__item__name Account
+          span.content__item__action
+            i(data-feather="chevron-right")
+      li.content__item
+        a(href="/categories")
+          span.content__item__icon
+            i(data-feather="folder")
+          span.content__item__name Categories
+          span.content__item__action
+            i(data-feather="chevron-right")
+    
+    section.form__inputs
+      a.form__button.form__button--danger(href="/logout") Logout

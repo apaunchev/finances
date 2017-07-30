@@ -1,0 +1,21 @@
+extends layout
+
+include mixins/_appNav
+
+block content
+  +appNav("/settings")
+  
+  div.app-page
+    if categories
+      ul.content__list
+        each category in categories
+          li.content__item
+            a(href=`/category/${category._id}/edit`)
+              span.content__item__icon
+                i(data-feather=`${category.icon}`)
+              span.content__item__name= category.name
+              span.content__item__action
+                i(data-feather="chevron-right")
+
+      section.form__inputs
+        a.form__button(href="/categories/add") New category
