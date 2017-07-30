@@ -12,21 +12,21 @@
   height: 150px;
   margin: 10px 0 0 10px;
   padding: 10px;
-  border-radius: 4px;
+  border-radius: $s-border-radius;
 
   &.card--expenses {
-    background-color: $c-expenses;
     color: white;
+    @include setBackgroundColor($c-expenses);
   }
 
   &.card--incomes {
-    background-color: $c-incomes;
     color: white;
+    @include setBackgroundColor($c-incomes);
   }
 
   &.card--other {
-    background-color: $c-others;
     color: grey;
+    @include setBackgroundColor($c-others);
   }
 }
 

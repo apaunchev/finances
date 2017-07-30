@@ -1,0 +1,7 @@
+@mixin setBackgroundColor($baseColor) {
+  background-color: $baseColor;
+  &:active,
+  &:focus {
+    background-color: darken($baseColor, 5%);
+  }
+}

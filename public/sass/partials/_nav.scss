@@ -13,9 +13,18 @@
 
   a {
     color: $c-links-nav;
+
+    &:active,
+    &:focus {
+      color: darken($c-links-nav, 5%);
+    }
   }
 
   > div {
+    svg {
+      stroke-width: 2;
+    }
+
     &:nth-child(1) {
       flex: 1;
 

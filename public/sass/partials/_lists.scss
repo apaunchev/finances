@@ -1,0 +1,31 @@
+.content__list {
+  list-style-type: none;
+  margin: 10px 0;
+  padding: 0;
+}
+
+.content__item {
+  border-bottom: 1px solid $c-others;
+
+  > a {
+    display: flex;
+    padding: 10px 0;
+    @include setBackgroundColor(white);
+
+    > span {
+      height: 28px;
+      line-height: 28px;
+    }
+  }
+}
+
+.content__item__icon {
+  margin-right: 8px;
+}
+
+// .content__item__name {
+// }
+
+.content__item__action {
+  margin-left: auto;
+}

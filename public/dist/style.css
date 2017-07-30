@@ -409,6 +409,10 @@ body {
   color: #dde9f7; }
   .app-nav a {
     color: #dde9f7; }
+    .app-nav a:active, .app-nav a:focus {
+      color: #c8dcf2; }
+  .app-nav > div svg {
+    stroke-width: 2; }
   .app-nav > div:nth-child(1) {
     flex: 1; }
     .app-nav > div:nth-child(1) svg {
@@ -456,14 +460,20 @@ body {
   padding: 10px;
   border-radius: 4px; }
   .card.card--expenses {
-    background-color: #FB5C5C;
-    color: white; }
+    color: white;
+    background-color: #FB5C5C; }
+    .card.card--expenses:active, .card.card--expenses:focus {
+      background-color: #fa4343; }
   .card.card--incomes {
-    background-color: #62D266;
-    color: white; }
+    color: white;
+    background-color: #62D266; }
+    .card.card--incomes:active, .card.card--incomes:focus {
+      background-color: #4ecc53; }
   .card.card--other {
-    background-color: whitesmoke;
-    color: grey; }
+    color: grey;
+    background-color: whitesmoke; }
+    .card.card--other:active, .card.card--other:focus {
+      background-color: #e8e8e8; }
 
 .card__title {
   margin: 0;
@@ -486,40 +496,49 @@ body {
 .card__amount {
   font-size: 20px; }
 
+.content__list, .transactions__list {
+  list-style-type: none;
+  margin: 10px 0;
+  padding: 0; }
+
+.content__item, .transaction {
+  border-bottom: 1px solid whitesmoke; }
+  .content__item > a, .transaction > a {
+    display: flex;
+    padding: 10px 0;
+    background-color: white; }
+    .content__item > a:active, .transaction > a:active, .content__item > a:focus, .transaction > a:focus {
+      background-color: #f2f2f2; }
+    .content__item > a > span, .transaction > a > span {
+      height: 28px;
+      line-height: 28px; }
+
+.content__item__icon, .transaction__icon {
+  margin-right: 8px; }
+
+.content__item__action, .transaction__amount {
+  margin-left: auto; }
+
 .transactions__day {
-  margin-bottom: 24px; }
+  margin-bottom: 20px; }
 
 .transactions__title {
-  margin-bottom: 16px;
+  display: flex;
+  margin: 10px 0;
   padding: 8px 0;
+  font-size: 18px;
   font-weight: 300;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.2); }
+  border-bottom: 1px solid whitesmoke; }
 
 .transactions__dayOfWeek {
   padding-left: 4px;
   color: gray; }
 
 .transactions__amount {
-  float: right; }
-
-.transactions__list {
-  margin: 8px 0;
-  padding-left: 0;
-  list-style-type: none; }
+  margin-left: auto; }
 
 .transaction {
-  margin-top: 8px;
-  overflow: hidden;
-  line-height: 2; }
-  .transaction > a {
-    display: block; }
-
-.transaction__icon {
-  float: left;
-  margin: 3px 6px 0 0; }
-
-.transaction__amount {
-  float: right; }
+  border-bottom: none; }
 
 .transaction__amount--positive {
   color: #62D266; }
@@ -527,26 +546,14 @@ body {
 .transaction__amount--negative {
   color: #FB5C5C; }
 
-.categories {
-  display: flex;
-  flex-wrap: wrap; }
-
-.category {
-  flex: 0 0 50%; }
-  .category > a {
-    display: block;
-    padding: 16px 8px;
-    color: white; }
-    .category > a:active, .category > a:focus {
-      opacity: 0.8; }
-
 .form__inputs {
   padding: 10px 0; }
+  .form__inputs select,
+  .form__inputs input {
+    margin: 0 0 20px; }
 
 select,
-input,
-button,
-.form__button {
+input {
   box-sizing: border-box;
   display: block;
   padding: 8px;
@@ -555,8 +562,28 @@ button,
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
   background-color: white; }
 
-.form__button {
-  text-align: center; }
+.form__button, button,
+input[type=submit] {
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid whitesmoke;
+  border-radius: 4px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  background-color: #62D266; }
+  .form__button:active, button:active,
+  input[type=submit]:active, .form__button:focus, button:focus,
+  input[type=submit]:focus {
+    background-color: #4ecc53; }
+  .form__button.form__button--danger, button.form__button--danger,
+  input.form__button--danger[type=submit] {
+    background-color: #FB5C5C; }
+    .form__button.form__button--danger:active, button.form__button--danger:active,
+    input.form__button--danger[type=submit]:active, .form__button.form__button--danger:focus, button.form__button--danger:focus,
+    input.form__button--danger[type=submit]:focus {
+      background-color: #fa4343; }
 
 select,
 input[type=date] {
@@ -567,9 +594,6 @@ input[type=checkbox] {
   display: inline-block;
   width: auto;
   margin-bottom: 16px; }
-
-input[type=submit] {
-  cursor: pointer; }
 
 .flash {
   margin: 16px 0; }
