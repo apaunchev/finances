@@ -79,6 +79,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
+document.addEventListener('touchstart', function() {}, true);
+
 __WEBPACK_IMPORTED_MODULE_2_feather_icons___default.a.replace({
   'stroke-width': 1
 });
