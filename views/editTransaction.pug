@@ -4,14 +4,7 @@ include mixins/_appNav
 include mixins/_transactionForm
 
 block content
-  nav.app-nav
-    div
-      a(href="/" onclick="window.history.go(-1); return false;")
-        i(data-feather="chevron-left")
-    div
-      span Edit transaction
-    div
-      span &nbsp;
+  +appNav()
 
   div.app-page
     +transactionForm(transaction)

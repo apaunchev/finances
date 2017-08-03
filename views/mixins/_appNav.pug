@@ -1,11 +1,12 @@
-mixin appNav(backHref = "/", forwardHref, pageTitle)
+mixin appNav(screenTitle = title, leftHref = "/", rightHref, leftIcon = "chevron-left", rightIcon = "chevron-right")
   nav.app-nav
     div
-      a(href=`${backHref}`)
-        i(data-feather="chevron-left")
+      - const onclickAction = leftHref === "/" ? "window.history.go(-1); return false;" : "";
+      a(href=`${leftHref}` onclick=`${onclickAction}`)
+        i(data-feather=`${leftIcon}`)
     div
-      span= title || pageTitle
+      span= screenTitle
     div
-      if forwardHref
-        a(href=`${forwardHref}`)
-          i(data-feather="chevron-right")
+      if rightHref
+        a(href=`${rightHref}`)
+          i(data-feather=`${rightIcon}`)
