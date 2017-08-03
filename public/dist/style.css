@@ -517,6 +517,9 @@ body {
 
 .content__item__action, .transaction__amount {
   margin-left: auto; }
+  .content__item__action > span, .transaction__amount > span {
+    display: inline-block;
+    margin-left: 10px; }
 
 .transactions__day {
   margin-bottom: 20px; }

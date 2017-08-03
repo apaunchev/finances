@@ -1,0 +1,12 @@
+extends layout
+
+include mixins/_appNav
+
+block content
+  +appNav()
+
+  div.app-page
+    form(action="/budget" method="POST" class="form")
+      section.form__inputs
+        input(type="number" name="monthlyBudget" placeholder="Monthly budget" value=user.monthlyBudget)
+        input(type="submit" value="Save")

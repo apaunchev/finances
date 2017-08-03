@@ -12,8 +12,8 @@ block content
         i(data-feather="plus-circle")
 
   section.overview
-    h1.overview__number= `${(incomes + expenses).toFixed(2)}`
-      span.overview__label Monthly balance
+    h1.overview__number= `${(budget + expenses).toFixed()}`
+      span.overview__label Left to spend this month
 
   section.cards
     a.card.card--expenses(href=`/transactions/${year}/${month + 1}/all/expenses`)
@@ -25,7 +25,7 @@ block content
       div.card__content
         span.card__amount= `${incomes.toFixed(2)}`
     each c in categories
-      - const colorClass = c.totalAmount >= 0 ? 'transaction__amount--positive' : 'transaction__amount--negative'
+      - const colorClass = c.totalAmount >= 0 ? "transaction__amount--positive" : "transaction__amount--negative"
       a.card.card--other(href=`/transactions/${year}/${month + 1}/${c._id}`)
         h1.card__title= c.name
         div.card__content

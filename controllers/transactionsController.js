@@ -31,10 +31,11 @@ exports.getGroupedTransactions = async (req, res) => {
   }
   const categories = await Transaction.getGroupedTransactions(req.user, new Date(year, month));
   let expenses = await Transaction.getMonthlyExpensesAmount(req.user, new Date(year, month));
-  expenses = (expenses[0] && expenses[0].totalAmount) || 0;
   let incomes = await Transaction.getMonthlyIncomesAmount(req.user, new Date(year, month));
+  const budget = req.user.monthlyBudget || 0;
+  expenses = (expenses[0] && expenses[0].totalAmount) || 0;
   incomes = (incomes[0] && incomes[0].totalAmount) || 0;
-  res.render('dashboard', { categories, expenses, incomes, month, year });
+  res.render('dashboard', { categories, budget, expenses, incomes, month, year });
 };
 
 exports.getTransactionsByCategory = async (req, res) => {

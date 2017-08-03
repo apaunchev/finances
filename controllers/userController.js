@@ -71,3 +71,18 @@ exports.updateAccount = async (req, res) => {
   req.flash('success', 'Your profile was updated successfully.');
   res.redirect('back');
 };
+
+exports.budget = (req, res) => {
+  res.render('budget', { title: 'Budget' });
+};
+
+exports.updateBudget = async (req, res) => {
+  const updates = {
+    monthlyBudget: req.body.monthlyBudget
+  };
+  const user = await User.findOneAndUpdate(
+    { _id: req.user._id },
+    { $set: updates }
+  );
+  res.redirect('/settings');
+};

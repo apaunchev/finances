@@ -22,13 +22,6 @@ router.get('/add', authController.isLoggedIn, catchErrors(transactionsController
 router.post('/add', transactionsController.processTransaction, catchErrors(transactionsController.createTransaction));
 router.post('/add/:id', transactionsController.processTransaction, catchErrors(transactionsController.updateTransaction));
 
-router.get('/categories', catchErrors(categoriesController.categories));
-router.get('/categories/add', authController.isLoggedIn, catchErrors(categoriesController.addCategory));
-router.post('/categories/add', catchErrors(categoriesController.createCategory));
-router.post('/categories/add/:id', catchErrors(categoriesController.updateCategory));
-router.get('/category/:id/edit', authController.isLoggedIn, catchErrors(categoriesController.editCategory));
-router.get('/category/:id/remove', authController.isLoggedIn, catchErrors(categoriesController.removeCategory));
-
 router.get('/login', userController.loginForm);
 router.post('/login', authController.login);
 router.get('/register', userController.registerForm);
@@ -43,6 +36,16 @@ router.get('/account/forgot', authController.forgotForm);
 router.post('/account/forgot', catchErrors(authController.forgot));
 router.get('/account/reset/:token', catchErrors(authController.reset));
 router.post('/account/reset/:token', authController.confirmedPasswords, catchErrors(authController.update));
+
+router.get('/categories', catchErrors(categoriesController.categories));
+router.get('/categories/add', authController.isLoggedIn, catchErrors(categoriesController.addCategory));
+router.post('/categories/add', catchErrors(categoriesController.createCategory));
+router.post('/categories/add/:id', catchErrors(categoriesController.updateCategory));
+router.get('/category/:id/edit', authController.isLoggedIn, catchErrors(categoriesController.editCategory));
+router.get('/category/:id/remove', authController.isLoggedIn, catchErrors(categoriesController.removeCategory));
+
+router.get('/budget', userController.budget);
+router.post('/budget', catchErrors(userController.updateBudget));
 
 router.get('/api/search', catchErrors(transactionsController.search));
 
