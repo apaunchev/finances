@@ -147,7 +147,8 @@ transactionSchema.statics.getMonthlyTransactions = function (user) {
     {
       $group: {
         _id: { year: { $year: '$date' }, month: { $month: '$date' } },
-        balance: { $sum: '$amount' },
+        incomesAmount: { $sum: { $cond: [{ '$gt': ['$amount', 0]}, "$amount", 0] } },
+        expensesAmount: { $sum: { $cond: [{ '$lt': ['$amount', 0]}, "$amount", 0] } },
         count: { $sum: 1 }
       }
     },

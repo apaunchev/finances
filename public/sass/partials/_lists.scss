@@ -28,4 +28,9 @@
 
 .content__item__action {
   margin-left: auto;
+  
+  > span {
+    display: inline-block;
+    margin-left: 10px;
+  }
 }
