@@ -79,13 +79,13 @@ exports.getMonthlyIncomes = async (req, res) => {
 };
 
 exports.addTransaction = async (req, res) => {
-  const categories = await Category.find();
+  const categories = await Category.find({ user: req.user._id });
   res.render('editTransaction', { title: 'Add transaction', categories });
 };
 
 exports.editTransaction = async (req, res) => {
   const transaction = await Transaction.findOne({ _id: req.params.id });
-  const categories = await Category.find();
+  const categories = await Category.find({ user: req.user._id });
   confirmOwner(transaction, req.user);
   res.render('editTransaction', { title: 'Edit transaction', transaction, categories });
 };

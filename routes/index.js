@@ -39,8 +39,8 @@ router.post('/account/reset/:token', authController.confirmedPasswords, catchErr
 
 router.get('/categories', catchErrors(categoriesController.categories));
 router.get('/categories/add', authController.isLoggedIn, catchErrors(categoriesController.addCategory));
-router.post('/categories/add', catchErrors(categoriesController.createCategory));
-router.post('/categories/add/:id', catchErrors(categoriesController.updateCategory));
+router.post('/categories/add', categoriesController.processCategory, catchErrors(categoriesController.createCategory));
+router.post('/categories/add/:id', categoriesController.processCategory, catchErrors(categoriesController.updateCategory));
 router.get('/category/:id/edit', authController.isLoggedIn, catchErrors(categoriesController.editCategory));
 router.get('/category/:id/remove', authController.isLoggedIn, catchErrors(categoriesController.removeCategory));
 
