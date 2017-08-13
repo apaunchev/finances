@@ -6,5 +6,7 @@ import feather from 'feather-icons';
 document.addEventListener('touchstart', function() {}, true);
 
 feather.replace({
-  'stroke-width': 1
+  'stroke-width': 1,
+  width: 21,
+  height: 21
 });

@@ -509,8 +509,8 @@ body {
     .content__item > a:active, .transaction > a:active, .content__item > a:focus, .transaction > a:focus {
       background-color: #f2f2f2; }
     .content__item > a > span, .transaction > a > span {
-      height: 28px;
-      line-height: 28px; }
+      height: 21px;
+      line-height: 21px; }
 
 .content__item__icon, .transaction__icon {
   margin-right: 8px; }
@@ -528,8 +528,6 @@ body {
   display: flex;
   margin: 10px 0;
   padding: 8px 0;
-  font-size: 18px;
-  font-weight: 300;
   border-bottom: 1px solid whitesmoke; }
 
 .transactions__dayOfWeek {
