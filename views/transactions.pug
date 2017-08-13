@@ -3,7 +3,8 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav(title, "/", "/add", "chevron-left", "plus-circle")
+  - const pageTitle = `${h.getMonthName(month)} ${year}`
+  +appNav(pageTitle, "/", "/add", "chevron-left", "plus-circle")
 
   div.app-page
     if transactions.length > 0
