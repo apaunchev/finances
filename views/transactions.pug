@@ -4,7 +4,7 @@ include mixins/_appNav
 
 block content
   - const pageTitle = `${h.getMonthName(month)} ${year}`
-  +appNav(pageTitle, "/", "/add", "chevron-left", "plus-circle")
+  +appNav(pageTitle, "/transactions", "/add", "chevron-left", "plus-circle")
 
   div.app-page
     if transactions.length > 0
@@ -18,9 +18,8 @@ block content
               - const colorClass = t.amount >= 0 ? 'transaction__amount--positive' : 'transaction__amount--negative'
               li.transaction
                 a(href=`/transaction/${t._id}/edit`)
-                  span.transaction__icon
-                    i(data-feather=`${t.category.icon}`)
                   span.transaction__name= t.description
-                  span.transaction__amount(class=`${colorClass}`)= `${t.amount.toFixed(2)}`
+                  span.transaction__amount
+                    span.content__item__pill(style=`background-color: ${t.category.color}`)= `${t.amount.toFixed(2)}`
     else
       p No transactions yet.

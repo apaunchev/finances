@@ -3,7 +3,7 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav()
+  +appNav("Budget", "/settings")
 
   div.app-page
     form(action="/budget" method="POST" class="form")

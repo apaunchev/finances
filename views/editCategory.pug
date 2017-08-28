@@ -4,7 +4,7 @@ include mixins/_appNav
 include mixins/_categoryForm
 
 block content
-  +appNav()
+  +appNav("Edit category", "/categories")
 
   div.app-page
     +categoryForm(category)

@@ -1,7 +1,7 @@
 mixin appNav(screenTitle = title, leftHref = "/", rightHref, leftIcon = "chevron-left", rightIcon = "chevron-right")
   nav.app-nav
     div
-      - const onclickAction = leftHref === "/" ? "window.history.go(-1); return false;" : "";
+      - const onclickAction = leftHref === "" ? "window.history.go(-1); return false;" : "/";
       a(href=`${leftHref}` onclick=`${onclickAction}`)
         i(data-feather=`${leftIcon}`)
     div

@@ -3,7 +3,7 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav()
+  +appNav("Account", "/settings")
 
   div.app-page
     //- img(src=user.gravatar + 'd=retro')

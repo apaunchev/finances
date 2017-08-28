@@ -13,7 +13,7 @@ exports.getTransactions = async (req, res) => {
   }
   const transactions = await Transaction.getTransactionsByDate(req.user, new Date(year, month));
   const dailyTransactions = formatDailyTransactions(transactions);
-  res.render('transactions', { title: 'Transactions', transactions: dailyTransactions });
+  res.render('transactions', { title: 'Transactions', transactions: dailyTransactions, month, year });
 };
 
 exports.getMonthlyTransactions = async (req, res) => {

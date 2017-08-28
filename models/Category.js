@@ -3,7 +3,7 @@ mongoose.Promise = global.Promise;
 
 const categorySchema = new mongoose.Schema({
   name: String,
-  icon: String,
+  color: String,
   user: {
     type: mongoose.Schema.ObjectId,
     ref: 'User',

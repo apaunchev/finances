@@ -3,16 +3,13 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav()
+  +appNav("Months", "/settings", "/", "settings", "chevron-right")
   
   div.app-page
     if months
       ol.content__list
         each month in months
-          - const colorClass = month.balance >= 0 ? 'transaction__amount--positive' : 'transaction__amount--negative'
           li.content__item
             a(href=`/transactions/${month._id.year}/${month._id.month}`)
               span.content__item__name= `${h.getMonthName(month._id.month - 1)} ${month._id.year}`
-              span.content__item__action
-                span.transaction__amount--positive= month.incomesAmount.toFixed(2)
-                span.transaction__amount--negative= month.expensesAmount.toFixed(2)
+              span.content__item__action= month.expensesAmount.toFixed(2)

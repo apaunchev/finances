@@ -3,7 +3,7 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav()
+  +appNav("Categories", "/settings")
   
   div.app-page
     if categories
@@ -11,9 +11,8 @@ block content
         each category in categories
           li.content__item
             a(href=`/category/${category._id}/edit`)
-              span.content__item__icon
-                i(data-feather=`${category.icon}`)
-              span.content__item__name= category.name
+              span.content__item__name
+                span.content__item__pill(style=`background-color: ${category.color}`)= category.name
               span.content__item__action
                 i(data-feather="chevron-right")
 

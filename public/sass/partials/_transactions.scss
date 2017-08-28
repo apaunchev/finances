@@ -4,14 +4,17 @@
 
 .transactions__title {
   display: flex;
-  margin: 10px 0;
+  align-items: baseline;
+  margin: 8px 0;
   padding: 8px 0;
-  border-bottom: 1px solid $c-others;
+  border-bottom: 1px solid #ccc;
+  font-size: 18px;
 }
 
 .transactions__dayOfWeek {
   padding-left: 4px;
   color: gray;
+  font-size: 14px;
 }
 
 .transactions__amount {
@@ -27,18 +30,12 @@
   border-bottom: none;
 }
 
-.transaction__icon {
-  @extend .content__item__icon;
+.transaction__name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .transaction__amount {
   @extend .content__item__action;
-}
-
-.transaction__amount--positive {
-  color: $c-incomes;
-}
-
-.transaction__amount--negative {
-  color: $c-expenses;
 }
