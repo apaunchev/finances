@@ -36,7 +36,8 @@ transactionSchema.statics.getTransactionsByDate = function (user, date, category
         date: {
           $gte: new Date(date.getFullYear(), date.getMonth(), 1),
           $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
-        }
+        },
+        amount: { $lt: 0 }
       }
     },
     {
