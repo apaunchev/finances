@@ -1,6 +1,10 @@
 mixin transactionForm(transaction = {})
   form(action=`/add/${transaction._id || ''}` method="POST" class="form")
     section.form__inputs
+      select(name="type")
+        option(value="expense" selected=transaction.amount < 0) Expense
+        option(value="income" selected=transaction.amount > 0) Income
+
       input(type="number" name="amount" step="0.01" placeholder="Amount" value=transaction.amount required)
 
       - const date = h.moment(transaction.date).format('YYYY-MM-DD')

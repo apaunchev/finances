@@ -34,12 +34,21 @@ exports.editTransaction = async (req, res) => {
 };
 
 exports.processTransaction = (req, res, next) => {
+  const type = req.body.type;
+  const amount = parseFloat(req.body.amount);
   const category = req.body.category.split('|');
   req.body.category = category[0];
   req.body.description = req.body.description || category[1];
   req.body.date = req.body.date || Date.now();
-  req.body.amount = parseFloat(req.body.amount);
+  if (type === 'expense') {
+    req.body.amount = -amount;
+  } else {
+    if (amount < 0) {
+      req.body.amount = -amount;
+    }
+  }
   req.body.user = req.user._id;
+  delete req.body.type;
   next();
 };
 
