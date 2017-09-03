@@ -41,9 +41,6 @@ router.post('/categories/add/:id', categoriesController.processCategory, catchEr
 router.get('/category/:id/edit', authController.isLoggedIn, catchErrors(categoriesController.editCategory));
 router.get('/category/:id/remove', authController.isLoggedIn, catchErrors(categoriesController.removeCategory));
 
-router.get('/budget', userController.budget);
-router.post('/budget', catchErrors(userController.updateBudget));
-
 router.get('/api/search', catchErrors(transactionsController.search));
 
 module.exports = router;
