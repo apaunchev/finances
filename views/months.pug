@@ -12,4 +12,5 @@ block content
           li.content__item
             a(href=`/transactions/${month._id.year}/${month._id.month}`)
               span.content__item__name= `${h.getMonthName(month._id.month - 1)} ${month._id.year}`
-              span.content__item__action= month.expensesAmount.toFixed(2)
+              - const balance = (month.expensesAmount + month.incomesAmount).toFixed(2)
+              span.content__item__action= balance
