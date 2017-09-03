@@ -21,6 +21,16 @@ exports.getTransactionsByMonth = async (req, res) => {
   res.render('months', { title: 'Choose a month', months });
 };
 
+exports.getTrasactionsByCategory = async (req, res) => {
+  const transactions = await Transaction.getTrasactionsByCategory(req.user);
+  res.json(transactions);
+};
+
+exports.getTrasactionsByCategoryId = async (req, res) => {
+  const transactions = await Transaction.find({ user: req.user._id, category: req.params.category });
+  res.json(transactions);
+};
+
 exports.addTransaction = async (req, res) => {
   const categories = await Category.find({ user: req.user._id });
   res.render('editTransaction', { title: 'Add transaction', categories });

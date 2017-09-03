@@ -74,4 +74,31 @@ transactionSchema.statics.getTransactionsByMonth = function (user) {
   ]);
 };
 
+transactionSchema.statics.getTrasactionsByCategory = function (user) {
+  return this.aggregate([
+    {
+      $match: {
+        user: user._id
+      }
+    },
+    {
+      $lookup: {
+        from: 'categories',
+        localField: 'category',
+        foreignField: '_id',
+        as: 'category'
+      }
+    },
+    {
+      $unwind: '$category'
+    },
+    {
+      $group: {
+        _id: '$category',
+        count: { $sum: 1 }
+      }
+    }
+  ]);
+};
+
 module.exports = mongoose.model('Transaction', transactionSchema);
