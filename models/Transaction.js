@@ -28,7 +28,7 @@ transactionSchema.index({
   description: 'text'
 });
 
-transactionSchema.statics.getTransactionsByDate = function (user, date, category) {
+transactionSchema.statics.getTransactions = function (user, date, category) {
   return this.aggregate([
     {
       $match: {
@@ -54,91 +54,7 @@ transactionSchema.statics.getTransactionsByDate = function (user, date, category
   ]);
 };
 
-transactionSchema.statics.getExpensesByDate = function (user, date, category) {
-  return this.aggregate([
-    {
-      $match: {
-        user: user._id,
-        amount: { $lt: 0 },
-        date: {
-          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
-          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
-        }
-      }
-    },
-    {
-      $lookup: {
-        from: 'categories',
-        localField: 'category',
-        foreignField: '_id',
-        as: 'category'
-      }
-    },
-    {
-      $unwind: '$category'
-    },
-    {
-      $sort: { 'date': -1 }
-    }
-  ]);
-};
-
-transactionSchema.statics.getIncomesByDate = function (user, date, category) {
-  return this.aggregate([
-    {
-      $match: {
-        user: user._id,
-        amount: { $gte: 0 },
-        date: {
-          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
-          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
-        }
-      }
-    },
-    {
-      $lookup: {
-        from: 'categories',
-        localField: 'category',
-        foreignField: '_id',
-        as: 'category'
-      }
-    },
-    {
-      $unwind: '$category'
-    },
-    {
-      $sort: { 'date': -1 }
-    }
-  ]);
-};
-
-transactionSchema.statics.getTransactionsByDateAndCategory = function (user, date, category) {
-  return this.aggregate([
-    {
-      $match: {
-        user: user._id,
-        category: category._id,
-        date: {
-          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
-          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
-        }
-      }
-    },
-    {
-      $lookup: {
-        from: 'categories',
-        localField: 'category',
-        foreignField: '_id',
-        as: 'category'
-      }
-    },
-    {
-      $unwind: '$category'
-    }
-  ]);
-};
-
-transactionSchema.statics.getMonthlyTransactions = function (user) {
+transactionSchema.statics.getTransactionsByMonth = function (user) {
   return this.aggregate([
     {
       $match: {
@@ -155,87 +71,6 @@ transactionSchema.statics.getMonthlyTransactions = function (user) {
     },
     {
       $sort: { '_id': -1 }
-    }
-  ]);
-};
-
-transactionSchema.statics.getGroupedTransactions = function (user, date) {
-  return this.aggregate([
-    {
-      $match: {
-        user: user._id,
-        date: {
-          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
-          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
-        },
-        amount: { $lt: 0 }
-      }
-    },
-    {
-      $lookup: {
-        from: 'categories',
-        localField: 'category',
-        foreignField: '_id',
-        as: 'category'
-      }
-    },
-    {
-      $unwind: '$category'
-    },
-    {
-      $group: {
-        _id: '$category._id',
-        name: { '$first': '$category.name' },
-        icon: { '$first': '$category.icon' },
-        totalAmount: { $sum: '$amount' }
-      }
-    },
-    {
-      $sort: { 'totalAmount': 1 }
-    }
-  ]);
-};
-
-transactionSchema.statics.getMonthlyExpensesAmount = function (user, date) {
-  return this.aggregate([
-    {
-      $match: {
-        user: user._id,
-        date: {
-          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
-          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
-        },
-        amount: { $lt: 0 }
-      }
-    },
-    {
-      $group: {
-        _id: null,
-        totalAmount: { $sum: '$amount' },
-        count: { $sum: 1 }
-      }
-    }
-  ]);
-};
-
-transactionSchema.statics.getMonthlyIncomesAmount = function (user, date) {
-  return this.aggregate([
-    {
-      $match: {
-        user: user._id,
-        date: {
-          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
-          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
-        },
-        amount: { $gte: 0 }
-      }
-    },
-    {
-      $group: {
-        _id: null,
-        totalAmount: { $sum: '$amount' },
-        count: { $sum: 1 }
-      }
     }
   ]);
 };

@@ -11,71 +11,14 @@ exports.getTransactions = async (req, res) => {
     month = now.getMonth();
     year = now.getFullYear();
   }
-  const transactions = await Transaction.getTransactionsByDate(req.user, new Date(year, month));
+  const transactions = await Transaction.getTransactions(req.user, new Date(year, month));
   const dailyTransactions = formatDailyTransactions(transactions);
   res.render('transactions', { title: 'Transactions', transactions: dailyTransactions, month, year });
 };
 
-exports.getMonthlyTransactions = async (req, res) => {
-  const months = await Transaction.getMonthlyTransactions(req.user);
+exports.getTransactionsByMonth = async (req, res) => {
+  const months = await Transaction.getTransactionsByMonth(req.user);
   res.render('months', { title: 'Choose a month', months });
-};
-
-exports.getGroupedTransactions = async (req, res) => {
-  const now = new Date();
-  let month = parseInt(req.params.month) - 1;
-  let year = req.params.year;
-  if (isNaN(month) || isNaN(year)) {
-    month = now.getMonth();
-    year = now.getFullYear();
-  }
-  const categories = await Transaction.getGroupedTransactions(req.user, new Date(year, month));
-  let expenses = await Transaction.getMonthlyExpensesAmount(req.user, new Date(year, month));
-  let incomes = await Transaction.getMonthlyIncomesAmount(req.user, new Date(year, month));
-  const budget = req.user.monthlyBudget || 0;
-  expenses = (expenses[0] && expenses[0].totalAmount) || 0;
-  incomes = (incomes[0] && incomes[0].totalAmount) || 0;
-  res.render('dashboard', { categories, budget, expenses, incomes, month, year });
-};
-
-exports.getTransactionsByCategory = async (req, res) => {
-  const now = new Date();
-  let month = parseInt(req.params.month) - 1;
-  let year = req.params.year;
-  if (isNaN(month) || isNaN(year)) {
-    month = now.getMonth();
-    year = now.getFullYear();
-  }
-  const category = await Category.findOne({ _id: req.params.category });
-  const transactions = await Transaction.getTransactionsByDateAndCategory(req.user, new Date(year, month), category);
-  const dailyTransactions = formatDailyTransactions(transactions);
-  res.render('transactions', { transactions: dailyTransactions, month, year, category });
-};
-
-exports.getMonthlyExpenses = async (req, res) => {
-  const now = new Date();
-  let month = parseInt(req.params.month) - 1;
-  let year = req.params.year;
-  if (isNaN(month) || isNaN(year)) {
-    month = now.getMonth();
-    year = now.getFullYear();
-  }
-  const transactions = await Transaction.getExpensesByDate(req.user, new Date(year, month));
-  const dailyTransactions = formatDailyTransactions(transactions);
-  res.render('transactions', { transactions: dailyTransactions, month, year });
-};
-
-exports.getMonthlyIncomes = async (req, res) => {
-  const now = new Date();
-  let month = parseInt(req.params.month) - 1;
-  let year = req.params.year;
-  if (isNaN(month) || isNaN(year)) {
-    month = now.getMonth();
-    year = now.getFullYear();
-  }
-  const transactions = await Transaction.getIncomesByDate(req.user, new Date(year, month));
-  const dailyTransactions = formatDailyTransactions(transactions);
-  res.render('transactions', { transactions: dailyTransactions, month, year });
 };
 
 exports.addTransaction = async (req, res) => {
