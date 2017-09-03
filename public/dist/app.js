@@ -83,8 +83,8 @@ document.addEventListener('touchstart', function() {}, true);
 
 __WEBPACK_IMPORTED_MODULE_2_feather_icons___default.a.replace({
   'stroke-width': 1,
-  width: 21,
-  height: 21
+  width: 24,
+  height: 24
 });
 
 

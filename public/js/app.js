@@ -7,6 +7,6 @@ document.addEventListener('touchstart', function() {}, true);
 
 feather.replace({
   'stroke-width': 1,
-  width: 21,
-  height: 21
+  width: 24,
+  height: 24
 });
