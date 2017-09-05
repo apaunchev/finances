@@ -94,8 +94,9 @@ transactionSchema.statics.getTrasactionsByCategory = function (user) {
     },
     {
       $group: {
-        _id: '$category',
-        count: { $sum: 1 }
+        _id: { _id: '$category._id', name: '$category.name' },
+        count: { $sum: 1 },
+        amount: { $sum: '$amount' }
       }
     }
   ]);
