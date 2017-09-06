@@ -79,6 +79,11 @@ exports.removeTransaction = async (req, res) => {
   res.redirect('/');
 };
 
+exports.stats = async (req, res) => {
+  const stats = await Transaction.getTransactionsByMonth(req.user);
+  res.render('stats', { stats });
+};
+
 exports.search = async (req, res) => {
   const transactions = await Transaction
     .find({ $text: { $search: req.query.q } }, { score: { $meta: 'textScore' } })

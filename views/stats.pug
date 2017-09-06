@@ -1,0 +1,10 @@
+extends layout
+
+include mixins/_appNav
+
+block content
+  +appNav("Stats", "/settings", "", "chevron-left", "")
+  
+  div.app-page
+    if stats
+      pre= h.dump(stats)

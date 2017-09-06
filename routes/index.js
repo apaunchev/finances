@@ -17,6 +17,8 @@ router.get('/transactionsByCategory/:year', catchErrors(transactionsController.g
 router.get('/transactionsByCategory/:year/:month', catchErrors(transactionsController.getTrasactionsByCategory));
 // router.get('/transactionsByCategory/:category', catchErrors(transactionsController.getTrasactionsByCategoryId));
 
+router.get('/stats', catchErrors(transactionsController.stats));
+
 router.get('/search', catchErrors(transactionsController.search));
 
 router.get('/add', authController.isLoggedIn, catchErrors(transactionsController.addTransaction));

@@ -63,8 +63,12 @@ transactionSchema.statics.getTransactionsByMonth = function (user) {
     {
       $group: {
         _id: { year: { $year: '$date' }, month: { $month: '$date' } },
-        incomesAmount: { $sum: { $cond: [{ '$gt': ['$amount', 0]}, "$amount", 0] } },
-        expensesAmount: { $sum: { $cond: [{ '$lt': ['$amount', 0]}, "$amount", 0] } },
+        totalIncomes: { $sum: { $cond: [{ '$gt': ['$amount', 0]}, "$amount", 0] } },
+        highestIncome: { $max: { $cond: [{ '$gt': ['$amount', 0]}, "$amount", 0] } },
+        totalExpenses: { $sum: { $cond: [{ '$lt': ['$amount', 0]}, "$amount", 0] } },
+        highestExpense: { $min: { $cond: [{ '$lt': ['$amount', 0]}, "$amount", 0] } },
+        averageExpense: { $avg: { $cond: [{ '$lt': ['$amount', 0]}, "$amount", 0] } },
+        balance: { $sum: '$amount' },
         count: { $sum: 1 }
       }
     },
