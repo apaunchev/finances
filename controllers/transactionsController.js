@@ -22,7 +22,9 @@ exports.getTransactionsByMonth = async (req, res) => {
 };
 
 exports.getTrasactionsByCategory = async (req, res) => {
-  const transactions = await Transaction.getTrasactionsByCategory(req.user);
+  let year = req.params.year;
+  let month = parseInt(req.params.month) - 1;
+  const transactions = await Transaction.getTrasactionsByCategory(req.user, year, month);
   res.json(transactions);
 };
 

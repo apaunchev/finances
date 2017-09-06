@@ -74,11 +74,32 @@ transactionSchema.statics.getTransactionsByMonth = function (user) {
   ]);
 };
 
-transactionSchema.statics.getTrasactionsByCategory = function (user) {
+transactionSchema.statics.getTrasactionsByCategory = function (user, year, month) {
+  const now = new Date();
+  let dateRange = {};
+
+  if (isNaN(year) && isNaN(month)) {
+    month = now.getMonth();
+    year = now.getFullYear();
+  }
+  
+  if (year && isNaN(month)) {
+    dateRange = {
+      $gte: new Date(year, 0, 1),
+      $lte: new Date(year, 11, 31)
+    };
+  } else {
+    dateRange = {
+      $gte: new Date(year, month, 1),
+      $lte: new Date(year, month + 1, 0)
+    };
+  }
+
   return this.aggregate([
     {
       $match: {
-        user: user._id
+        user: user._id,
+        date: dateRange
       }
     },
     {

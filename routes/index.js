@@ -13,7 +13,9 @@ router.get('/transactions/:year/:month', catchErrors(transactionsController.getT
 router.get('/transaction/:id/edit', authController.isLoggedIn, catchErrors(transactionsController.editTransaction));
 router.get('/transaction/:id/remove', authController.isLoggedIn, catchErrors(transactionsController.removeTransaction));
 router.get('/transactionsByCategory', catchErrors(transactionsController.getTrasactionsByCategory));
-router.get('/transactionsByCategory/:category', catchErrors(transactionsController.getTrasactionsByCategoryId));
+router.get('/transactionsByCategory/:year', catchErrors(transactionsController.getTrasactionsByCategory));
+router.get('/transactionsByCategory/:year/:month', catchErrors(transactionsController.getTrasactionsByCategory));
+// router.get('/transactionsByCategory/:category', catchErrors(transactionsController.getTrasactionsByCategoryId));
 
 router.get('/search', catchErrors(transactionsController.search));
 
