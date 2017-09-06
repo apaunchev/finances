@@ -18,6 +18,8 @@ router.get('/transactionsByCategory/:year/:month', catchErrors(transactionsContr
 // router.get('/transactionsByCategory/:category', catchErrors(transactionsController.getTrasactionsByCategoryId));
 
 router.get('/stats', catchErrors(transactionsController.stats));
+router.get('/stats/:year', catchErrors(transactionsController.stats));
+router.get('/stats/:year/:month', catchErrors(transactionsController.stats));
 
 router.get('/search', catchErrors(transactionsController.search));
 

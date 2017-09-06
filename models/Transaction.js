@@ -53,16 +53,42 @@ transactionSchema.statics.getTransactions = function (user, date, category) {
   ]);
 };
 
-transactionSchema.statics.getTransactionsByMonth = function (user) {
+transactionSchema.statics.getTransactionsByMonth = function (user, year, month) {
+  let date = {};
+  let _id = {};
+  const now = new Date();
+
+  if (isNaN(year) && isNaN(month)) {
+    month = now.getMonth();
+    year = now.getFullYear();
+  }
+  
+  if (year && isNaN(month)) {
+    _id = { year: { $year: '$date' } };
+
+    date = {
+      $gte: new Date(year, 0, 1),
+      $lte: new Date(year, 11, 31)
+    };
+  } else {
+    _id = { year: { $year: '$date' }, month: { $month: '$date' } };
+
+    date = {
+      $gte: new Date(year, month, 1),
+      $lte: new Date(year, month + 1, 0)
+    };
+  }
+
   return this.aggregate([
     {
       $match: {
-        user: user._id
+        user: user._id,
+        date
       }
     },
     {
       $group: {
-        _id: { year: { $year: '$date' }, month: { $month: '$date' } },
+        _id,
         totalIncomes: { $sum: { $cond: [{ '$gt': ['$amount', 0]}, "$amount", 0] } },
         highestIncome: { $max: { $cond: [{ '$gt': ['$amount', 0]}, "$amount", 0] } },
         totalExpenses: { $sum: { $cond: [{ '$lt': ['$amount', 0]}, "$amount", 0] } },
@@ -80,7 +106,7 @@ transactionSchema.statics.getTransactionsByMonth = function (user) {
 
 transactionSchema.statics.getTrasactionsByCategory = function (user, year, month) {
   const now = new Date();
-  let dateRange = {};
+  let date = {};
 
   if (isNaN(year) && isNaN(month)) {
     month = now.getMonth();
@@ -88,12 +114,12 @@ transactionSchema.statics.getTrasactionsByCategory = function (user, year, month
   }
   
   if (year && isNaN(month)) {
-    dateRange = {
+    date = {
       $gte: new Date(year, 0, 1),
       $lte: new Date(year, 11, 31)
     };
   } else {
-    dateRange = {
+    date = {
       $gte: new Date(year, month, 1),
       $lte: new Date(year, month + 1, 0)
     };
@@ -103,7 +129,7 @@ transactionSchema.statics.getTrasactionsByCategory = function (user, year, month
     {
       $match: {
         user: user._id,
-        date: dateRange
+        date
       }
     },
     {

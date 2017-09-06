@@ -80,8 +80,13 @@ exports.removeTransaction = async (req, res) => {
 };
 
 exports.stats = async (req, res) => {
-  const stats = await Transaction.getTransactionsByMonth(req.user);
-  res.render('stats', { stats });
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  const overallStats = await Transaction.getTransactionsByMonth(req.user);
+  const monthlyStats = await Transaction.getTransactionsByMonth(req.user, year, month);
+  const yearlyStats = await Transaction.getTransactionsByMonth(req.user, year);
+  res.render('stats', { overallStats, monthlyStats, yearlyStats });
 };
 
 exports.search = async (req, res) => {

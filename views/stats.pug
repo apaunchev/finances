@@ -6,5 +6,6 @@ block content
   +appNav("Stats", "/settings", "", "chevron-left", "")
   
   div.app-page
-    if stats
-      pre= h.dump(stats)
+    pre= h.dump(overallStats)
+    pre= h.dump(monthlyStats)
+    pre= h.dump(yearlyStats)
