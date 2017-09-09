@@ -4,10 +4,14 @@ const Category = mongoose.model('Category');
 const _ = require('lodash');
 
 exports.getTransactions = async (req, res) => {
+  const now = new Date();
   const user = req.user;
   const month = parseInt(req.params.month) - 1;
   const year = req.params.year;
   const category = req.params.category;
+  if (isNaN(year) && isNaN(month)) {
+    res.redirect(`/transactions/${now.getFullYear()}/${now.getMonth() + 1}`);
+  }
   const transactions = await Transaction.getTransactions(user, year, month, category);
   const dailyTransactions = formatDailyTransactions(transactions);
   res.render('transactions', { title: 'Transactions', transactions: dailyTransactions, month, year });

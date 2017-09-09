@@ -6,7 +6,7 @@ const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
-router.get('/', authController.isLoggedIn, catchErrors(transactionsController.getTransactionsByMonth));
+router.get('/', authController.isLoggedIn, catchErrors(transactionsController.getTransactions));
 
 router.get('/transactions', catchErrors(transactionsController.getTransactionsByMonth));
 router.get('/transactions/:year/:month', catchErrors(transactionsController.getTransactions));
