@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
 mongoose.Promise = global.Promise;
 
 const transactionSchema = new mongoose.Schema({
@@ -28,16 +29,25 @@ transactionSchema.index({
   description: 'text'
 });
 
-transactionSchema.statics.getTransactions = function (user, date, category) {
+transactionSchema.statics.getTransactions = function (user, year, month, category) {
+  let $match = {
+    user: user._id
+  };
+
+  if (year && month) {
+    $match.date = {
+      $gte: new Date(year, month, 1),
+      $lte: new Date(year, month + 1, 0)
+    };
+  }
+
+  if (category) {
+    $match.category = ObjectId(category);
+  }
+
   return this.aggregate([
     {
-      $match: {
-        user: user._id,
-        date: {
-          $gte: new Date(date.getFullYear(), date.getMonth(), 1),
-          $lte: new Date(date.getFullYear(), date.getMonth() + 1, 0)
-        }
-      }
+      $match
     },
     {
       $lookup: {
@@ -62,7 +72,10 @@ transactionSchema.statics.getTransactionsByMonth = function (user) {
     },
     {
       $group: {
-        _id: { year: { $year: '$date' }, month: { $month: '$date' } },
+        _id: {
+          year: { $year: '$date' },
+          month: { $month: '$date' }
+        },
         balance: { $sum: '$amount' },
         count: { $sum: 1 }
       }
@@ -73,23 +86,19 @@ transactionSchema.statics.getTransactionsByMonth = function (user) {
   ]);
 }
 
-transactionSchema.statics.getTransactionsStats = function (user, year, month) {
-  let _id = {};
-  let $match = { user: user._id, date: {} };
-  const now = new Date();
+transactionSchema.statics.getTrasactionsByCategory = function (user, year, month) {
+  let $match = {
+    user: user._id
+  };
 
-  if (isNaN(year) && isNaN(month)) {
-    delete $match.date;
-  } else if (year && isNaN(month)) {
-    _id = { year: { $year: '$date' } };
-
+  if (year && isNaN(month)) {
     $match.date = {
       $gte: new Date(year, 0, 1),
       $lte: new Date(year, 11, 31)
     };
-  } else if (month && year) {
-    _id = { year: { $year: '$date' }, month: { $month: '$date' } };
+  }
 
+  if (year && month) {
     $match.date = {
       $gte: new Date(year, month, 1),
       $lte: new Date(year, month + 1, 0)
@@ -99,49 +108,6 @@ transactionSchema.statics.getTransactionsStats = function (user, year, month) {
   return this.aggregate([
     {
       $match
-    },
-    {
-      $group: {
-        _id,
-        totalIncomes: { $sum: { $cond: [{ '$gt': ['$amount', 0]}, "$amount", 0] } },
-        highestIncome: { $max: { $cond: [{ '$gt': ['$amount', 0]}, "$amount", 0] } },
-        totalExpenses: { $sum: { $cond: [{ '$lt': ['$amount', 0]}, "$amount", 0] } },
-        highestExpense: { $min: { $cond: [{ '$lt': ['$amount', 0]}, "$amount", 0] } },
-        averageExpense: { $avg: { $cond: [{ '$lt': ['$amount', 0]}, "$amount", 0] } },
-        balance: { $sum: '$amount' },
-        count: { $sum: 1 }
-      }
-    }
-  ]);
-};
-
-transactionSchema.statics.getTrasactionsByCategory = function (user, year, month) {
-  const now = new Date();
-  let date = {};
-
-  if (isNaN(year) && isNaN(month)) {
-    month = now.getMonth();
-    year = now.getFullYear();
-  }
-  
-  if (year && isNaN(month)) {
-    date = {
-      $gte: new Date(year, 0, 1),
-      $lte: new Date(year, 11, 31)
-    };
-  } else {
-    date = {
-      $gte: new Date(year, month, 1),
-      $lte: new Date(year, month + 1, 0)
-    };
-  }
-
-  return this.aggregate([
-    {
-      $match: {
-        user: user._id,
-        date
-      }
     },
     {
       $lookup: {
@@ -156,12 +122,70 @@ transactionSchema.statics.getTrasactionsByCategory = function (user, year, month
     },
     {
       $group: {
-        _id: { _id: '$category._id', name: '$category.name' },
+        _id: {
+          _id: '$category._id',
+          name: '$category.name'
+        },
         count: { $sum: 1 },
         amount: { $sum: '$amount' }
+      }
+    },
+    {
+      $sort: { 'amount': -1 }
+    }
+  ]);
+};
+
+transactionSchema.statics.getStats = function (user, year, month) {
+  let _id = {};
+  let $match = { user: user._id };
+
+  if (year && isNaN(month)) {
+    _id = { year: { $year: '$date' } };
+
+    $match.date = {
+      $gte: new Date(year, 0, 1),
+      $lte: new Date(year, 11, 31)
+    };
+  }
+  
+  if (year && month) {
+    _id = {
+      year: { $year: '$date' },
+      month: { $month: '$date' }
+    };
+
+    $match.date = {
+      $gte: new Date(year, month, 1),
+      $lte: new Date(year, month + 1, 0)
+    };
+  }
+
+  return this.aggregate([
+    {
+      $match
+    },
+    {
+      $group: {
+        _id,
+        totalIncomes: { $sum: { $cond: [{ '$gt': ['$amount', 0] }, "$amount", 0] } },
+        highestIncome: { $max: { $cond: [{ '$gt': ['$amount', 0] }, "$amount", 0] } },
+        totalExpenses: { $sum: { $cond: [{ '$lt': ['$amount', 0] }, "$amount", 0] } },
+        highestExpense: { $min: { $cond: [{ '$lt': ['$amount', 0] }, "$amount", 0] } },
+        averageExpense: { $avg: { $cond: [{ '$lt': ['$amount', 0] }, "$amount", 0] } },
+        balance: { $sum: '$amount' },
+        count: { $sum: 1 }
       }
     }
   ]);
 };
+
+function autopopulate(next) {
+  this.populate('category');
+  next();
+}
+
+transactionSchema.pre('find', autopopulate);
+transactionSchema.pre('findOne', autopopulate);
 
 module.exports = mongoose.model('Transaction', transactionSchema);

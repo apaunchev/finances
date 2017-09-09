@@ -6,15 +6,17 @@ const userController = require('../controllers/userController');
 const authController = require('../controllers/authController');
 const { catchErrors } = require('../handlers/errorHandlers');
 
-router.get('/', authController.isLoggedIn, catchErrors(transactionsController.getTransactions));
+router.get('/', authController.isLoggedIn, catchErrors(transactionsController.getTransactionsByMonth));
 
 router.get('/transactions', catchErrors(transactionsController.getTransactionsByMonth));
 router.get('/transactions/:year/:month', catchErrors(transactionsController.getTransactions));
+router.get('/transactions/:year/:month/:category', catchErrors(transactionsController.getTransactions));
 router.get('/transaction/:id/edit', authController.isLoggedIn, catchErrors(transactionsController.editTransaction));
 router.get('/transaction/:id/remove', authController.isLoggedIn, catchErrors(transactionsController.removeTransaction));
-router.get('/transactionsByCategory', catchErrors(transactionsController.getTrasactionsByCategory));
-router.get('/transactionsByCategory/:year', catchErrors(transactionsController.getTrasactionsByCategory));
-router.get('/transactionsByCategory/:year/:month', catchErrors(transactionsController.getTrasactionsByCategory));
+
+router.get('/categories', catchErrors(transactionsController.getTrasactionsByCategory));
+router.get('/categories/:year', catchErrors(transactionsController.getTrasactionsByCategory));
+router.get('/categories/:year/:month', catchErrors(transactionsController.getTrasactionsByCategory));
 
 router.get('/add', authController.isLoggedIn, catchErrors(transactionsController.addTransaction));
 router.post('/add', transactionsController.processTransaction, catchErrors(transactionsController.createTransaction));
@@ -22,7 +24,6 @@ router.post('/add/:id', transactionsController.processTransaction, catchErrors(t
 
 router.get('/stats', catchErrors(transactionsController.stats));
 router.get('/search', catchErrors(transactionsController.search));
-router.get('/settings', userController.settings);
 
 router.get('/login', userController.loginForm);
 router.post('/login', authController.login);

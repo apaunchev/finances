@@ -4,14 +4,11 @@ const Category = mongoose.model('Category');
 const _ = require('lodash');
 
 exports.getTransactions = async (req, res) => {
-  const now = new Date();
-  let month = parseInt(req.params.month) - 1;
-  let year = req.params.year;
-  if (isNaN(month) || isNaN(year)) {
-    month = now.getMonth();
-    year = now.getFullYear();
-  }
-  const transactions = await Transaction.getTransactions(req.user, new Date(year, month));
+  const user = req.user;
+  const month = parseInt(req.params.month) - 1;
+  const year = req.params.year;
+  const category = req.params.category;
+  const transactions = await Transaction.getTransactions(user, year, month, category);
   const dailyTransactions = formatDailyTransactions(transactions);
   res.render('transactions', { title: 'Transactions', transactions: dailyTransactions, month, year });
 };
@@ -22,15 +19,10 @@ exports.getTransactionsByMonth = async (req, res) => {
 };
 
 exports.getTrasactionsByCategory = async (req, res) => {
-  let year = req.params.year;
-  let month = parseInt(req.params.month) - 1;
-  const transactions = await Transaction.getTrasactionsByCategory(req.user, year, month);
-  res.json(transactions);
-};
-
-exports.getTrasactionsByCategoryId = async (req, res) => {
-  const transactions = await Transaction.find({ user: req.user._id, category: req.params.category });
-  res.json(transactions);
+  const year = req.params.year;
+  const month = parseInt(req.params.month) - 1;
+  const categories = await Transaction.getTrasactionsByCategory(req.user, year, month);
+  res.render('categories', { categories, year, month });
 };
 
 exports.addTransaction = async (req, res) => {
@@ -80,12 +72,13 @@ exports.removeTransaction = async (req, res) => {
 };
 
 exports.stats = async (req, res) => {
+  const user = req.user;
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
-  const overall = await Transaction.getTransactionsStats(req.user);
-  const monthly = await Transaction.getTransactionsStats(req.user, year, month);
-  const yearly = await Transaction.getTransactionsStats(req.user, year);
+  const overall = await Transaction.getStats(user);
+  const monthly = await Transaction.getStats(user, year, month);
+  const yearly = await Transaction.getStats(user, year);
   const stats = { overall, monthly, yearly };
   res.render('stats', { stats });
 };

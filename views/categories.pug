@@ -3,15 +3,13 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav("Categories", "/settings", "/categories/add", "chevron-left", "plus")
+  +appNav("Categories", "/transactions")
   
   div.app-page
     if categories
-      ul.content__list
-        each category in categories
+      ol.content__list
+        each c in categories
           li.content__item
-            a(href=`/category/${category._id}/edit`)
-              span.content__item__name
-                span.content__item__pill(style=`background-color: ${category.color}`)= category.name
-              span.content__item__action
-                i(data-feather="chevron-right")
+            a(href=`/transactions/${year}/${month + 1}/${c._id._id}`)
+              span.content__item__name= `${c._id.name}`
+              span.content__item__action= c.amount.toFixed(2)

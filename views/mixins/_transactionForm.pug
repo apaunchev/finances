@@ -12,7 +12,7 @@ mixin transactionForm(transaction = {})
 
       select(name="category")
         each c in categories
-          - const selected = transaction.category ? transaction.category.toString() === c._id.toString() : false
+          - const selected = transaction.category ? transaction.category._id.toString() === c._id.toString() : false
           option(value=`${c._id}|${c.name}` selected=selected) #{c.name}
     
       input(type="text" name="description" placeholder="Description" value=transaction.description)
