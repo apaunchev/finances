@@ -37,12 +37,13 @@ router.post('/account/forgot', catchErrors(authController.forgot));
 router.get('/account/reset/:token', catchErrors(authController.reset));
 router.post('/account/reset/:token', authController.confirmedPasswords, catchErrors(authController.update));
 
-router.get('/categories', catchErrors(categoriesController.categories));
-router.get('/categories/add', authController.isLoggedIn, catchErrors(categoriesController.addCategory));
-router.post('/categories/add', categoriesController.processCategory, catchErrors(categoriesController.createCategory));
-router.post('/categories/add/:id', categoriesController.processCategory, catchErrors(categoriesController.updateCategory));
-router.get('/category/:id/edit', authController.isLoggedIn, catchErrors(categoriesController.editCategory));
-router.get('/category/:id/remove', authController.isLoggedIn, catchErrors(categoriesController.removeCategory));
+router.get('/settings', userController.settings);
+router.get('/settings/categories', catchErrors(categoriesController.categories));
+router.get('/settings/categories/add', authController.isLoggedIn, catchErrors(categoriesController.addCategory));
+router.post('/settings/categories/add', categoriesController.processCategory, catchErrors(categoriesController.createCategory));
+router.post('/settings/categories/add/:id', categoriesController.processCategory, catchErrors(categoriesController.updateCategory));
+router.get('/settings/category/:id/edit', authController.isLoggedIn, catchErrors(categoriesController.editCategory));
+router.get('/settings/category/:id/remove', authController.isLoggedIn, catchErrors(categoriesController.removeCategory));
 
 router.get('/api/search', catchErrors(transactionsController.search));
 

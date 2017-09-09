@@ -7,7 +7,7 @@ exports.getMonthName = (month) => {
 
 exports.settingsMenu = [
   { 'url': '/account', title: 'Account', icon: 'user' },
-  { 'url': '/categories', title: 'Categories', icon: 'folder' }
+  { 'url': '/settings/categories', title: 'Categories', icon: 'folder' }
 ];
 
 exports.dump = (obj) => JSON.stringify(obj, null, 2);
