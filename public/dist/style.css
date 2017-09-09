@@ -394,9 +394,6 @@ body {
 
 .app-page {
   padding: 52px 10px 0; }
-  .app-page.app-page--no-sides {
-    padding-left: 0;
-    padding-right: 0; }
 
 .app-nav {
   position: fixed;
@@ -429,76 +426,6 @@ body {
     flex: 1; }
     .app-nav > div:nth-child(3) svg {
       float: right; }
-
-.overview {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 150px;
-  padding: 52px 10px 20px;
-  background-color: #00a4f4;
-  color: white;
-  text-align: center; }
-
-.overview__number {
-  margin: 0;
-  font-size: 48px; }
-
-.overview__label {
-  display: block;
-  margin-top: 10px;
-  font-size: 14px;
-  color: #dde9f7; }
-
-.cards {
-  display: flex;
-  flex-wrap: wrap;
-  padding-bottom: 10px; }
-
-.card {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  width: calc(50% - 35px);
-  height: 150px;
-  margin: 10px 0 0 10px;
-  padding: 10px; }
-  .card.card--expenses {
-    color: white;
-    background-color: #FB5C5C; }
-    .card.card--expenses:active, .card.card--expenses:focus {
-      background-color: #fa4343; }
-  .card.card--incomes {
-    color: white;
-    background-color: #62D266; }
-    .card.card--incomes:active, .card.card--incomes:focus {
-      background-color: #4ecc53; }
-  .card.card--other {
-    color: grey;
-    background-color: whitesmoke; }
-    .card.card--other:active, .card.card--other:focus {
-      background-color: #e8e8e8; }
-
-.card__title {
-  margin: 0;
-  font-size: 16px; }
-
-.card__content {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin: 0; }
-
-.card__icon {
-  margin-bottom: 16px; }
-  .card__icon > svg {
-    height: 48px;
-    width: 48px; }
-
-.card__amount {
-  font-size: 20px; }
 
 .content__list, .transactions__list {
   list-style-type: none;
