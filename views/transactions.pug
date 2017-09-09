@@ -4,7 +4,7 @@ include mixins/_appNav
 
 block content
   - const pageTitle = `${h.getMonthName(month)} ${year}`
-  +appNav(pageTitle, "/transactions", "/add", "chevron-left", "plus-circle")
+  +appNav(pageTitle, "/transactions", "/add", "chevron-left", "plus")
 
   div.app-page
     if transactions.length > 0
