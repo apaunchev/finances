@@ -53,27 +53,44 @@ transactionSchema.statics.getTransactions = function (user, date, category) {
   ]);
 };
 
-transactionSchema.statics.getTransactionsByMonth = function (user, year, month) {
-  let date = {};
+transactionSchema.statics.getTransactionsByMonth = function (user) {
+  return this.aggregate([
+    {
+      $match: {
+        user: user._id
+      }
+    },
+    {
+      $group: {
+        _id: { year: { $year: '$date' }, month: { $month: '$date' } },
+        balance: { $sum: '$amount' },
+        count: { $sum: 1 }
+      }
+    },
+    {
+      $sort: { '_id': -1 }
+    }
+  ]);
+}
+
+transactionSchema.statics.getTransactionsStats = function (user, year, month) {
   let _id = {};
+  let $match = { user: user._id, date: {} };
   const now = new Date();
 
   if (isNaN(year) && isNaN(month)) {
-    month = now.getMonth();
-    year = now.getFullYear();
-  }
-  
-  if (year && isNaN(month)) {
+    delete $match.date;
+  } else if (year && isNaN(month)) {
     _id = { year: { $year: '$date' } };
 
-    date = {
+    $match.date = {
       $gte: new Date(year, 0, 1),
       $lte: new Date(year, 11, 31)
     };
-  } else {
+  } else if (month && year) {
     _id = { year: { $year: '$date' }, month: { $month: '$date' } };
 
-    date = {
+    $match.date = {
       $gte: new Date(year, month, 1),
       $lte: new Date(year, month + 1, 0)
     };
@@ -81,10 +98,7 @@ transactionSchema.statics.getTransactionsByMonth = function (user, year, month) 
 
   return this.aggregate([
     {
-      $match: {
-        user: user._id,
-        date
-      }
+      $match
     },
     {
       $group: {
@@ -97,9 +111,6 @@ transactionSchema.statics.getTransactionsByMonth = function (user, year, month) 
         balance: { $sum: '$amount' },
         count: { $sum: 1 }
       }
-    },
-    {
-      $sort: { '_id': -1 }
     }
   ]);
 };

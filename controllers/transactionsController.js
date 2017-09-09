@@ -83,10 +83,11 @@ exports.stats = async (req, res) => {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth();
-  const overallStats = await Transaction.getTransactionsByMonth(req.user);
-  const monthlyStats = await Transaction.getTransactionsByMonth(req.user, year, month);
-  const yearlyStats = await Transaction.getTransactionsByMonth(req.user, year);
-  res.render('stats', { overallStats, monthlyStats, yearlyStats });
+  const overall = await Transaction.getTransactionsStats(req.user);
+  const monthly = await Transaction.getTransactionsStats(req.user, year, month);
+  const yearly = await Transaction.getTransactionsStats(req.user, year);
+  const stats = { overall, monthly, yearly };
+  res.render('stats', { stats });
 };
 
 exports.search = async (req, res) => {

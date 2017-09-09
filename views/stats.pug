@@ -6,6 +6,65 @@ block content
   +appNav("Stats", "/settings", "", "chevron-left", "")
   
   div.app-page
-    pre= h.dump(overallStats)
-    pre= h.dump(monthlyStats)
-    pre= h.dump(yearlyStats)
+    .transactions__day
+      h4.transactions__title This month
+        span.transactions__amount= stats.monthly[0].balance.toFixed(2)
+      ul.transactions__list
+        li.transaction
+          a
+            span.transaction__name Incomes
+            span.transaction__amount= stats.monthly[0].totalIncomes.toFixed(2)
+        li.transaction
+          a
+            span.transaction__name Expenses
+            span.transaction__amount= stats.monthly[0].totalExpenses.toFixed(2)
+        li.transaction
+          a
+            span.transaction__name Highest income
+            span.transaction__amount= stats.monthly[0].highestIncome.toFixed(2)
+        li.transaction
+          a
+            span.transaction__name Highest expense
+            span.transaction__amount= stats.monthly[0].highestExpense.toFixed(2)
+    
+    .transactions__day
+      h4.transactions__title This year
+        span.transactions__amount= stats.yearly[0].balance.toFixed(2)
+      ul.transactions__list
+        li.transaction
+          a
+            span.transaction__name Incomes
+            span.transaction__amount= stats.yearly[0].totalIncomes.toFixed(2)
+        li.transaction
+          a
+            span.transaction__name Expenses
+            span.transaction__amount= stats.yearly[0].totalExpenses.toFixed(2)
+        li.transaction
+          a
+            span.transaction__name Highest income
+            span.transaction__amount= stats.yearly[0].highestIncome.toFixed(2)
+        li.transaction
+          a
+            span.transaction__name Highest expense
+            span.transaction__amount= stats.yearly[0].highestExpense.toFixed(2)
+      
+    .transactions__day
+      h4.transactions__title Overall
+        span.transactions__amount= stats.overall[0].balance.toFixed(2)
+      ul.transactions__list
+        li.transaction
+          a
+            span.transaction__name Incomes
+            span.transaction__amount= stats.overall[0].totalIncomes.toFixed(2)
+        li.transaction
+          a
+            span.transaction__name Expenses
+            span.transaction__amount= stats.overall[0].totalExpenses.toFixed(2)
+        li.transaction
+          a
+            span.transaction__name Highest income
+            span.transaction__amount= stats.overall[0].highestIncome.toFixed(2)
+        li.transaction
+          a
+            span.transaction__name Highest expense
+            span.transaction__amount= stats.overall[0].highestExpense.toFixed(2)

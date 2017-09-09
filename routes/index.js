@@ -15,25 +15,20 @@ router.get('/transaction/:id/remove', authController.isLoggedIn, catchErrors(tra
 router.get('/transactionsByCategory', catchErrors(transactionsController.getTrasactionsByCategory));
 router.get('/transactionsByCategory/:year', catchErrors(transactionsController.getTrasactionsByCategory));
 router.get('/transactionsByCategory/:year/:month', catchErrors(transactionsController.getTrasactionsByCategory));
-// router.get('/transactionsByCategory/:category', catchErrors(transactionsController.getTrasactionsByCategoryId));
-
-router.get('/stats', catchErrors(transactionsController.stats));
-router.get('/stats/:year', catchErrors(transactionsController.stats));
-router.get('/stats/:year/:month', catchErrors(transactionsController.stats));
-
-router.get('/search', catchErrors(transactionsController.search));
 
 router.get('/add', authController.isLoggedIn, catchErrors(transactionsController.addTransaction));
 router.post('/add', transactionsController.processTransaction, catchErrors(transactionsController.createTransaction));
 router.post('/add/:id', transactionsController.processTransaction, catchErrors(transactionsController.updateTransaction));
+
+router.get('/stats', catchErrors(transactionsController.stats));
+router.get('/search', catchErrors(transactionsController.search));
+router.get('/settings', userController.settings);
 
 router.get('/login', userController.loginForm);
 router.post('/login', authController.login);
 router.get('/register', userController.registerForm);
 router.post('/register', userController.validateRegister, catchErrors(userController.register), authController.login);
 router.get('/logout', authController.logout);
-
-router.get('/settings', userController.settings);
 
 router.get('/account', authController.isLoggedIn, userController.account);
 router.post('/account', catchErrors(userController.updateAccount));
