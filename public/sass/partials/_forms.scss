@@ -1,4 +1,5 @@
 .form__inputs {
+  margin: 0 16px;
   padding: 10px 0;
 
   select,
@@ -26,8 +27,8 @@ input {
   color: white;
   text-align: center;
   cursor: pointer;
-  @include setBackgroundColor($c-incomes);
-  
+  @include setBackgroundColor($c-income);
+
   &.form__button--danger {
     @include setBackgroundColor($c-expenses);
   }

@@ -1,23 +1,23 @@
-.transactions__day {
-  margin-bottom: 30px;
+.transactions__group {
+  margin: 8px 0 24px;
 }
 
-.transactions__title {
+.transactions__group__title {
   display: flex;
   align-items: baseline;
-  margin: 8px 0;
+  margin: 8px 16px;
   padding: 8px 0;
   border-bottom: 1px solid #ccc;
-  font-size: 18px;
+  font-weight: 500;
 }
 
-.transactions__dayOfWeek {
+.transactions__group__subtitle {
   padding-left: 4px;
   color: gray;
-  font-size: 14px;
+  font-weight: 300;
 }
 
-.transactions__amount {
+.transactions__group__amount {
   margin-left: auto;
 }
 
@@ -38,4 +38,8 @@
 
 .transaction__amount {
   @extend .content__item__action;
+}
+
+.transaction__pill {
+  @extend .content__item__pill;
 }

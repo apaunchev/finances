@@ -3,22 +3,26 @@ extends layout
 include mixins/_appNav
 
 block content
-  - const pageTitle = `${h.getMonthName(month)} ${year}`
+  - const pageTitle = category ? `${category.name}` : `${h.getMonthName(month)} ${year}`
   +appNav(pageTitle, "/transactions", "/add", "chevron-left", "plus")
 
   div.app-page
+    div.app-sub-nav
+      a(href=`/transactions/${year}/${month + 1}` class="selected") Transactions
+      a(href=`/categories/${year}/${month + 1}`) Overview
+
     if transactions.length > 0
       each day in transactions
-        .transactions__day
-          h4.transactions__title= day.date
-            span.transactions__dayOfWeek= day.dayOfWeek
-            span.transactions__amount= day.totalAmount.toFixed(2)
+        .transactions__group
+          h4.transactions__group__title= day.date
+            span.transactions__group__subtitle= day.dayOfWeek
+            span.transactions__group__amount= h.formatNumber(day.totalAmount)
           ol.transactions__list
             each t in day.transactions
               li.transaction
                 a(href=`/transaction/${t._id}/edit`)
                   span.transaction__name= t.description
                   span.transaction__amount
-                    span.content__item__pill(style=`background-color: ${t.category.color}`)= `${t.amount.toFixed(2)}`
+                    span.transaction__pill(style=`background-color: ${t.category.color}`)= `${h.formatNumber(t.amount)}`
     else
       p No transactions yet.

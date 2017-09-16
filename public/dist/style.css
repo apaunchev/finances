@@ -393,7 +393,7 @@ body {
   font-family: -apple-system, Helvetica, Arial, sans-serif; }
 
 .app-page {
-  padding: 52px 10px 0; }
+  padding: 52px 0 16px; }
 
 .app-nav {
   position: fixed;
@@ -427,9 +427,20 @@ body {
     .app-nav > div:nth-child(3) svg {
       float: right; }
 
+.app-sub-nav {
+  display: flex;
+  margin-bottom: 16px; }
+  .app-sub-nav > a {
+    flex: 1;
+    text-align: center;
+    line-height: 2.25; }
+    .app-sub-nav > a.selected {
+      background-color: #007aff;
+      color: white; }
+
 .content__list, .transactions__list {
   list-style-type: none;
-  margin: 8px 0 0;
+  margin: 8px 16px 0;
   padding: 0; }
 
 .content__item, .transaction {
@@ -437,7 +448,7 @@ body {
   .content__item > a, .transaction > a {
     display: flex;
     align-items: center;
-    padding: 12px 0;
+    padding: 10px 0;
     background-color: white; }
     .content__item > a:active, .transaction > a:active, .content__item > a:focus, .transaction > a:focus {
       background-color: #f2f2f2; }
@@ -449,28 +460,28 @@ body {
   margin-left: auto;
   padding-left: 10px; }
 
-.content__item__pill {
+.content__item__pill, .transaction__pill {
   color: white;
   padding: 5px 10px;
   border-radius: 10px; }
 
-.transactions__day {
-  margin-bottom: 30px; }
+.transactions__group {
+  margin: 8px 0 24px; }
 
-.transactions__title {
+.transactions__group__title {
   display: flex;
   align-items: baseline;
-  margin: 8px 0;
+  margin: 8px 16px;
   padding: 8px 0;
   border-bottom: 1px solid #ccc;
-  font-size: 18px; }
+  font-weight: 500; }
 
-.transactions__dayOfWeek {
+.transactions__group__subtitle {
   padding-left: 4px;
   color: gray;
-  font-size: 14px; }
+  font-weight: 300; }
 
-.transactions__amount {
+.transactions__group__amount {
   margin-left: auto; }
 
 .transaction {
@@ -482,6 +493,7 @@ body {
   text-overflow: ellipsis; }
 
 .form__inputs {
+  margin: 0 16px;
   padding: 10px 0; }
   .form__inputs select,
   .form__inputs input {

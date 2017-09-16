@@ -34,7 +34,7 @@ transactionSchema.statics.getTransactions = function (user, year, month, categor
     user: user._id
   };
 
-  if (year && month) {
+  if (year && month >= 0) {
     $match.date = {
       $gte: new Date(year, month, 1),
       $lte: new Date(year, month + 1, 0)
@@ -42,7 +42,7 @@ transactionSchema.statics.getTransactions = function (user, year, month, categor
   }
 
   if (category) {
-    $match.category = ObjectId(category);
+    $match.category = category._id;
   }
 
   return this.aggregate([
@@ -76,8 +76,7 @@ transactionSchema.statics.getTransactionsByMonth = function (user) {
           year: { $year: '$date' },
           month: { $month: '$date' }
         },
-        balance: { $sum: '$amount' },
-        count: { $sum: 1 }
+        balance: { $sum: '$amount' }
       }
     },
     {
@@ -98,7 +97,7 @@ transactionSchema.statics.getTrasactionsByCategory = function (user, year, month
     };
   }
 
-  if (year && month) {
+  if (year && month >= 0) {
     $match.date = {
       $gte: new Date(year, month, 1),
       $lte: new Date(year, month + 1, 0)
@@ -124,14 +123,11 @@ transactionSchema.statics.getTrasactionsByCategory = function (user, year, month
       $group: {
         _id: {
           _id: '$category._id',
-          name: '$category.name'
+          name: '$category.name',
+          color: '$category.color'
         },
-        count: { $sum: 1 },
         amount: { $sum: '$amount' }
       }
-    },
-    {
-      $sort: { 'amount': -1 }
     }
   ]);
 };
@@ -148,8 +144,8 @@ transactionSchema.statics.getStats = function (user, year, month) {
       $lte: new Date(year, 11, 31)
     };
   }
-  
-  if (year && month) {
+
+  if (year && month >= 0) {
     _id = {
       year: { $year: '$date' },
       month: { $month: '$date' }
@@ -168,13 +164,11 @@ transactionSchema.statics.getStats = function (user, year, month) {
     {
       $group: {
         _id,
-        totalIncomes: { $sum: { $cond: [{ '$gt': ['$amount', 0] }, "$amount", 0] } },
+        totalIncome: { $sum: { $cond: [{ '$gt': ['$amount', 0] }, "$amount", 0] } },
         highestIncome: { $max: { $cond: [{ '$gt': ['$amount', 0] }, "$amount", 0] } },
         totalExpenses: { $sum: { $cond: [{ '$lt': ['$amount', 0] }, "$amount", 0] } },
         highestExpense: { $min: { $cond: [{ '$lt': ['$amount', 0] }, "$amount", 0] } },
-        averageExpense: { $avg: { $cond: [{ '$lt': ['$amount', 0] }, "$amount", 0] } },
-        balance: { $sum: '$amount' },
-        count: { $sum: 1 }
+        balance: { $sum: '$amount' }
       }
     }
   ]);

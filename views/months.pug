@@ -3,13 +3,20 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav("Months", "/settings", "/stats", "settings", "bar-chart-2")
-  
+  +appNav("Finances", "/settings", "", "settings", "")
+
   div.app-page
+    div.app-sub-nav
+      a(href="/transactions" class="selected") Overview
+      a(href="/stats") Statistics
+
     if months
-      ol.content__list
-        each month in months
-          li.content__item
-            a(href=`/transactions/${month._id.year}/${month._id.month}`)
-              span.content__item__name= `${h.getMonthName(month._id.month - 1)} ${month._id.year}`
-              span.content__item__action= month.balance.toFixed(2)
+      each year, index in months
+        .transactions__group
+          h4.transactions__group__title= year[index]._id.year
+          ul.transactions__list
+            each month in year
+              li.transaction
+                a(href=`/transactions/${month._id.year}/${month._id.month}`)
+                  span.transaction__name= `${h.getMonthName(month._id.month - 1)} ${month._id.year}`
+                  span.transaction__amount= h.formatNumber(month.balance)

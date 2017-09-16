@@ -3,13 +3,23 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav("Categories", "/transactions")
-  
+  - const pageTitle = `${h.getMonthName(month)} ${year}`
+  +appNav(pageTitle, "/transactions", "/add", "chevron-left", "plus")
+
   div.app-page
+    div.app-sub-nav
+      a(href=`/transactions/${year}/${month + 1}`) Transactions
+      a(href=`/categories/${year}/${month + 1}` class="selected") Overview
+
     if categories
-      ol.content__list
-        each c in categories
-          li.content__item
-            a(href=`/transactions/${year}/${month + 1}/${c._id._id}`)
-              span.content__item__name= `${c._id.name}`
-              span.content__item__action= c.amount.toFixed(2)
+      each group, name in categories
+        .transactions__group
+          h4.transactions__group__title= name
+            span.transactions__group__amount= h.formatNumber(group.totalAmount)
+          ul.transactions__list
+            each c in group.categories
+              li.transaction
+                a(href=`/transactions/${year}/${month + 1}/${c._id._id}`)
+                  span.transaction__name= c._id.name
+                  span.transaction__amount
+                    span.transaction__pill(style=`background-color: ${c._id.color}`)= `${h.formatNumber(c.amount)}`

@@ -4,7 +4,7 @@ include mixins/_appNav
 
 block content
   +appNav("Categories", "/settings", "/settings/categories/add", "chevron-left", "plus")
-  
+
   div.app-page
     if categories
       ul.content__list
@@ -12,6 +12,6 @@ block content
           li.content__item
             a(href=`/settings/category/${category._id}/edit`)
               span.content__item__name
-                span.content__item__pill(style=`background-color: ${category.color}`)= category.name
+                span.transaction__pill(style=`background-color: ${category.color}`)= category.name
               span.content__item__action
                 i(data-feather="chevron-right")

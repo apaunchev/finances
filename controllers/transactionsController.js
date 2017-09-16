@@ -12,22 +12,37 @@ exports.getTransactions = async (req, res) => {
     return;
   }
   const user = req.user;
-  const category = req.params.category;
+  const category = await Category.findOne({ _id: req.params.category });
   const transactions = await Transaction.getTransactions(user, year, month, category);
   const dailyTransactions = formatDailyTransactions(transactions);
-  res.render('transactions', { title: 'Transactions', transactions: dailyTransactions, month, year });
+  res.render('transactions', { title: 'Transactions', transactions: dailyTransactions, month, year, category });
 };
 
 exports.getTransactionsByMonth = async (req, res) => {
   const months = await Transaction.getTransactionsByMonth(req.user);
-  res.render('months', { title: 'Choose a month', months });
+  let groupedMonths = _.chain(months)
+    .groupBy(m => m._id.year)
+    .values()
+    .reverse()
+    .value();
+  res.render('months', { title: 'Choose a month', months: groupedMonths });
 };
 
 exports.getTrasactionsByCategory = async (req, res) => {
   const year = req.params.year;
   const month = parseInt(req.params.month) - 1;
   const categories = await Transaction.getTrasactionsByCategory(req.user, year, month);
-  res.render('categories', { categories, year, month });
+  const filteredCategories = {
+    Income: {
+      categories: sortCategories(categories, 1),
+      totalAmount: reduceCategories(categories, 1)
+    },
+    Expenses: {
+      categories: sortCategories(categories, -1),
+      totalAmount: reduceCategories(categories, -1)
+    }
+  };
+  res.render('categories', { categories: filteredCategories, year, month });
 };
 
 exports.addTransaction = async (req, res) => {
@@ -43,21 +58,12 @@ exports.editTransaction = async (req, res) => {
 };
 
 exports.processTransaction = (req, res, next) => {
-  const type = req.body.type;
-  const amount = parseFloat(req.body.amount);
   const category = req.body.category.split('|');
+  req.body.user = req.user._id;
+  req.body.amount = parseFloat(req.body.amount);
+  req.body.date = req.body.date || Date.now();
   req.body.category = category[0];
   req.body.description = req.body.description || category[1];
-  req.body.date = req.body.date || Date.now();
-  if (type === 'expense') {
-    req.body.amount = -amount;
-  } else {
-    if (amount < 0) {
-      req.body.amount = -amount;
-    }
-  }
-  req.body.user = req.user._id;
-  delete req.body.type;
   next();
 };
 
@@ -125,4 +131,22 @@ const confirmOwner = (transaction, user) => {
   if (!transaction.user.equals(user._id)) {
     throw Error('Transaction not found.');
   }
+};
+
+const sortCategories = (categories, type = -1) => {
+  // type === -1: expenses
+  // type === 1: income
+  return _.chain(categories)
+    .filter(c => type === -1 ? c.amount < 0 : c.amount > 0)
+    .sortBy(c => type === -1 ? c.amount : -c.amount)
+    .value();
+};
+
+const reduceCategories = (categories, type = -1) => {
+  // type === -1: expenses
+  // type === 1: income
+  return _.chain(categories)
+    .filter(c => type === -1 ? c.amount < 0 : c.amount > 0)
+    .reduce((memo, c) => memo + c.amount, 0)
+    .value();
 };
