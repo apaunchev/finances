@@ -15,7 +15,8 @@ exports.getTransactions = async (req, res) => {
   const category = await Category.findOne({ _id: req.params.category });
   const transactions = await Transaction.getTransactions(user, year, month, category);
   const dailyTransactions = formatDailyTransactions(transactions);
-  res.render('transactions', { title: 'Transactions', transactions: dailyTransactions, month, year, category });
+  res.json({ transactions: dailyTransactions, month, year, category });
+  // res.render('transactions', { title: 'Transactions', transactions: dailyTransactions, month, year, category });
 };
 
 exports.getTransactionsByMonth = async (req, res) => {
