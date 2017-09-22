@@ -3,10 +3,10 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav("Finances", "/settings", "", "settings", "")
+  +appNav("My Finances", "/settings", "", "settings", "")
 
   div.app-page
-    +appSubNav("/transactions", "Overview", false, "/stats", "Statistics", true)
+    +appSubNav("/dashboard", "Overview", false, "/statistics", "Statistics", true)
 
     .transactions__group
       h4.transactions__group__title This month

@@ -82,7 +82,7 @@ exports.removeTransaction = async (req, res) => {
   res.redirect('/');
 };
 
-exports.stats = async (req, res) => {
+exports.statistics = async (req, res) => {
   const user = req.user;
   const now = new Date();
   const year = now.getFullYear();
