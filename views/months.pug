@@ -6,9 +6,7 @@ block content
   +appNav("Finances", "/settings", "", "settings", "")
 
   div.app-page
-    div.app-sub-nav
-      a(href="/transactions" class="selected") Overview
-      a(href="/stats") Statistics
+    +appSubNav("/transactions", "Overview", true, "/stats", "Statistics", false)
 
     if months
       each year, index in months

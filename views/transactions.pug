@@ -7,9 +7,9 @@ block content
   +appNav(pageTitle, "/transactions", "/add", "chevron-left", "plus")
 
   div.app-page
-    div.app-sub-nav
-      a(href=`/transactions/${year}/${month + 1}` class="selected") Transactions
-      a(href=`/categories/${year}/${month + 1}`) Overview
+    - const transactionsMenu = `/transactions/${year}/${month + 1}`
+    - const overviewMenu = `/categories/${year}/${month + 1}`
+    +appSubNav(transactionsMenu, "Transactions", true, overviewMenu, "Overview", false)
 
     if transactions.length > 0
       each day in transactions

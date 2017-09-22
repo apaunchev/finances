@@ -7,9 +7,9 @@ block content
   +appNav(pageTitle, "/transactions", "/add", "chevron-left", "plus")
 
   div.app-page
-    div.app-sub-nav
-      a(href=`/transactions/${year}/${month + 1}`) Transactions
-      a(href=`/categories/${year}/${month + 1}` class="selected") Overview
+    - const transactionsMenu = `/transactions/${year}/${month + 1}`
+    - const overviewMenu = `/categories/${year}/${month + 1}`
+    +appSubNav(transactionsMenu, "Transactions", false, overviewMenu, "Overview", true)
 
     if categories
       each group, name in categories

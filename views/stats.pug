@@ -6,9 +6,7 @@ block content
   +appNav("Finances", "/settings", "", "settings", "")
 
   div.app-page
-    div.app-sub-nav
-      a(href="/transactions") Overview
-      a(href="/stats" class="selected") Statistics
+    +appSubNav("/transactions", "Overview", false, "/stats", "Statistics", true)
 
     .transactions__group
       h4.transactions__group__title This month
