@@ -26,7 +26,8 @@ exports.getTransactionsByMonth = async (req, res) => {
     .values()
     .reverse()
     .value();
-  res.render('months', { title: 'Choose a month', months: groupedMonths });
+  res.json({ months: groupedMonths });
+  // res.render('months', { title: 'Choose a month', months: groupedMonths });
 };
 
 exports.getTrasactionsByCategory = async (req, res) => {
@@ -43,19 +44,22 @@ exports.getTrasactionsByCategory = async (req, res) => {
       totalAmount: reduceCategories(categories, -1)
     }
   };
-  res.render('categories', { categories: filteredCategories, year, month });
+  res.json({ categories: filteredCategories, year, month });
+  // res.render('categories', { categories: filteredCategories, year, month });
 };
 
 exports.addTransaction = async (req, res) => {
   const categories = await Category.find({ user: req.user._id });
-  res.render('editTransaction', { title: 'Add transaction', categories });
+  res.json({ categories });
+  // res.render('editTransaction', { title: 'Add transaction', categories });
 };
 
 exports.editTransaction = async (req, res) => {
   const transaction = await Transaction.findOne({ _id: req.params.id });
   const categories = await Category.find({ user: req.user._id });
   confirmOwner(transaction, req.user);
-  res.render('editTransaction', { title: 'Edit transaction', transaction, categories });
+  res.json({ transaction, categories });
+  // res.render('editTransaction', { title: 'Edit transaction', transaction, categories });
 };
 
 exports.processTransaction = (req, res, next) => {
@@ -92,7 +96,8 @@ exports.stats = async (req, res) => {
   const monthly = await Transaction.getStats(user, year, month);
   const yearly = await Transaction.getStats(user, year);
   const stats = { overall, monthly, yearly };
-  res.render('stats', { stats });
+  res.json({ stats });
+  // res.render('stats', { stats });
 };
 
 exports.search = async (req, res) => {
