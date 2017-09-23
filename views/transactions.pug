@@ -4,7 +4,7 @@ include mixins/_appNav
 
 block content
   - const pageTitle = category ? `${category.name}` : `${h.getMonthName(month)} ${year}`
-  +appNav(pageTitle, "/transactions", "/add", "chevron-left", "plus")
+  +appNav(pageTitle, "/dashboard", "/add", "chevron-left", "plus")
 
   div.app-page
     - const transactionsMenu = `/transactions/${year}/${month + 1}`

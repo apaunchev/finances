@@ -3,10 +3,10 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav("Finances", "/settings", "", "settings", "")
+  +appNav("My Finances", "/settings", "", "settings", "")
 
   div.app-page
-    +appSubNav("/transactions", "Overview", true, "/stats", "Statistics", false)
+    +appSubNav("/dashboard", "Overview", true, "/statistics", "Statistics", false)
 
     if months
       each year, index in months
