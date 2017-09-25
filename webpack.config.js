@@ -1,33 +1,30 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 
 module.exports = {
   entry: {
-    app: './public/js/app.js'
+    app: './client/src/index.js'
   },
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'public/dist')
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'client')
   },
+  context: __dirname,
   module: {
-    loaders: [{
+    rules: [{
+      test: /\.jsx?$/,
+      exclude: /(node_modules|bower_components)/,
+      loader: 'babel-loader',
+      options: {
+        presets: ['react', 'env']
+      }
+    }, {
       test: /\.scss$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: 'css-loader!sass-loader'
-      })
+      use: [
+        'style-loader',
+        'css-loader',
+        'sass-loader'
+      ]
     }]
-  },
-  plugins: [
-    new ExtractTextPlugin('style.css'),
-    new BrowserSyncPlugin({
-      host: 'localhost',
-      port: 4000,
-      proxy: 'http://localhost:1234/',
-      notify: false
-    })
-  ],
-  devtool: 'source-map'
+  }
 };
