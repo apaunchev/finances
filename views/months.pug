@@ -3,7 +3,7 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav("My Finances", "/settings", "", "settings", "")
+  +appNav("My Finances", "/settings", "/add", "settings", "plus")
 
   div.app-page
     +appSubNav("/dashboard", "Overview", true, "/statistics", "Statistics", false)
