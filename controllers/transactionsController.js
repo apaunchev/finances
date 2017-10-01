@@ -88,9 +88,19 @@ exports.statistics = async (req, res) => {
   const year = now.getFullYear();
   const month = now.getMonth();
   const overall = await Transaction.getStats(user);
-  const monthly = await Transaction.getStats(user, year, month);
   const yearly = await Transaction.getStats(user, year);
-  const stats = { overall, monthly, yearly };
+  let monthly = await Transaction.getStats(user, year, month);
+  if (_.isEmpty(monthly)) {
+    monthly = [{
+      _id: {},
+      totalIncome: 0,
+      highestIncome: 0,
+      totalExpenses: 0,
+      highestExpense: 0,
+      balance: 0
+    }];
+  }
+  const stats = { overall, yearly, monthly };
   res.render('stats', { stats });
 };
 

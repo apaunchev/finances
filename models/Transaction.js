@@ -164,10 +164,10 @@ transactionSchema.statics.getStats = function (user, year, month) {
     {
       $group: {
         _id,
-        totalIncome: { $sum: { $cond: [{ '$gt': ['$amount', 0] }, "$amount", 0] } },
-        highestIncome: { $max: { $cond: [{ '$gt': ['$amount', 0] }, "$amount", 0] } },
-        totalExpenses: { $sum: { $cond: [{ '$lt': ['$amount', 0] }, "$amount", 0] } },
-        highestExpense: { $min: { $cond: [{ '$lt': ['$amount', 0] }, "$amount", 0] } },
+        totalIncome: { $sum: { $cond: [{ $gt: ['$amount', 0] }, '$amount', 0] } },
+        highestIncome: { $max: { $cond: [{ $gt: ['$amount', 0] }, '$amount', 0] } },
+        totalExpenses: { $sum: { $cond: [{ $lt: ['$amount', 0] }, '$amount', 0] } },
+        highestExpense: { $min: { $cond: [{ $lt: ['$amount', 0] }, '$amount', 0] } },
         balance: { $sum: '$amount' }
       }
     }
