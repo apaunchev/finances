@@ -9,11 +9,13 @@ const { catchErrors } = require('../handlers/errorHandlers');
 router.get('/', authController.isLoggedIn, catchErrors(transactionsController.getTransactions));
 router.get('/dashboard', catchErrors(transactionsController.getTransactionsByMonth));
 
+router.get('/transactions', catchErrors(transactionsController.getTransactions));
 router.get('/transactions/:year/:month', catchErrors(transactionsController.getTransactions));
 router.get('/transactions/:year/:month/:category', catchErrors(transactionsController.getTransactions));
 router.get('/transaction/:id/edit', authController.isLoggedIn, catchErrors(transactionsController.editTransaction));
 router.get('/transaction/:id/remove', authController.isLoggedIn, catchErrors(transactionsController.removeTransaction));
 
+router.get('/categories', catchErrors(transactionsController.getTrasactionsByCategory));
 router.get('/categories/:year', catchErrors(transactionsController.getTrasactionsByCategory));
 router.get('/categories/:year/:month', catchErrors(transactionsController.getTrasactionsByCategory));
 

@@ -34,12 +34,12 @@ exports.getTrasactionsByCategory = async (req, res) => {
   const categories = await Transaction.getTrasactionsByCategory(req.user, year, month);
   const filteredCategories = {
     Income: {
-      categories: sortCategories(categories, 1),
-      totalAmount: reduceCategories(categories, 1)
+      categories: getSortedCategories(categories, 1),
+      totalAmount: getTotalAmount(categories, 1)
     },
     Expenses: {
-      categories: sortCategories(categories, -1),
-      totalAmount: reduceCategories(categories, -1)
+      categories: getSortedCategories(categories, -1),
+      totalAmount: getTotalAmount(categories, -1)
     }
   };
   res.render('categories', { categories: filteredCategories, year, month });
@@ -83,25 +83,21 @@ exports.removeTransaction = async (req, res) => {
 };
 
 exports.statistics = async (req, res) => {
-  const user = req.user;
   const now = new Date();
-  const year = now.getFullYear();
   const month = now.getMonth();
-  const overall = await Transaction.getStats(user);
-  const yearly = await Transaction.getStats(user, year);
-  let monthly = await Transaction.getStats(user, year, month);
-  if (_.isEmpty(monthly)) {
-    monthly = [{
-      _id: {},
-      totalIncome: 0,
-      highestIncome: 0,
-      totalExpenses: 0,
-      highestExpense: 0,
-      balance: 0
-    }];
-  }
-  const stats = { overall, yearly, monthly };
-  res.render('stats', { stats });
+  const year = now.getFullYear();
+  const transactions = await Transaction.find({ user: req.user }, { description: 0, category: 0, user: 0 });
+  const monthly = _.filter(transactions, (transaction) => {
+    const date = new Date(transaction.date);
+    return date.getMonth() === month && date.getFullYear() === year;
+  });
+  const yearly = _.filter(transactions, (transaction) => new Date(transaction.date).getFullYear() === year);
+  const stats = {
+    'This month': generateStatsObject(monthly),
+    'This year': generateStatsObject(yearly),
+    Overall: generateStatsObject(transactions)
+  };
+  res.render('stats', { stats, month, year });
 };
 
 exports.search = async (req, res) => {
@@ -109,6 +105,12 @@ exports.search = async (req, res) => {
     .find({ $text: { $search: req.query.q } }, { score: { $meta: 'textScore' } })
     .sort({ score: { $meta: 'textScore' }, date: -1 });
   res.json(transactions);
+};
+
+const confirmOwner = (transaction, user) => {
+  if (!transaction.user.equals(user._id)) {
+    throw Error('Transaction not found.');
+  }
 };
 
 const formatDailyTransactions = (transactions) => {
@@ -120,7 +122,7 @@ const formatDailyTransactions = (transactions) => {
       const transactions = _.chain(daily).sortBy(date).reverse().value()
       return {
         transactions,
-        totalAmount: totalAmount(daily),
+        totalAmount: getTotalAmount(daily),
         date: date.getDate(),
         dayOfWeek: weekDays[date.getDay()]
       };
@@ -130,33 +132,52 @@ const formatDailyTransactions = (transactions) => {
     .value();
 };
 
-const totalAmount = (collection) => {
-  if (!collection.length) {
-    return 0;
-  }
-  return collection.reduce((a, b) => a + b.amount, 0);
+const generateStatsObject = (data) => {
+  return {
+    'Total income': getTotalAmount(data, 1),
+    'Total expenses': getTotalAmount(data, -1),
+    'Highest income': getMinMaxAmount(data, 1),
+    'Highest expense': getMinMaxAmount(data, -1),
+    'Balance': getTotalAmount(data)
+  };
 };
 
-const confirmOwner = (transaction, user) => {
-  if (!transaction.user.equals(user._id)) {
-    throw Error('Transaction not found.');
-  }
-};
+// type === -1: expenses
+// type === 0: all
+// type === 1: income
 
-const sortCategories = (categories, type = -1) => {
-  // type === -1: expenses
-  // type === 1: income
+const getSortedCategories = (categories, type = -1) => {
   return _.chain(categories)
     .filter(c => type === -1 ? c.amount < 0 : c.amount > 0)
     .sortBy(c => type === -1 ? c.amount : -c.amount)
     .value();
 };
 
-const reduceCategories = (categories, type = -1) => {
-  // type === -1: expenses
-  // type === 1: income
-  return _.chain(categories)
-    .filter(c => type === -1 ? c.amount < 0 : c.amount > 0)
-    .reduce((memo, c) => memo + c.amount, 0)
-    .value();
+const getMinMaxAmount = (transactions, type = -1) => {
+  if (type === -1) {
+    transactions = transactions.filter(t => t.amount <= 0);
+    if (transactions.length === 0) {
+      return 0;
+    }
+    return _.minBy(transactions, t => t.amount);
+  } else if (type === 1) {
+    transactions = transactions.filter(t => t.amount > 0);
+    if (transactions.length === 0) {
+      return 0;
+    }
+    return _.maxBy(transactions, t => t.amount);
+  }
+  return 0;
+};
+
+const getTotalAmount = (transactions, type = 0) => {
+  if (!transactions.length) {
+    return 0;
+  }
+  if (type === -1) {
+    transactions = transactions.filter(t => t.amount <= 0);
+  } else if (type === 1) {
+    transactions = transactions.filter(t => t.amount > 0);
+  }
+  return transactions.reduce((a, b) => a + b.amount, 0);
 };

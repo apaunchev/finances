@@ -3,12 +3,12 @@ extends layout
 include mixins/_appNav
 
 block content
-  - const pageTitle = `${h.getMonthName(month)} ${year}`
+  - const pageTitle = month ? `${h.getMonthName(month)} ${year}` : year ? `${year}` : 'Overall'
   +appNav(pageTitle, "/dashboard", "/add", "chevron-left", "plus")
 
   div.app-page
-    - const transactionsMenu = `/transactions/${year}/${month + 1}`
-    - const overviewMenu = `/categories/${year}/${month + 1}`
+    - const transactionsMenu = month ? `/transactions/${year}/${month + 1}` : year ? `/transactions/${year}` : '/transactions'
+    - const overviewMenu = month ? `/categories/${year}/${month + 1}` : year ? `/categories/${year}` : '/categories'
     +appSubNav(transactionsMenu, "Transactions", false, overviewMenu, "Overview", true)
 
     if categories

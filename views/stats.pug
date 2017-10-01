@@ -8,66 +8,14 @@ block content
   div.app-page
     +appSubNav("/dashboard", "Overview", false, "/statistics", "Statistics", true)
 
-    .transactions__group
-      h4.transactions__group__title This month
-        span.transactions__group__amount= h.formatNumber(stats.monthly[0].balance)
+    each group, name in stats
+      - innerHref = name === 'This month' ? `/categories/${year}/${month + 1}` : name === 'This year' ? `/categories/${year}` : '/categories'
+      h4.transactions__group__title= name
+        span.transactions__group__amount= h.formatNumber(group['Balance'])
       ul.transactions__list
-        li.transaction
-          a
-            span.transaction__name Income
-            span.transaction__amount= h.formatNumber(stats.monthly[0].totalIncome)
-
-        li.transaction
-          a
-            span.transaction__name Expenses
-            span.transaction__amount= h.formatNumber(stats.monthly[0].totalExpenses)
-        li.transaction
-          a
-            span.transaction__name Highest income
-            span.transaction__amount= h.formatNumber(stats.monthly[0].highestIncome)
-        li.transaction
-          a
-            span.transaction__name Highest expense
-            span.transaction__amount= h.formatNumber(stats.monthly[0].highestExpense)
-
-    .transactions__group
-      h4.transactions__group__title This year
-        span.transactions__group__amount= h.formatNumber(stats.yearly[0].balance)
-      ul.transactions__list
-        li.transaction
-          a
-            span.transaction__name Income
-            span.transaction__amount= h.formatNumber(stats.yearly[0].totalIncome)
-        li.transaction
-          a
-            span.transaction__name Expenses
-            span.transaction__amount= h.formatNumber(stats.yearly[0].totalExpenses)
-        li.transaction
-          a
-            span.transaction__name Highest income
-            span.transaction__amount= h.formatNumber(stats.yearly[0].highestIncome)
-        li.transaction
-          a
-            span.transaction__name Highest expense
-            span.transaction__amount= h.formatNumber(stats.yearly[0].highestExpense)
-
-    .transactions__group
-      h4.transactions__group__title Overall
-        span.transactions__group__amount= h.formatNumber(stats.overall[0].balance)
-      ul.transactions__list
-        li.transaction
-          a
-            span.transaction__name Income
-            span.transaction__amount= h.formatNumber(stats.overall[0].totalIncome)
-        li.transaction
-          a
-            span.transaction__name Expenses
-            span.transaction__amount= h.formatNumber(stats.overall[0].totalExpenses)
-        li.transaction
-          a
-            span.transaction__name Highest income
-            span.transaction__amount= h.formatNumber(stats.overall[0].highestIncome)
-        li.transaction
-          a
-            span.transaction__name Highest expense
-            span.transaction__amount= h.formatNumber(stats.overall[0].highestExpense)
+        each key, name in group
+          unless name === 'Balance'
+            li.transaction
+              a(href=key._id ? `/transaction/${key._id}/edit` : innerHref)
+                span.transaction__name= name
+                span.transaction__amount= h.formatNumber(key.amount || key)

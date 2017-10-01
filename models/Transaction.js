@@ -132,48 +132,6 @@ transactionSchema.statics.getTrasactionsByCategory = function (user, year, month
   ]);
 };
 
-transactionSchema.statics.getStats = function (user, year, month) {
-  let _id = {};
-  let $match = { user: user._id };
-
-  if (year && isNaN(month)) {
-    _id = { year: { $year: '$date' } };
-
-    $match.date = {
-      $gte: new Date(year, 0, 1),
-      $lte: new Date(year, 11, 31)
-    };
-  }
-
-  if (year && month >= 0) {
-    _id = {
-      year: { $year: '$date' },
-      month: { $month: '$date' }
-    };
-
-    $match.date = {
-      $gte: new Date(year, month, 1),
-      $lte: new Date(year, month + 1, 0)
-    };
-  }
-
-  return this.aggregate([
-    {
-      $match
-    },
-    {
-      $group: {
-        _id,
-        totalIncome: { $sum: { $cond: [{ $gt: ['$amount', 0] }, '$amount', 0] } },
-        highestIncome: { $max: { $cond: [{ $gt: ['$amount', 0] }, '$amount', 0] } },
-        totalExpenses: { $sum: { $cond: [{ $lt: ['$amount', 0] }, '$amount', 0] } },
-        highestExpense: { $min: { $cond: [{ $lt: ['$amount', 0] }, '$amount', 0] } },
-        balance: { $sum: '$amount' }
-      }
-    }
-  ]);
-};
-
 function autopopulate(next) {
   this.populate('category');
   next();
