@@ -101,10 +101,16 @@ exports.statistics = async (req, res) => {
 };
 
 exports.search = async (req, res) => {
+  res.render('search');
+};
+
+exports.performSearch = async (req, res) => {
+  const term = req.body.term;
   const transactions = await Transaction
-    .find({ $text: { $search: req.query.q } }, { score: { $meta: 'textScore' } })
+    .find({ $text: { $search: term } }, { score: { $meta: 'textScore' } })
     .sort({ score: { $meta: 'textScore' }, date: -1 });
-  res.json(transactions);
+  const dailyTransactions = formatTransactions(transactions, true);
+  res.render('searchResults', { term, transactions: dailyTransactions });
 };
 
 const confirmOwner = (transaction, user) => {

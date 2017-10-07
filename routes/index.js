@@ -26,6 +26,7 @@ router.post('/add/:id', transactionsController.processTransaction, catchErrors(t
 router.get('/statistics', catchErrors(transactionsController.statistics));
 
 router.get('/search', catchErrors(transactionsController.search));
+router.post('/search', catchErrors(transactionsController.performSearch));
 
 router.get('/login', userController.loginForm);
 router.post('/login', authController.login);

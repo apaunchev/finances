@@ -1,0 +1,11 @@
+extends layout
+
+include mixins/_appNav
+include mixins/_groupedTransactions
+
+block content
+  - const pageTitle = term ? `Search: ${term}` : 'Search'
+  +appNav(pageTitle, "/search")
+
+  div.app-page
+    +groupedTransactions(transactions)
