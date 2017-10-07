@@ -27,7 +27,7 @@ input {
   color: white;
   text-align: center;
   cursor: pointer;
-  @include setBackgroundColor($c-income);
+  @include setBackgroundColor($c-buttons);
 
   &.form__button--danger {
     @include setBackgroundColor($c-expenses);
@@ -37,6 +37,7 @@ input {
 button,
 input[type=submit] {
   @extend .form__button;
+  @include setBackgroundColor($c-income);
 }
 
 select,
