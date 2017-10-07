@@ -11,10 +11,6 @@ block content
     - const overviewMenu = month ? `/categories/${year}/${month + 1}` : year ? `/categories/${year}` : '/categories'
     +appSubNav(transactionsMenu, "Transactions", true, overviewMenu, "Overview", false)
 
-    section.search.form__inputs
-      input.search__input(type="search" placeholder="Search" name="search")
-      .search__results
-
     if transactions.length > 0
       each day in transactions
         .transactions__group

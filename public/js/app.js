@@ -1,8 +1,7 @@
 import '../sass/style.scss';
 
-import feather from 'feather-icons';
 import { $, $$ } from './modules/bling';
-import typeAhead from './modules/typeAhead';
+import feather from 'feather-icons';
 
 document.addEventListener('touchstart', function() {}, true);
 
@@ -11,5 +10,3 @@ feather.replace({
   width: 24,
   height: 24
 });
-
-typeAhead($('.search'));
