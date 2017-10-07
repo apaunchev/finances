@@ -1,6 +1,7 @@
 extends layout
 
 include mixins/_appNav
+include mixins/_groupedTransactions
 
 block content
   - const pageTitle = category ? `${category.name}` : month ? `${h.getMonthName(month)} ${year}` : 'Transactions'
@@ -11,18 +12,4 @@ block content
     - const overviewMenu = month ? `/categories/${year}/${month + 1}` : year ? `/categories/${year}` : '/categories'
     +appSubNav(transactionsMenu, "Transactions", true, overviewMenu, "Overview", false)
 
-    if transactions.length > 0
-      each day in transactions
-        .transactions__group
-          h4.transactions__group__title= day.date
-            span.transactions__group__subtitle= day.dayOfWeek
-            span.transactions__group__amount= h.formatNumber(day.totalAmount)
-          ol.transactions__list
-            each t in day.transactions
-              li.transaction
-                a(href=`/transaction/${t._id}/edit`)
-                  span.transaction__name= t.description
-                  span.transaction__amount
-                    span.transaction__pill(style=`background-color: ${t.category.color}`)= `${h.formatNumber(t.amount)}`
-    else
-      .content No transactions yet.
+    +groupedTransactions(transactions)

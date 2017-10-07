@@ -14,7 +14,7 @@ exports.getTransactions = async (req, res) => {
   const user = req.user;
   const category = await Category.findOne({ _id: req.params.category });
   const transactions = await Transaction.getTransactions(user, year, month, category);
-  const dailyTransactions = formatDailyTransactions(transactions);
+  const dailyTransactions = formatTransactions(transactions);
   res.render('transactions', { title: 'Transactions', transactions: dailyTransactions, month, year, category });
 };
 
@@ -113,18 +113,23 @@ const confirmOwner = (transaction, user) => {
   }
 };
 
-const formatDailyTransactions = (transactions) => {
+const formatTransactions = (transactions, withFullDate = false) => {
   const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   return _.chain(transactions)
-    .groupBy(t => new Date(t.date).getDate())
-    .mapValues(daily => {
-      const date = new Date(daily[0].date)
-      const transactions = _.chain(daily).sortBy(date).reverse().value()
+    .groupBy(transaction => {
+      const date = new Date(transaction.date);
+      return withFullDate ? `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}` : date.getDate();
+    })
+    .mapValues(group => {
+      const date = new Date(group[0].date);
+      const transactions = _.chain(group).sortBy(date).reverse().value();
       return {
         transactions,
-        totalAmount: getTotalAmount(daily),
-        date: date.getDate(),
-        dayOfWeek: weekDays[date.getDay()]
+        totalAmount: getTotalAmount(group),
+        date,
+        dayOfMonth: date.getDate(),
+        dayOfWeek: weekDays[date.getDay()],
+        fullDateString: withFullDate ? `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}` : null
       };
     })
     .sortBy('date')
