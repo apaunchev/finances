@@ -13,6 +13,10 @@ mixin transactionForm(transaction = {})
 
       input(type="text" name="description" placeholder="Description" value=transaction.description)
 
+      input(type="text" name="vendor" placeholder="Vendor" value=transaction.vendor)
+
+      textarea(placeholder="Notes" rows="5")= transaction.notes
+
       input(type="submit" value="Save")
       if transaction._id
         a.form__button.form__button--danger(href=`/transaction/${transaction._id}/remove` onclick="return confirm('Are you sure you want to remove this transaction?')") Remove

@@ -9,7 +9,8 @@
 }
 
 select,
-input {
+input,
+textarea {
   box-sizing: border-box;
   display: block;
   padding: 8px;
@@ -35,18 +36,18 @@ input {
 }
 
 button,
-input[type=submit] {
+input[type="submit"] {
   @extend .form__button;
   @include setBackgroundColor($c-income);
 }
 
 select,
-input[type=date] {
+input[type="date"] {
   -webkit-appearance: none;
 }
 
-input[type=radio],
-input[type=checkbox] {
+input[type="radio"],
+input[type="checkbox"] {
   display: inline-block;
   width: auto;
   margin-bottom: 16px;

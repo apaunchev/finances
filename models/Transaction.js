@@ -22,7 +22,9 @@ const transactionSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: 'User',
     required: true
-  }
+  },
+  vendor: String,
+  notes: String
 });
 
 transactionSchema.index({
