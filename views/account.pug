@@ -3,7 +3,12 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav("Account", "/settings")
+  -
+    const leftMenu = [
+      { url: "/settings", title: "Settings", icon: "chevron-left" }
+    ]
+
+  +appNav(title, leftMenu)
 
   div.app-page
     //- img(src=user.gravatar + 'd=retro')

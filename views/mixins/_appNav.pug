@@ -1,15 +1,20 @@
-mixin appNav(screenTitle = title, leftHref = "/", rightHref, leftIcon = "chevron-left", rightIcon = "chevron-right")
+mixin appNav(screenTitle = title, leftMenu, rightMenu)
   nav.app-nav
     div
-      - const onclickAction = leftHref === "" ? "window.history.go(-1); return false;" : "";
-      a(href=`${leftHref}` onclick=`${onclickAction}`)
-        i(data-feather=`${leftIcon}`)
+      if leftMenu
+        each link in leftMenu
+          a(href=`${link.url}` title=`${link.title}`)
+            i(data-feather=`${link.icon}`)
+      else
+        a(href="" title="Back" onclick="window.history.go(-1); return false;")
+          i(data-feather="chevron-left")
     div
       span= screenTitle
     div
-      if rightHref
-        a(href=`${rightHref}`)
-          i(data-feather=`${rightIcon}`)
+      if rightMenu
+        each link in rightMenu
+          a(href=`${link.url}` title=`${link.title}`)
+            i(data-feather=`${link.icon}`)
 
 mixin appSubNav(leftHref = "", leftTitle = "", leftSelected = false, rightHref = "", rightTitle = "", rightSelected = false)
   nav.app-sub-nav

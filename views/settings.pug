@@ -3,7 +3,15 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav("Settings", "/dashboard", "/logout", "chevron-left", "log-out")
+  -
+    const leftMenu = [
+      { url: "/dashboard", title: "Dashboard", icon: "chevron-left" }
+    ]
+    const rightMenu = [
+      { url: "/logout", title: "Log out", icon: "log-out" }
+    ]
+
+  +appNav(title, leftMenu, rightMenu)
   
   div.app-page
     ul.content__list

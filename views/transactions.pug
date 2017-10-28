@@ -4,14 +4,18 @@ include mixins/_appNav
 include mixins/_groupedTransactions
 
 block content
-  - const pageTitle = category ? `${category.name}` : month ? `${h.getMonthName(month)} ${year}` : 'Transactions'
-  +appNav(pageTitle, "/dashboard", "/add", "chevron-left", "plus")
+  -
+    const pageTitle = category ? `${category.name}` : month ? `${h.getMonthName(month)} ${year}` : "Transactions"
+    const rightMenu = [
+      { url: "/add", title: "Add", icon: "plus-circle" },
+      { url: "/search", title: "Search", icon: "search" }
+    ]
+
+  +appNav(pageTitle, null, rightMenu)
 
   div.app-page
-    - const transactionsMenu = month ? `/transactions/${year}/${month + 1}` : year ? `/transactions/${year}` : '/transactions'
-    - const overviewMenu = month ? `/categories/${year}/${month + 1}` : year ? `/categories/${year}` : '/categories'
+    - const transactionsMenu = month ? `/transactions/${year}/${month + 1}` : year ? `/transactions/${year}` : "/transactions"
+    - const overviewMenu = month ? `/categories/${year}/${month + 1}` : year ? `/categories/${year}` : "/categories"
     +appSubNav(transactionsMenu, "Transactions", true, overviewMenu, "Overview", false)
 
     +groupedTransactions(transactions)
-
-    a.form__button(href='/search') Search

@@ -3,7 +3,15 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav("My Finances", "/settings", "/add", "settings", "plus")
+  -
+    const leftMenu = [
+      { url: "/settings", title: "Settings", icon: "settings" }
+    ]
+    const rightMenu = [
+      { url: "/add", title: "Add", icon: "plus" }
+    ]
+
+  +appNav(title, leftMenu, rightMenu)
 
   div.app-page
     +appSubNav("/dashboard", "Overview", true, "/statistics", "Statistics", false)

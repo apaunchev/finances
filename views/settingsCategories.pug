@@ -3,7 +3,15 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav("Categories", "/settings", "/settings/categories/add", "chevron-left", "plus")
+  -
+    const leftMenu = [
+      { url: "/settings", title: "Settings", icon: "chevron-left" }
+    ]
+    const rightMenu = [
+      { url: "/settings/categories/add", title: "Add category", icon: "plus-circle" }
+    ]
+
+  +appNav(title, leftMenu, rightMenu)
 
   div.app-page
     if categories
