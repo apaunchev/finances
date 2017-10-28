@@ -3,7 +3,7 @@ html
   head
     meta(charset="UTF-8")
     meta(name="viewport" content="width=device-width, initial-scale=1")
-    title= `${title || 'My Finances'}`
+    title= title ? `${title} – My Finances` : "My Finances"
     link(rel="icon" sizes="192x192" href="/images/icons/app-icon.png")
     link(rel="apple-touch-icon" sizes="192x192" href="/images/icons/app-icon.png")
     link(rel="stylesheet" href="/dist/style.css")

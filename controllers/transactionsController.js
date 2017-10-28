@@ -25,7 +25,7 @@ exports.getTransactionsByMonth = async (req, res) => {
     .values()
     .reverse()
     .value();
-  res.render('months', { title: 'Choose a month', months: groupedMonths });
+  res.render('months', { title: 'Dashboard', months: groupedMonths });
 };
 
 exports.getTrasactionsByCategory = async (req, res) => {
@@ -97,11 +97,11 @@ exports.statistics = async (req, res) => {
     'This year': generateStatsObject(yearly),
     Overall: generateStatsObject(transactions)
   };
-  res.render('stats', { stats, month, year });
+  res.render('stats', { title: "Statistics", stats, month, year });
 };
 
 exports.search = async (req, res) => {
-  res.render('search');
+  res.render('search', { title: "Search" });
 };
 
 exports.performSearch = async (req, res) => {
