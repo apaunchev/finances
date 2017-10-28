@@ -25,7 +25,7 @@ exports.getTransactionsByMonth = async (req, res) => {
     .values()
     .reverse()
     .value();
-  res.render('months', { title: 'Dashboard', months: groupedMonths });
+  res.render('dashboard', { title: 'Dashboard', months: groupedMonths });
 };
 
 exports.getTrasactionsByCategory = async (req, res) => {
