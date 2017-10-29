@@ -3,23 +3,15 @@ extends layout
 include mixins/_appNav
 
 block content
-  -
-    const leftMenu = [
-      { url: "/dashboard", title: "Dashboard", icon: "chevron-left" }
-    ]
-    const rightMenu = [
-      { url: "/logout", title: "Log out", icon: "log-out" }
-    ]
-
-  +appNav(title, leftMenu, rightMenu)
+  +appNav(title, menus.settings.appNavLeft, menus.settings.appNavRight)
   
   div.app-page
     ul.content__list
-      each item in h.settingsMenu
+      each link in menus.settings.contentList
         li.content__item
-          a(href=item.url)
+          a(href=link.url)
             span.content__item__icon
-              i(data-feather=item.icon)
-            span.content__item__name= item.title
+              i(data-feather=link.icon)
+            span.content__item__name= link.title
             span.content__item__action
               i(data-feather="chevron-right")

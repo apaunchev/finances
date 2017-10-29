@@ -6,20 +6,13 @@ include mixins/_groupedTransactions
 block content
   -
     const pageTitle = category ? `${category.name}` : month ? `${h.getMonthName(month)} ${year}` : "Transactions"
-    const leftMenu = [
-      { url: "/dashboard", title: "Dashboard", icon: "calendar" }
-    ]
-    const rightMenu = [
-      { url: "/add", title: "Add", icon: "plus-circle" },
-      { url: "/search", title: "Search", icon: "search" }
-    ]
-    const subNavMenu = [
+    const appSubNav = [
       { url: month ? `/transactions/${year}/${month + 1}` : year ? `/transactions/${year}` : "/transactions", title: "Transactions", selected: true },
       { url: month ? `/categories/${year}/${month + 1}` : year ? `/categories/${year}` : "/categories", title: "Overview", selected: false }
     ]
 
-  +appNav(pageTitle, leftMenu, rightMenu)
+  +appNav(pageTitle, menus.transactions.appNavLeft, menus.transactions.appNavRight)
 
   div.app-page
-    +appSubNav(subNavMenu)
+    +appSubNav(appSubNav)
     +groupedTransactions(transactions)

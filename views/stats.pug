@@ -3,19 +3,10 @@ extends layout
 include mixins/_appNav
 
 block content
-  -
-    const leftMenu = [
-      { url: "/settings", title: "Settings", icon: "settings" }
-    ]
-    const subNavMenu = [
-      { url: "/dashboard", title: "Overview", selected: false },
-      { url: "/statistics", title: "Statistics", selected: true }
-    ]
-
-  +appNav(title, leftMenu)
+  +appNav(title, menus.stats.appNavLeft)
 
   div.app-page
-    +appSubNav(subNavMenu)
+    +appSubNav(menus.stats.appSubNav)
 
     each group, name in stats
       - innerHref = name === 'This month' ? `/categories/${year}/${month + 1}` : name === 'This year' ? `/categories/${year}` : '/categories'

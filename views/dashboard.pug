@@ -3,22 +3,10 @@ extends layout
 include mixins/_appNav
 
 block content
-  -
-    const leftMenu = [
-      { url: "/settings", title: "Settings", icon: "settings" }
-    ]
-    const rightMenu = [
-      { url: "/add", title: "Add", icon: "plus-circle" }
-    ]
-    const subNavMenu = [
-      { url: "/dashboard", title: "Overview", selected: true },
-      { url: "/statistics", title: "Statistics", selected: false }
-    ]
-
-  +appNav(title, leftMenu, rightMenu)
+  +appNav(title, menus.dashboard.appNavLeft, menus.dashboard.appNavRight)
 
   div.app-page
-    +appSubNav(subNavMenu)
+    +appSubNav(menus.dashboard.appSubNav)
 
     if months
       each year, index in months
