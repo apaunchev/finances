@@ -21,6 +21,10 @@ router.get(
   catchErrors(transactionsController.getTransactions)
 );
 router.get(
+  "/transactions/:category",
+  catchErrors(transactionsController.getTransactionsByCategory)
+);
+router.get(
   "/transactions/:year/:month",
   catchErrors(transactionsController.getTransactions)
 );

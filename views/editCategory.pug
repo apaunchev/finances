@@ -4,7 +4,12 @@ include mixins/_appNav
 include mixins/_categoryForm
 
 block content
-  +appNav()
+  -
+    const appNavRight = [
+      { url: `/transactions/${category._id}`, title: "Browse all transactions", icon: "list" }
+    ]
+
+  +appNav(title, null, appNavRight)
 
   div.app-page
     +categoryForm(category)

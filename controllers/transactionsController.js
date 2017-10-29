@@ -145,6 +145,15 @@ exports.performSearch = async (req, res) => {
     transactions: dailyTransactions
   });
 };
+
+exports.getTransactionsByCategory = async (req, res) => {
+  const category = await Category.findOne({ _id: req.params.category });
+  const transactions = await Transaction.find({ category });
+  const dailyTransactions = formatTransactions(transactions, true);
+  res.render("transactionsFull", {
+    title: `Category: ${category.name}`,
+    transactions: dailyTransactions
+  });
 };
 
 const confirmOwner = (transaction, user) => {
