@@ -7,11 +7,15 @@ block content
     const leftMenu = [
       { url: "/settings", title: "Settings", icon: "settings" }
     ]
+    const subNavMenu = [
+      { url: "/dashboard", title: "Overview", selected: false },
+      { url: "/statistics", title: "Statistics", selected: true }
+    ]
 
   +appNav(title, leftMenu)
 
   div.app-page
-    +appSubNav("/dashboard", "Overview", false, "/statistics", "Statistics", true)
+    +appSubNav(subNavMenu)
 
     each group, name in stats
       - innerHref = name === 'This month' ? `/categories/${year}/${month + 1}` : name === 'This year' ? `/categories/${year}` : '/categories'

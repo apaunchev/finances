@@ -16,7 +16,7 @@ mixin appNav(screenTitle = title, leftMenu, rightMenu)
           a(href=`${link.url}` title=`${link.title}`)
             i(data-feather=`${link.icon}`)
 
-mixin appSubNav(leftHref = "", leftTitle = "", leftSelected = false, rightHref = "", rightTitle = "", rightSelected = false)
+mixin appSubNav(menu)
   nav.app-sub-nav
-    a(href=`${leftHref}` class=`${leftSelected ? 'selected' : ''}`)= leftTitle
-    a(href=`${rightHref}` class=`${rightSelected  ? 'selected' : ''}`)= rightTitle
+    each link in menu
+      a(href=`${link.url}` class=`${link.selected ? 'selected' : ''}`)= link.title

@@ -10,11 +10,15 @@ block content
     const rightMenu = [
       { url: "/add", title: "Add", icon: "plus-circle" }
     ]
+    const subNavMenu = [
+      { url: "/dashboard", title: "Overview", selected: true },
+      { url: "/statistics", title: "Statistics", selected: false }
+    ]
 
   +appNav(title, leftMenu, rightMenu)
 
   div.app-page
-    +appSubNav("/dashboard", "Overview", true, "/statistics", "Statistics", false)
+    +appSubNav(subNavMenu)
 
     if months
       each year, index in months

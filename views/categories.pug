@@ -9,13 +9,15 @@ block content
       { url: "/add", title: "Add", icon: "plus-circle" },
       { url: "/search", title: "Search", icon: "search" }
     ]
+    const subNavMenu = [
+      { url: month ? `/transactions/${year}/${month + 1}` : year ? `/transactions/${year}` : "/transactions", title: "Transactions", selected: false },
+      { url: month ? `/categories/${year}/${month + 1}` : year ? `/categories/${year}` : "/categories", title: "Overview", selected: true }
+    ]
 
   +appNav(pageTitle, null, rightMenu)
 
   div.app-page
-    - const transactionsMenu = month ? `/transactions/${year}/${month + 1}` : year ? `/transactions/${year}` : "/transactions"
-    - const overviewMenu = month ? `/categories/${year}/${month + 1}` : year ? `/categories/${year}` : "/categories"
-    +appSubNav(transactionsMenu, "Transactions", false, overviewMenu, "Overview", true)
+    +appSubNav(subNavMenu)
 
     if categories
       each group, name in categories
