@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 mongoose.Promise = global.Promise;
 
@@ -7,20 +7,20 @@ const transactionSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now,
-    required: 'Please provide a valid date.'
+    required: "Please provide a valid date."
   },
   amount: {
     type: Number,
-    required: 'Please provide a valid amount.'
+    required: "Please provide a valid amount."
   },
   category: {
     type: mongoose.Schema.ObjectId,
-    ref: 'Category',
+    ref: "Category",
     required: true
   },
   user: {
     type: mongoose.Schema.ObjectId,
-    ref: 'User',
+    ref: "User",
     required: true
   },
   vendor: String,
@@ -28,10 +28,15 @@ const transactionSchema = new mongoose.Schema({
 });
 
 transactionSchema.index({
-  description: 'text'
+  description: "text"
 });
 
-transactionSchema.statics.getTransactions = function (user, year, month, category) {
+transactionSchema.statics.getTransactions = function(
+  user,
+  year,
+  month,
+  category
+) {
   let $match = {
     user: user._id
   };
@@ -53,19 +58,19 @@ transactionSchema.statics.getTransactions = function (user, year, month, categor
     },
     {
       $lookup: {
-        from: 'categories',
-        localField: 'category',
-        foreignField: '_id',
-        as: 'category'
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category"
       }
     },
     {
-      $unwind: '$category'
+      $unwind: "$category"
     }
   ]);
 };
 
-transactionSchema.statics.getTransactionsByMonth = function (user) {
+transactionSchema.statics.getTransactionsByMonth = function(user) {
   return this.aggregate([
     {
       $match: {
@@ -75,19 +80,23 @@ transactionSchema.statics.getTransactionsByMonth = function (user) {
     {
       $group: {
         _id: {
-          year: { $year: '$date' },
-          month: { $month: '$date' }
+          year: { $year: "$date" },
+          month: { $month: "$date" }
         },
-        balance: { $sum: '$amount' }
+        balance: { $sum: "$amount" }
       }
     },
     {
-      $sort: { '_id': -1 }
+      $sort: { _id: -1 }
     }
   ]);
-}
+};
 
-transactionSchema.statics.getTrasactionsByCategory = function (user, year, month) {
+transactionSchema.statics.getTrasactionsByCategory = function(
+  user,
+  year,
+  month
+) {
   let $match = {
     user: user._id
   };
@@ -112,34 +121,34 @@ transactionSchema.statics.getTrasactionsByCategory = function (user, year, month
     },
     {
       $lookup: {
-        from: 'categories',
-        localField: 'category',
-        foreignField: '_id',
-        as: 'category'
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category"
       }
     },
     {
-      $unwind: '$category'
+      $unwind: "$category"
     },
     {
       $group: {
         _id: {
-          _id: '$category._id',
-          name: '$category.name',
-          color: '$category.color'
+          _id: "$category._id",
+          name: "$category.name",
+          color: "$category.color"
         },
-        amount: { $sum: '$amount' }
+        amount: { $sum: "$amount" }
       }
     }
   ]);
 };
 
 function autopopulate(next) {
-  this.populate('category');
+  this.populate("category");
   next();
 }
 
-transactionSchema.pre('find', autopopulate);
-transactionSchema.pre('findOne', autopopulate);
+transactionSchema.pre("find", autopopulate);
+transactionSchema.pre("findOne", autopopulate);
 
-module.exports = mongoose.model('Transaction', transactionSchema);
+module.exports = mongoose.model("Transaction", transactionSchema);

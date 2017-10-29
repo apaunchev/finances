@@ -1,12 +1,12 @@
-import '../sass/style.scss';
+import "../sass/style.scss";
 
-import { $, $$ } from './modules/bling';
-import feather from 'feather-icons';
+import { $, $$ } from "./modules/bling";
+import feather from "feather-icons";
 
-document.addEventListener('touchstart', function() {}, true);
+document.addEventListener("touchstart", function() {}, true);
 
 feather.replace({
-  'stroke-width': 1,
+  "stroke-width": 1,
   width: 24,
   height: 24
 });

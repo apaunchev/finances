@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const Transaction = mongoose.model('Transaction');
-const Category = mongoose.model('Category');
-const _ = require('lodash');
+const mongoose = require("mongoose");
+const Transaction = mongoose.model("Transaction");
+const Category = mongoose.model("Category");
+const _ = require("lodash");
 
 exports.getTransactions = async (req, res) => {
   const now = new Date();
@@ -13,9 +13,20 @@ exports.getTransactions = async (req, res) => {
   }
   const user = req.user;
   const category = await Category.findOne({ _id: req.params.category });
-  const transactions = await Transaction.getTransactions(user, year, month, category);
+  const transactions = await Transaction.getTransactions(
+    user,
+    year,
+    month,
+    category
+  );
   const dailyTransactions = formatTransactions(transactions);
-  res.render('transactions', { title: 'Transactions', transactions: dailyTransactions, month, year, category });
+  res.render("transactions", {
+    title: "Transactions",
+    transactions: dailyTransactions,
+    month,
+    year,
+    category
+  });
 };
 
 exports.getTransactionsByMonth = async (req, res) => {
@@ -25,13 +36,17 @@ exports.getTransactionsByMonth = async (req, res) => {
     .values()
     .reverse()
     .value();
-  res.render('dashboard', { title: 'Dashboard', months: groupedMonths });
+  res.render("dashboard", { title: "Dashboard", months: groupedMonths });
 };
 
 exports.getTrasactionsByCategory = async (req, res) => {
   const year = req.params.year;
   const month = parseInt(req.params.month) - 1;
-  const categories = await Transaction.getTrasactionsByCategory(req.user, year, month);
+  const categories = await Transaction.getTrasactionsByCategory(
+    req.user,
+    year,
+    month
+  );
   const filteredCategories = {
     Income: {
       categories: getSortedCategories(categories, 1),
@@ -42,23 +57,27 @@ exports.getTrasactionsByCategory = async (req, res) => {
       totalAmount: getTotalAmount(categories, -1)
     }
   };
-  res.render('categories', { categories: filteredCategories, year, month });
+  res.render("categories", { categories: filteredCategories, year, month });
 };
 
 exports.addTransaction = async (req, res) => {
   const categories = await Category.find({ user: req.user._id });
-  res.render('editTransaction', { title: 'Add transaction', categories });
+  res.render("editTransaction", { title: "Add transaction", categories });
 };
 
 exports.editTransaction = async (req, res) => {
   const transaction = await Transaction.findOne({ _id: req.params.id });
   const categories = await Category.find({ user: req.user._id });
   confirmOwner(transaction, req.user);
-  res.render('editTransaction', { title: 'Edit transaction', transaction, categories });
+  res.render("editTransaction", {
+    title: "Edit transaction",
+    transaction,
+    categories
+  });
 };
 
 exports.processTransaction = (req, res, next) => {
-  const category = req.body.category.split('|');
+  const category = req.body.category.split("|");
   req.body.user = req.user._id;
   req.body.amount = parseFloat(req.body.amount);
   req.body.date = req.body.date || Date.now();
@@ -68,88 +87,114 @@ exports.processTransaction = (req, res, next) => {
 };
 
 exports.createTransaction = async (req, res) => {
-  const transaction = await (new Transaction(req.body)).save();
-  res.redirect('/');
+  const transaction = await new Transaction(req.body).save();
+  res.redirect("/");
 };
 
 exports.updateTransaction = async (req, res) => {
-  const transaction = await Transaction.findOneAndUpdate({ _id: req.params.id }, req.body, { new: true, runValidators: true }).exec();
-  res.redirect('/');
+  const transaction = await Transaction.findOneAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    { new: true, runValidators: true }
+  ).exec();
+  res.redirect("/");
 };
 
 exports.removeTransaction = async (req, res) => {
   const transaction = await Transaction.remove({ _id: req.params.id });
-  res.redirect('/');
+  res.redirect("/");
 };
 
 exports.statistics = async (req, res) => {
   const now = new Date();
   const month = now.getMonth();
   const year = now.getFullYear();
-  const transactions = await Transaction.find({ user: req.user }, { description: 0, category: 0, user: 0 });
-  const monthly = _.filter(transactions, (transaction) => {
+  const transactions = await Transaction.find(
+    { user: req.user },
+    { description: 0, category: 0, user: 0 }
+  );
+  const monthly = _.filter(transactions, transaction => {
     const date = new Date(transaction.date);
     return date.getMonth() === month && date.getFullYear() === year;
   });
-  const yearly = _.filter(transactions, (transaction) => new Date(transaction.date).getFullYear() === year);
+  const yearly = _.filter(
+    transactions,
+    transaction => new Date(transaction.date).getFullYear() === year
+  );
   const stats = {
-    'This month': generateStatsObject(monthly),
-    'This year': generateStatsObject(yearly),
+    "This month": generateStatsObject(monthly),
+    "This year": generateStatsObject(yearly),
     Overall: generateStatsObject(transactions)
   };
-  res.render('stats', { title: "Statistics", stats, month, year });
+  res.render("stats", { title: "Statistics", stats, month, year });
 };
 
 exports.search = async (req, res) => {
-  res.render('search', { title: "Search" });
+  res.render("search", { title: "Search" });
 };
 
 exports.performSearch = async (req, res) => {
   const term = req.body.term;
-  const transactions = await Transaction
-    .find({ $text: { $search: term } }, { score: { $meta: 'textScore' } })
-    .sort({ score: { $meta: 'textScore' }, date: -1 });
+  const transactions = await Transaction.find(
+    { $text: { $search: term } },
+    { score: { $meta: "textScore" } }
+  ).sort({ score: { $meta: "textScore" }, date: -1 });
   const dailyTransactions = formatTransactions(transactions, true);
-  res.render('searchResults', { term, transactions: dailyTransactions });
+  res.render("searchResults", { term, transactions: dailyTransactions });
 };
 
 const confirmOwner = (transaction, user) => {
   if (!transaction.user.equals(user._id)) {
-    throw Error('Transaction not found.');
+    throw Error("Transaction not found.");
   }
 };
 
 const formatTransactions = (transactions, withFullDate = false) => {
-  const weekDays = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const weekDays = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
+  ];
   return _.chain(transactions)
     .groupBy(transaction => {
       const date = new Date(transaction.date);
-      return withFullDate ? `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}` : date.getDate();
+      return withFullDate
+        ? `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+        : date.getDate();
     })
     .mapValues(group => {
       const date = new Date(group[0].date);
-      const transactions = _.chain(group).sortBy(date).reverse().value();
+      const transactions = _.chain(group)
+        .sortBy(date)
+        .reverse()
+        .value();
       return {
         transactions,
         totalAmount: getTotalAmount(group),
         date,
         dayOfMonth: date.getDate(),
         dayOfWeek: weekDays[date.getDay()],
-        fullDateString: withFullDate ? `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}` : null
+        fullDateString: withFullDate
+          ? `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+          : null
       };
     })
-    .sortBy('date')
+    .sortBy("date")
     .reverse()
     .value();
 };
 
-const generateStatsObject = (data) => {
+const generateStatsObject = data => {
   return {
-    'Total income': getTotalAmount(data, 1),
-    'Total expenses': getTotalAmount(data, -1),
-    'Highest income': getMinMaxAmount(data, 1),
-    'Highest expense': getMinMaxAmount(data, -1),
-    'Balance': getTotalAmount(data)
+    "Total income": getTotalAmount(data, 1),
+    "Total expenses": getTotalAmount(data, -1),
+    "Highest income": getMinMaxAmount(data, 1),
+    "Highest expense": getMinMaxAmount(data, -1),
+    Balance: getTotalAmount(data)
   };
 };
 
@@ -159,8 +204,8 @@ const generateStatsObject = (data) => {
 
 const getSortedCategories = (categories, type = -1) => {
   return _.chain(categories)
-    .filter(c => type === -1 ? c.amount < 0 : c.amount > 0)
-    .sortBy(c => type === -1 ? c.amount : -c.amount)
+    .filter(c => (type === -1 ? c.amount < 0 : c.amount > 0))
+    .sortBy(c => (type === -1 ? c.amount : -c.amount))
     .value();
 };
 

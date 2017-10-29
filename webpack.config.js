@@ -1,14 +1,14 @@
-const path = require('path');
-const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const path = require("path");
+const webpack = require("webpack");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 module.exports = {
   entry: {
-    app: './public/js/app.js'
+    app: "./public/js/app.js"
   },
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'public/dist')
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "public/dist")
   },
   context: __dirname,
   module: {
@@ -16,21 +16,19 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /(node_modules|bower_components)/,
-        loader: 'babel-loader',
+        loader: "babel-loader",
         options: {
-          presets: ['env']
+          presets: ["env"]
         }
       },
       {
         test: /\.scss$/,
         use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: ['css-loader', 'sass-loader']
+          fallback: "style-loader",
+          use: ["css-loader", "sass-loader"]
         })
       }
     ]
   },
-  plugins: [
-    new ExtractTextPlugin('style.css')
-  ]
+  plugins: [new ExtractTextPlugin("style.css")]
 };
