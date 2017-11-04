@@ -9,7 +9,7 @@ mixin groupedTransactions(transactions)
           each t in group.transactions
             li.transaction
               a(href=`/transaction/${t._id}/edit`)
-                span.transaction__name= t.description
+                span.transaction__name= `${t.description} ${t.vendor ? `(${t.vendor})` : ""}`
                 span.transaction__amount
                   span.transaction__pill(style=`background-color: ${t.category.color}`)= `${h.formatNumber(t.amount)}`
   else
