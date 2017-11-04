@@ -1,7 +1,9 @@
+const _ = require("lodash");
 const mongoose = require("mongoose");
 const Transaction = mongoose.model("Transaction");
 const Category = mongoose.model("Category");
-const _ = require("lodash");
+const axios = require("axios");
+const fx = require("money");
 
 exports.getTransactions = async (req, res) => {
   const now = new Date();
@@ -76,13 +78,33 @@ exports.editTransaction = async (req, res) => {
   });
 };
 
+exports.processCurrency = async (req, res, next) => {
+  await axios
+    .get("https://api.fixer.io/latest")
+    .then(res => {
+      fx.base = res.data.base;
+      fx.rates = res.data.rates;
+    })
+    .catch(err => console.error(err));
+  next();
+};
+
 exports.processTransaction = (req, res, next) => {
+  const userId = req.user._id;
+  const userCurrency = req.user.currency || "EUR";
   const category = req.body.category.split("|");
-  req.body.user = req.user._id;
-  req.body.amount = parseFloat(req.body.amount);
+  const currency = req.body.currency;
+  const amount = parseFloat(req.body.amount);
+  req.body.amount =
+    fx(amount)
+      .from(currency)
+      .to(userCurrency)
+      .toFixed(2) / 1;
   req.body.date = req.body.date || Date.now();
   req.body.category = category[0];
   req.body.description = req.body.description || category[1];
+  if (!req.body.vendor) delete req.body.vendor;
+  req.body.user = userId;
   next();
 };
 

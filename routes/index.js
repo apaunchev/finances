@@ -63,11 +63,13 @@ router.get(
 );
 router.post(
   "/add",
+  transactionsController.processCurrency,
   transactionsController.processTransaction,
   catchErrors(transactionsController.createTransaction)
 );
 router.post(
   "/add/:id",
+  transactionsController.processCurrency,
   transactionsController.processTransaction,
   catchErrors(transactionsController.updateTransaction)
 );

@@ -1,0 +1,5 @@
+mixin currencySelect
+  select(name="currency")
+    each currency in h.currencies
+      - const selected = user.currency && user.currency === currency
+      option(value=currency selected=selected) #{currency}

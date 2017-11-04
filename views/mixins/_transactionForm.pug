@@ -1,15 +1,19 @@
+include _currencySelect
+
 mixin transactionForm(transaction = {})
   form(action=`/add/${transaction._id || ''}` method="POST" class="form")
     section.form__inputs
       input(type="number" name="amount" step="0.01" placeholder="Amount" value=transaction.amount required)
 
+      +currencySelect()
+
       - const date = h.moment(transaction.date).format('YYYY-MM-DD')
       input(type="date" name="date" value=date)
 
       select(name="category")
-        each c in categories
-          - const selected = transaction.category ? transaction.category._id.toString() === c._id.toString() : false
-          option(value=`${c._id}|${c.name}` selected=selected) #{c.name}
+        each category in categories
+          - const selected = transaction.category && transaction.category._id.toString() === category._id.toString()
+          option(value=`${category._id}|${category.name}` selected=selected) #{category.name}
 
       input(type="text" name="description" placeholder="Description" value=transaction.description)
 
@@ -18,5 +22,6 @@ mixin transactionForm(transaction = {})
       textarea(placeholder="Notes" rows="5")= transaction.notes
 
       input(type="submit" value="Save")
+
       if transaction._id
         a.form__button.form__button--danger(href=`/transaction/${transaction._id}/remove` onclick="return confirm('Are you sure you want to remove this transaction?')") Remove

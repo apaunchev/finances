@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
     require: "Please provide a name.",
     trim: true
   },
+  currency: String,
   resetPasswordToken: String,
   resetPasswordExpiresAt: Date
 });
