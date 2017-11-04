@@ -88,7 +88,8 @@ exports.processTransaction = (req, res, next) => {
 
 exports.createTransaction = async (req, res) => {
   const transaction = await new Transaction(req.body).save();
-  res.redirect("/");
+  const date = new Date(transaction.date);
+  res.redirect(`/transactions/${date.getFullYear()}/${date.getMonth() + 1}`);
 };
 
 exports.updateTransaction = async (req, res) => {
@@ -97,7 +98,8 @@ exports.updateTransaction = async (req, res) => {
     req.body,
     { new: true, runValidators: true }
   ).exec();
-  res.redirect("/");
+  const date = new Date(transaction.date);
+  res.redirect(`/transactions/${date.getFullYear()}/${date.getMonth() + 1}`);
 };
 
 exports.removeTransaction = async (req, res) => {
