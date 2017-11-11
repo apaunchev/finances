@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Category = mongoose.model("Category");
 
 exports.categories = async (req, res) => {
-  const categories = await Category.find({ user: req.user._id });
+  const categories = await Category.find({ user: req.user._id }).sort("name");
   res.render("settingsCategories", { title: "Categories", categories });
 };
 
