@@ -23,7 +23,6 @@ const transactionSchema = new mongoose.Schema({
     ref: "User",
     required: true
   },
-  vendor: String,
   notes: String
 });
 

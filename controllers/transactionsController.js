@@ -103,7 +103,6 @@ exports.processTransaction = (req, res, next) => {
   req.body.date = req.body.date || Date.now();
   req.body.category = category[0];
   req.body.description = req.body.description || category[1];
-  if (!req.body.vendor) delete req.body.vendor;
   req.body.user = userId;
   next();
 };
