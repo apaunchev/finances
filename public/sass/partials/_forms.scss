@@ -47,8 +47,14 @@ input[type="date"] {
 }
 
 input[type="radio"],
-input[type="checkbox"] {
+input[type="checkbox"],
+input[type="color"] {
   display: inline-block;
   width: auto;
   margin-bottom: 16px;
+}
+
+input[type="color"] {
+  padding: 0;
+  width: 100%;
 }

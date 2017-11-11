@@ -30,4 +30,4 @@ block content
                 a(href=`/transactions/${year}/${month + 1}/${c._id._id}`)
                   span.transaction__name= c._id.name
                   span.transaction__amount
-                    span.transaction__pill(style=`background-color: ${c._id.color}`)= `${h.formatNumber(c.amount)}`
+                    span.transaction__pill(style=`background-color: ${c._id.color}`)= `${h.formatNumber(c.amount)}${c._id.monthlyBudget ? `/${h.formatNumber(c._id.monthlyBudget)}` : ""}`
