@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const User = mongoose.model("User");
 const Category = mongoose.model("Category");
+const Transaction = mongoose.model("Transaction");
 
 exports.settings = (req, res) => {
   res.render("settings", { title: "Settings" });
@@ -45,7 +46,12 @@ exports.createCategory = async (req, res) => {
 
 exports.editCategory = async (req, res) => {
   const category = await Category.findOne({ _id: req.params.id });
-  res.render("editCategory", { title: "Edit category", category });
+  const transactionsCount = await Transaction.count({ category: category._id });
+  res.render("editCategory", {
+    title: "Edit category",
+    category,
+    transactionsCount
+  });
 };
 
 exports.updateCategory = async (req, res) => {
