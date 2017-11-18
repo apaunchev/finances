@@ -9,14 +9,6 @@ html
     link(rel="stylesheet" href="/dist/style.css")
 
   body
-    //- block messages
-    //-   if locals.flashes
-    //-     - const categories = Object.keys(locals.flashes)
-    //-     each category in categories
-    //-       each message in flashes[category]
-    //-         .flash(class=`flash--${category}`)
-    //-           p!= message
-
     block content
 
   script(src="/dist/bundle.js")
