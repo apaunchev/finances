@@ -1,5 +1,28 @@
 const mongoose = require("mongoose");
+const User = mongoose.model("User");
 const Category = mongoose.model("Category");
+
+exports.settings = (req, res) => {
+  res.render("settings", { title: "Settings" });
+};
+
+exports.account = (req, res) => {
+  res.render("account", { title: "Account" });
+};
+
+exports.updateAccount = async (req, res) => {
+  const updates = {
+    currency: req.body.currency
+  };
+
+  const user = await User.findOneAndUpdate(
+    { _id: req.user._id },
+    { $set: updates },
+    { new: true, runValidators: true }
+  );
+
+  res.redirect("back");
+};
 
 exports.categories = async (req, res) => {
   const categories = await Category.find({ user: req.user._id }).sort("name");

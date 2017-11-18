@@ -21,18 +21,18 @@ module.exports = {
       { url: "/statistics", title: "Statistics", selected: true }
     ]
   },
-  account: {
-    appNavLeft: [{ url: "/settings", title: "Settings", icon: "chevron-left" }]
-  },
   settings: {
     appNavLeft: [
       { url: "/dashboard", title: "Dashboard", icon: "chevron-left" }
     ],
     appNavRight: [{ url: "/logout", title: "Log out", icon: "log-out" }],
     contentList: [
-      { url: "/account", title: "Account", icon: "user" },
+      { url: "/settings/account", title: "Account", icon: "user" },
       { url: "/settings/categories", title: "Categories", icon: "folder" }
     ]
+  },
+  settingsAccount: {
+    appNavLeft: [{ url: "/settings", title: "Settings", icon: "chevron-left" }]
   },
   settingsCategories: {
     appNavLeft: [{ url: "/settings", title: "Settings", icon: "chevron-left" }],

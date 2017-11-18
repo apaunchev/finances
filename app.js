@@ -6,9 +6,8 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const passport = require("passport");
-const promisify = require("es6-promisify");
 const expressValidator = require("express-validator");
-const routes = require("./routes/index");
+const routes = require("./routes");
 const helpers = require("./helpers");
 const menus = require("./menus");
 const errorHandlers = require("./handlers/errorHandlers");
@@ -49,11 +48,6 @@ app.use((req, res, next) => {
   res.locals.menus = menus;
   res.locals.user = req.user || null;
   res.locals.currentPath = req.path;
-  next();
-});
-
-app.use((req, res, next) => {
-  req.login = promisify(req.login, req);
   next();
 });
 

@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const mongodbErrorHandler = require("mongoose-mongodb-errors");
 
 require("dotenv").config({ path: "variables.env" });
 
@@ -7,6 +8,7 @@ mongoose.Promise = global.Promise;
 mongoose.connection.on("error", err => {
   console.error(`🚫 → ${err.message}`);
 });
+mongoose.plugin(mongodbErrorHandler);
 
 require("./models/Transaction");
 require("./models/Category");
