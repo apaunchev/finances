@@ -8,8 +8,7 @@ const categorySchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "User",
     required: true
-  },
-  monthlyBudget: Number
+  }
 });
 
 module.exports = mongoose.model("Category", categorySchema);

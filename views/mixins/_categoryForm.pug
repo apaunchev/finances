@@ -5,8 +5,6 @@ mixin categoryForm(category = {})
 
       input(type="color" name="color" value=category.color required)
 
-      input(type="number" name="monthlyBudget" step="0.01" placeholder="Monthly budget" value=category.monthlyBudget)
-
       input(type="submit" value="Save" class="button")
 
       if category._id

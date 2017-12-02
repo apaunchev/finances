@@ -134,8 +134,7 @@ transactionSchema.statics.getTrasactionsByCategory = function(
         _id: {
           _id: "$category._id",
           name: "$category.name",
-          color: "$category.color",
-          monthlyBudget: "$category.monthlyBudget"
+          color: "$category.color"
         },
         amount: { $sum: "$amount" }
       }
