@@ -169,7 +169,7 @@ exports.performSearch = async (req, res) => {
   });
 };
 
-exports.getTransactionsByCategory = async (req, res) => {
+exports.getTransactionsForCategory = async (req, res) => {
   const category = await Category.findOne({ _id: req.params.category });
   const transactions = await Transaction.find({ category });
   const dailyTransactions = formatTransactions(transactions, true);

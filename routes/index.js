@@ -42,7 +42,7 @@ router.get(
 router.get(
   "/transactions/:category",
   authController.isAuthenticated,
-  catchErrors(transactionsController.getTransactionsByCategory)
+  catchErrors(transactionsController.getTransactionsForCategory)
 );
 
 router.get(
