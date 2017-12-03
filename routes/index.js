@@ -2,11 +2,17 @@ const express = require("express");
 const router = express.Router();
 const passport = require("passport");
 const authController = require("../controllers/authController");
+const dashboardController = require("../controllers/dashboardController");
 const transactionsController = require("../controllers/transactionsController");
 const settingsController = require("../controllers/settingsController");
+const reportsController = require("../controllers/reportsController");
 const { catchErrors } = require("../handlers/errorHandlers");
 
-router.get("/", catchErrors(transactionsController.getTransactions));
+router.get(
+  "/",
+  authController.isAuthenticated,
+  catchErrors(transactionsController.getTransactions)
+);
 
 // Auth
 
@@ -25,13 +31,21 @@ router.get(
   (req, res) => res.redirect("/")
 );
 
-// Transactions
+// Dashboard
 
 router.get(
   "/dashboard",
   authController.isAuthenticated,
-  catchErrors(transactionsController.getTransactionsByMonth)
+  dashboardController.dashboard
 );
+
+router.get(
+  "/months",
+  authController.isAuthenticated,
+  catchErrors(dashboardController.months)
+);
+
+// Transactions
 
 router.get(
   "/transactions",
@@ -43,18 +57,6 @@ router.get(
   "/transactions/:category",
   authController.isAuthenticated,
   catchErrors(transactionsController.getTransactionsForCategory)
-);
-
-router.get(
-  "/transactions/:year/:month",
-  authController.isAuthenticated,
-  catchErrors(transactionsController.getTransactions)
-);
-
-router.get(
-  "/transactions/:year/:month/:category",
-  authController.isAuthenticated,
-  catchErrors(transactionsController.getTransactions)
 );
 
 router.get(
@@ -89,26 +91,6 @@ router.post(
   transactionsController.processCurrency,
   transactionsController.processTransaction,
   catchErrors(transactionsController.updateTransaction)
-);
-
-// Categories
-
-router.get(
-  "/categories",
-  authController.isAuthenticated,
-  catchErrors(transactionsController.getTrasactionsByCategory)
-);
-
-router.get(
-  "/categories/:year",
-  authController.isAuthenticated,
-  catchErrors(transactionsController.getTrasactionsByCategory)
-);
-
-router.get(
-  "/categories/:year/:month",
-  authController.isAuthenticated,
-  catchErrors(transactionsController.getTrasactionsByCategory)
 );
 
 // Settings
@@ -167,6 +149,20 @@ router.get(
   "/settings/category/:id/remove",
   authController.isAuthenticated,
   catchErrors(settingsController.removeCategory)
+);
+
+// Reports
+
+router.get(
+  "/reports",
+  authController.isAuthenticated,
+  catchErrors(reportsController.reports)
+);
+
+router.get(
+  "/reports/categories",
+  authController.isAuthenticated,
+  catchErrors(reportsController.categories)
 );
 
 // Statistics

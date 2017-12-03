@@ -3,11 +3,11 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav(title, menus.settings.appNavLeft)
+  +appNav(title, menus.reports.appNavLeft)
 
   div.app-page
     ul.content__list
-      each link in menus.settings.contentList
+      each link in menus.reports.contentList
         li.content__item
           a(href=link.url)
             span.content__item__icon

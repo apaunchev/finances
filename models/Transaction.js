@@ -91,7 +91,7 @@ transactionSchema.statics.getTransactionsByMonth = function(user) {
   ]);
 };
 
-transactionSchema.statics.getTrasactionsByCategory = function(
+transactionSchema.statics.getTransactionsByCategory = function(
   user,
   year,
   month
@@ -136,6 +136,7 @@ transactionSchema.statics.getTrasactionsByCategory = function(
           name: "$category.name",
           color: "$category.color"
         },
+        count: { $sum: 1 },
         amount: { $sum: "$amount" }
       }
     }

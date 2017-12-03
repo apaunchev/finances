@@ -4,14 +4,19 @@ const Transaction = mongoose.model("Transaction");
 const Category = mongoose.model("Category");
 const axios = require("axios");
 const fx = require("money");
+const {
+  getSortedCategories,
+  getMinMaxAmount,
+  getTotalAmount
+} = require("../helpers");
 
 exports.getTransactions = async (req, res) => {
   const now = new Date();
-  const year = req.params.year;
-  const month = parseInt(req.params.month) - 1;
-  if (isNaN(year) && isNaN(month)) {
-    res.redirect(`/transactions/${now.getFullYear()}/${now.getMonth() + 1}`);
-    return;
+  let year = req.query.year;
+  let month = parseInt(req.query.month) - 1;
+  if (!year && !month) {
+    year = now.getFullYear();
+    month = now.getMonth();
   }
   const user = req.user;
   const category = await Category.findOne({ _id: req.params.category });
@@ -39,27 +44,6 @@ exports.getTransactionsByMonth = async (req, res) => {
     .reverse()
     .value();
   res.render("dashboard", { title: "Dashboard", months: groupedMonths });
-};
-
-exports.getTrasactionsByCategory = async (req, res) => {
-  const year = req.params.year;
-  const month = parseInt(req.params.month) - 1;
-  const categories = await Transaction.getTrasactionsByCategory(
-    req.user,
-    year,
-    month
-  );
-  const filteredCategories = {
-    Income: {
-      categories: getSortedCategories(categories, 1),
-      totalAmount: getTotalAmount(categories, 1)
-    },
-    Expenses: {
-      categories: getSortedCategories(categories, -1),
-      totalAmount: getTotalAmount(categories, -1)
-    }
-  };
-  res.render("categories", { categories: filteredCategories, year, month });
 };
 
 exports.addTransaction = async (req, res) => {
@@ -232,44 +216,4 @@ const generateStatsObject = data => {
     "Highest expense": getMinMaxAmount(data, -1),
     Balance: getTotalAmount(data)
   };
-};
-
-// type === -1: expenses
-// type === 0: all
-// type === 1: income
-
-const getSortedCategories = (categories, type = -1) => {
-  return _.chain(categories)
-    .filter(c => (type === -1 ? c.amount < 0 : c.amount > 0))
-    .sortBy(c => (type === -1 ? c.amount : -c.amount))
-    .value();
-};
-
-const getMinMaxAmount = (transactions, type = -1) => {
-  if (type === -1) {
-    transactions = transactions.filter(t => t.amount <= 0);
-    if (transactions.length === 0) {
-      return 0;
-    }
-    return _.minBy(transactions, t => t.amount);
-  } else if (type === 1) {
-    transactions = transactions.filter(t => t.amount > 0);
-    if (transactions.length === 0) {
-      return 0;
-    }
-    return _.maxBy(transactions, t => t.amount);
-  }
-  return 0;
-};
-
-const getTotalAmount = (transactions, type = 0) => {
-  if (!transactions.length) {
-    return 0;
-  }
-  if (type === -1) {
-    transactions = transactions.filter(t => t.amount <= 0);
-  } else if (type === 1) {
-    transactions = transactions.filter(t => t.amount > 0);
-  }
-  return transactions.reduce((a, b) => a + b.amount, 0);
 };

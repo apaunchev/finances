@@ -4,15 +4,9 @@ include mixins/_appNav
 include mixins/_groupedTransactions
 
 block content
-  -
-    const pageTitle = category ? `${category.name}` : month ? `${h.getMonthName(month)} ${year}` : "Transactions"
-    const appSubNav = [
-      { url: month ? `/transactions/${year}/${month + 1}` : year ? `/transactions/${year}` : "/transactions", title: "Transactions", selected: true },
-      { url: month ? `/categories/${year}/${month + 1}` : year ? `/categories/${year}` : "/categories", title: "Overview", selected: false }
-    ]
+  - const pageTitle = category ? `${category.name}` : month >= 0 ? `${h.getMonthName(month)} ${year}` : "Transactions"
 
   +appNav(pageTitle, menus.transactions.appNavLeft, menus.transactions.appNavRight)
 
   div.app-page
-    +appSubNav(appSubNav)
     +groupedTransactions(transactions)

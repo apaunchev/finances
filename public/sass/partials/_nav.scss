@@ -51,19 +51,3 @@
     }
   }
 }
-
-.app-sub-nav {
-  display: flex;
-  margin-bottom: 16px;
-
-  > a {
-    flex: 1;
-    text-align: center;
-    line-height: 2.25;
-
-    &.selected {
-      background-color: $c-buttons;
-      color: white;
-    }
-  }
-}

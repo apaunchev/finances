@@ -6,8 +6,6 @@ block content
   +appNav(title, menus.stats.appNavLeft)
 
   div.app-page
-    +appSubNav(menus.stats.appSubNav)
-
     each group, name in stats
       - innerHref = name === 'This month' ? `/categories/${year}/${month + 1}` : name === 'This year' ? `/categories/${year}` : '/categories'
       h4.transactions__group__title= name
