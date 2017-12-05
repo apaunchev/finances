@@ -54,12 +54,6 @@ router.get(
 );
 
 router.get(
-  "/transactions/:category",
-  authController.isAuthenticated,
-  catchErrors(transactionsController.getTransactionsForCategory)
-);
-
-router.get(
   "/transaction/:id/edit",
   authController.isAuthenticated,
   catchErrors(transactionsController.editTransaction)

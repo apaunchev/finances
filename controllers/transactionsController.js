@@ -18,8 +18,9 @@ exports.getTransactions = async (req, res) => {
     year = now.getFullYear();
     month = now.getMonth();
   }
+  const category =
+    req.query.category && (await Category.findOne({ _id: req.query.category }));
   const user = req.user;
-  const category = await Category.findOne({ _id: req.params.category });
   const transactions = await Transaction.getTransactions(
     user,
     year,
@@ -153,16 +154,6 @@ exports.performSearch = async (req, res) => {
   const dailyTransactions = formatTransactions(transactions, true);
   res.render("transactionsFull", {
     title: `Search: ${term}`,
-    transactions: dailyTransactions
-  });
-};
-
-exports.getTransactionsForCategory = async (req, res) => {
-  const category = await Category.findOne({ _id: req.params.category });
-  const transactions = await Transaction.find({ category });
-  const dailyTransactions = formatTransactions(transactions, true);
-  res.render("transactionsFull", {
-    title: `Category: ${category.name}`,
     transactions: dailyTransactions
   });
 };
