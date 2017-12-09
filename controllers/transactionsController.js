@@ -114,7 +114,7 @@ exports.updateTransaction = async (req, res) => {
 
 exports.removeTransaction = async (req, res) => {
   const transaction = await Transaction.remove({ _id: req.params.id });
-  res.redirect("/");
+  res.redirect("/transactions");
 };
 
 exports.statistics = async (req, res) => {
