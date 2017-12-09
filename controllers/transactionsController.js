@@ -48,7 +48,7 @@ exports.getTransactionsByMonth = async (req, res) => {
 };
 
 exports.addTransaction = async (req, res) => {
-  const categories = await Category.find({ user: req.user._id }).sort("name");
+  const categories = await Category.getMostUsedCategoriesForUser(req.user);
   res.render("editTransaction", { title: "Add transaction", categories });
 };
 
