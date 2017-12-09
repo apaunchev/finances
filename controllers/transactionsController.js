@@ -141,7 +141,7 @@ exports.statistics = async (req, res) => {
   res.render("stats", { title: "Statistics", stats, month, year });
 };
 
-exports.search = async (req, res) => {
+exports.search = (req, res) => {
   res.render("search", { title: "Search" });
 };
 
