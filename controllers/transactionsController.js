@@ -152,7 +152,7 @@ exports.performSearch = async (req, res) => {
     { score: { $meta: "textScore" } }
   ).sort({ score: { $meta: "textScore" }, date: -1 });
   const dailyTransactions = formatTransactions(transactions, true);
-  res.render("transactionsFull", {
+  res.render("searchResults", {
     title: `Search: ${term}`,
     transactions: dailyTransactions
   });
