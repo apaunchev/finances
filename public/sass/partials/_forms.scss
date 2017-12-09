@@ -1,11 +1,19 @@
-.form__inputs {
-  margin: 0 16px;
-  padding: 10px 0;
+.form {
+  margin: 8px 16px 0;
+}
 
-  select,
-  input {
-    margin: 0 0 20px;
-  }
+.input__group {
+  display: flex;
+  margin: 0 0 24px;
+}
+
+.input__element--large {
+  flex: 2;
+}
+
+.input__element--small {
+  flex: 1;
+  border-left: 1px solid rgba(black, 0.2);
 }
 
 select,
@@ -15,6 +23,7 @@ textarea {
   display: block;
   padding: 8px;
   width: 100%;
+  height: 41px;
   border: none;
   border-bottom: 1px solid rgba(black, 0.2);
   background-color: white;
@@ -22,7 +31,7 @@ textarea {
 
 .form__button {
   display: block;
-  margin: 10px 0;
+  width: 100%;
   padding: 10px;
   border: 1px solid $c-others;
   color: white;
@@ -51,7 +60,6 @@ input[type="checkbox"],
 input[type="color"] {
   display: inline-block;
   width: auto;
-  margin-bottom: 16px;
 }
 
 input[type="color"] {
