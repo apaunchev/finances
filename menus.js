@@ -19,11 +19,6 @@ module.exports = {
         icon: "pie-chart"
       },
       {
-        url: "/statistics",
-        title: "Statistics",
-        icon: "bar-chart-2"
-      },
-      {
         url: "/settings",
         title: "Settings",
         icon: "settings"
@@ -31,32 +26,24 @@ module.exports = {
     ]
   },
   transactions: {
-    appNavLeft: [{ url: "/dashboard", title: "Dashboard", icon: "menu" }],
+    appNavLeft: [{ url: "/dashboard", title: "Dashboard", icon: "chevron-left" }],
     appNavRight: [
       { url: "/add", title: "Add", icon: "plus-circle" },
       { url: "/search", title: "Search", icon: "search" }
     ]
   },
-  stats: {
-    appNavLeft: [{ url: "/dashboard", title: "Dashboard", icon: "menu" }]
-  },
   reports: {
-    appNavLeft: [{ url: "/dashboard", title: "Dashboard", icon: "menu" }],
+    appNavLeft: [{ url: "/dashboard", title: "Dashboard", icon: "chevron-left" }],
     contentList: [
       {
         url: "/reports/categories",
-        title: "What do I spend my money on?",
-        icon: "credit-card"
-      },
-      {
-        url: "/reports/payees",
-        title: "Where do I spend my money?",
-        icon: "shopping-cart"
-      },
-      {
-        url: "/reports/trends",
-        title: "How much do I earn compared to my expenses?",
+        title: "Categories",
         icon: "pie-chart"
+      },
+      {
+        url: "/reports/stats",
+        title: "Statistics",
+        icon: "bar-chart-2"
       }
     ]
   },
@@ -66,7 +53,7 @@ module.exports = {
     ]
   },
   settings: {
-    appNavLeft: [{ url: "/dashboard", title: "Dashboard", icon: "menu" }],
+    appNavLeft: [{ url: "/dashboard", title: "Dashboard", icon: "chevron-left" }],
     contentList: [
       { url: "/settings/account", title: "Account", icon: "user" },
       { url: "/settings/categories", title: "Categories", icon: "folder" }
