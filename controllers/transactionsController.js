@@ -7,7 +7,8 @@ const fx = require("money");
 const {
   getSortedCategories,
   getMinMaxAmount,
-  getTotalAmount
+  getTotalAmount,
+  weekDays
 } = require("../helpers");
 
 exports.getTransactions = async (req, res) => {
@@ -120,30 +121,6 @@ exports.removeTransaction = async (req, res) => {
   res.redirect("/transactions");
 };
 
-exports.statistics = async (req, res) => {
-  const now = new Date();
-  const month = now.getMonth();
-  const year = now.getFullYear();
-  const transactions = await Transaction.find(
-    { user: req.user },
-    { description: 0, category: 0, user: 0 }
-  );
-  const monthly = _.filter(transactions, transaction => {
-    const date = new Date(transaction.date);
-    return date.getMonth() === month && date.getFullYear() === year;
-  });
-  const yearly = _.filter(
-    transactions,
-    transaction => new Date(transaction.date).getFullYear() === year
-  );
-  const stats = {
-    "This month": generateStatsObject(monthly),
-    "This year": generateStatsObject(yearly),
-    Overall: generateStatsObject(transactions)
-  };
-  res.render("stats", { title: "Statistics", stats, month, year });
-};
-
 exports.search = (req, res) => {
   res.render("search", { title: "Search" });
 };
@@ -168,15 +145,6 @@ const confirmOwner = (transaction, user) => {
 };
 
 const formatTransactions = (transactions, withFullDate = false) => {
-  const weekDays = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ];
   return _.chain(transactions)
     .groupBy(transaction => {
       const date = new Date(transaction.date);
@@ -204,14 +172,4 @@ const formatTransactions = (transactions, withFullDate = false) => {
     .sortBy("date")
     .reverse()
     .value();
-};
-
-const generateStatsObject = data => {
-  return {
-    "Total income": getTotalAmount(data, 1),
-    "Total expenses": getTotalAmount(data, -1),
-    "Highest income": getMinMaxAmount(data, 1),
-    "Highest expense": getMinMaxAmount(data, -1),
-    Balance: getTotalAmount(data)
-  };
 };

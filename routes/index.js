@@ -156,12 +156,10 @@ router.get(
   catchErrors(reportsController.categories)
 );
 
-// Statistics
-
 router.get(
-  "/statistics",
+  "/reports/stats",
   authController.isAuthenticated,
-  catchErrors(transactionsController.statistics)
+  catchErrors(reportsController.stats)
 );
 
 // Search

@@ -20,6 +20,16 @@ exports.getMonthName = month => {
   return monthNames[parseFloat(month)];
 };
 
+exports.weekDays = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday"
+];
+
 exports.currencies = [
   "AUD",
   "BGN",

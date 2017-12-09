@@ -5,7 +5,8 @@ const Category = mongoose.model("Category");
 const {
   getSortedCategories,
   getTotalAmount,
-  getMonthName
+  getMonthName,
+  getMinMaxAmount
 } = require("../helpers");
 
 exports.reports = async (req, res) => {
@@ -42,4 +43,38 @@ exports.categories = async (req, res) => {
     year,
     month
   });
+};
+
+exports.stats = async (req, res) => {
+  const now = new Date();
+  const month = now.getMonth();
+  const year = now.getFullYear();
+  const transactions = await Transaction.find(
+    { user: req.user },
+    { description: 0, category: 0, user: 0 }
+  );
+  const monthly = _.filter(transactions, transaction => {
+    const date = new Date(transaction.date);
+    return date.getMonth() === month && date.getFullYear() === year;
+  });
+  const yearly = _.filter(
+    transactions,
+    transaction => new Date(transaction.date).getFullYear() === year
+  );
+  const stats = {
+    "This month": generateStatsObject(monthly),
+    "This year": generateStatsObject(yearly),
+    Overall: generateStatsObject(transactions)
+  };
+  res.render("stats", { title: "Stats", stats, month, year });
+};
+
+const generateStatsObject = data => {
+  return {
+    "Total income": getTotalAmount(data, 1),
+    "Total expenses": getTotalAmount(data, -1),
+    "Highest income": getMinMaxAmount(data, 1),
+    "Highest expense": getMinMaxAmount(data, -1),
+    Balance: getTotalAmount(data)
+  };
 };
