@@ -73,7 +73,6 @@ router.get(
 router.post(
   "/add",
   authController.isAuthenticated,
-  transactionsController.processCurrency,
   transactionsController.processTransaction,
   catchErrors(transactionsController.createTransaction)
 );
@@ -81,7 +80,6 @@ router.post(
 router.post(
   "/add/:id",
   authController.isAuthenticated,
-  transactionsController.processCurrency,
   transactionsController.processTransaction,
   catchErrors(transactionsController.updateTransaction)
 );

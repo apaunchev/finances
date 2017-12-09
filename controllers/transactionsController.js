@@ -63,32 +63,35 @@ exports.editTransaction = async (req, res) => {
   });
 };
 
-exports.processCurrency = async (req, res, next) => {
-  await axios
-    .get("https://api.fixer.io/latest")
-    .then(res => {
-      fx.base = res.data.base;
-      fx.rates = res.data.rates;
-    })
-    .catch(err => console.error(err));
-  next();
-};
-
-exports.processTransaction = (req, res, next) => {
+exports.processTransaction = async (req, res, next) => {
   const userId = req.user._id;
   const userCurrency = req.user.currency || "EUR";
-  const category = req.body.category.split("|");
-  const currency = req.body.currency;
+  const transactionCurrency = req.body.currency;
   const amount = parseFloat(req.body.amount);
-  req.body.amount =
-    fx(amount)
-      .from(currency)
-      .to(userCurrency)
-      .toFixed(2) / 1;
+  const category = req.body.category.split("|");
+
   req.body.date = req.body.date || Date.now();
   req.body.category = category[0];
   req.body.description = req.body.description || category[1];
   req.body.user = userId;
+  req.body.amount = amount;
+
+  if (userCurrency !== transactionCurrency) {
+    await axios
+      .get("https://api.fixer.io/latest")
+      .then(res => {
+        fx.base = res.data.base;
+        fx.rates = res.data.rates;
+      })
+      .catch(err => console.error(err));
+
+    req.body.amount =
+      fx(amount)
+        .from(transactionCurrency)
+        .to(userCurrency)
+        .toFixed(2) / 1;
+  }
+
   next();
 };
 
