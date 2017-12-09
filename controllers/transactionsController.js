@@ -12,23 +12,29 @@ const {
 } = require("../helpers");
 
 exports.getTransactions = async (req, res) => {
+  const user = req.user;
   const now = new Date();
+  let withFullDate = false;
   let year = req.query.year;
   let month = parseInt(req.query.month) - 1;
-  if (!year && !month) {
-    year = now.getFullYear();
-    month = now.getMonth();
-  }
   const category =
     req.query.category && (await Category.findOne({ _id: req.query.category }));
-  const user = req.user;
+
+  if (!year && !month && !category) {
+    year = now.getFullYear();
+    month = now.getMonth();
+  } else if (!year && !month && category) {
+    withFullDate = true; // If params contain only category, we want to see all transactions for that category.
+  }
+
   const transactions = await Transaction.getTransactions(
     user,
     year,
     month,
     category
   );
-  const dailyTransactions = formatTransactions(transactions);
+  const dailyTransactions = formatTransactions(transactions, withFullDate);
+
   res.render("transactions", {
     title: "Transactions",
     transactions: dailyTransactions,
@@ -132,7 +138,7 @@ exports.performSearch = async (req, res) => {
     { score: { $meta: "textScore" } }
   ).sort({ score: { $meta: "textScore" }, date: -1 });
   const dailyTransactions = formatTransactions(transactions, true);
-  res.render("searchResults", {
+  res.render("transactions", {
     title: `Search: ${term}`,
     transactions: dailyTransactions
   });
