@@ -10,8 +10,7 @@ const { catchErrors } = require("../handlers/errorHandlers");
 
 router.get(
   "/",
-  authController.isAuthenticated,
-  catchErrors(transactionsController.getTransactions)
+  dashboardController.dashboard
 );
 
 // Auth
