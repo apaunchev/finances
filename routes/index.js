@@ -10,6 +10,7 @@ const { catchErrors } = require("../handlers/errorHandlers");
 
 router.get(
   "/",
+  authController.isAuthenticated,
   dashboardController.dashboard
 );
 
