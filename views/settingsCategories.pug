@@ -7,11 +7,14 @@ block content
 
   div.app-page
     if categories
-      ul.content__list
-        each category in categories
-          li.content__item
-            a(href=`/settings/category/${category._id}/edit`)
-              span.content__item__name
-                span.transaction__pill(style=`background-color: ${category.color}`)= category.name
-              span.content__item__action
-                i(data-feather="chevron-right")
+      each group in categories
+        .transactions__group
+          h4.transactions__group__title= group._id
+          ul.transactions__list
+            each category in group.categories
+              li.content__item
+                a(href=`/settings/category/${category._id}/edit`)
+                  span.content__item__name
+                    span.transaction__pill(style=`background-color: ${category.color}`)= `${category.name} (${category.count})`
+                  span.content__item__action
+                    i(data-feather="chevron-right")

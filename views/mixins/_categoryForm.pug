@@ -4,7 +4,12 @@ mixin categoryForm(category = {})
       input(type="text" name="name" placeholder="Name" value=category.name required)
 
     .input__group
-      input(type="color" name="color" value=category.color required)
+      .input__element.input__element--large
+        select(name="type")
+          option(value="Expenses" selected=(category.type && category.type === "Expenses")) Expenses
+          option(value="Income" selected=(category.type && category.type === "Income")) Income
+      .input__element.input__element--small
+        input(type="color" name="color" value=category.color required)
 
     .input__group
       input(type="submit" value="Save" class="button")

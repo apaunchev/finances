@@ -26,7 +26,7 @@ exports.updateAccount = async (req, res) => {
 };
 
 exports.categories = async (req, res) => {
-  const categories = await Category.find({ user: req.user._id }).sort("name");
+  const categories = await Category.getCategoriesForUser(req.user, true);
   res.render("settingsCategories", { title: "Categories", categories });
 };
 

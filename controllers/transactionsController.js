@@ -55,14 +55,14 @@ exports.getTransactionsByMonth = async (req, res) => {
 };
 
 exports.addTransaction = async (req, res) => {
-  const categories = await Category.getMostUsedCategoriesForUser(req.user);
+  const categories = await Category.getCategoriesForUser(req.user, true);
   res.render("editTransaction", { title: "Add transaction", categories });
 };
 
 exports.editTransaction = async (req, res) => {
   const transaction = await Transaction.findOne({ _id: req.params.id });
-  const categories = await Category.find({ user: req.user._id }).sort("name");
   confirmOwner(transaction, req.user);
+  const categories = await Category.getCategoriesForUser(req.user, true);
   res.render("editTransaction", {
     title: "Edit transaction",
     transaction,
@@ -71,17 +71,16 @@ exports.editTransaction = async (req, res) => {
 };
 
 exports.processTransaction = async (req, res, next) => {
-  const userId = req.user._id;
   const userCurrency = req.user.currency || "EUR";
   const transactionCurrency = req.body.currency;
-  const amount = parseFloat(req.body.amount);
-  const category = req.body.category.split("|");
+  const category = req.body.category.split(":"); // Expenses:5921bd186ba4914d25133815:Personal
+  const type = category[0]; // Expenses or Income
 
   req.body.date = req.body.date || Date.now();
-  req.body.category = category[0];
-  req.body.description = req.body.description || category[1];
-  req.body.user = userId;
-  req.body.amount = amount;
+  req.body.category = category[1];
+  req.body.description = req.body.description || category[2];
+  req.body.user = req.user._id;
+  req.body.amount = parseFloat(type === "Expenses" ? -Math.abs(req.body.amount) : Math.abs(req.body.amount));
 
   if (userCurrency !== transactionCurrency) {
     await axios

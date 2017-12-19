@@ -3,14 +3,17 @@ include _currencySelect
 mixin transactionForm(transaction = {})
   form(action=`/add/${transaction._id || ''}` method="POST" class="form")
     .input__group
-      select(name="category")
-        each category in categories
-          - const selected = transaction.category && transaction.category._id.toString() === category._id.toString()
-          option(value=`${category._id}|${category.name}` selected=selected) #{category.name}
+      .input__element
+        select(name="category")
+          each group in categories
+            optgroup(label=group._id)
+              each category in group.categories
+                - const selected = transaction.category && transaction.category.name === category.name
+                option(value=`${category.type}:${category._id}:${category.name}` selected=selected)= category.name
 
     .input__group
       .input__element.input__element--large
-        input(type="number" name="amount" step="0.01" placeholder="Amount (+ or −)" value=transaction.amount required)
+        input(type="number" name="amount" step="0.01" placeholder="Amount" value=transaction.amount required)
       .input__element.input__element--small
         +currencySelect()
 
