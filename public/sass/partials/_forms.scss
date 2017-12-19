@@ -7,12 +7,15 @@
   margin: 0 0 24px;
 }
 
+.input__element {
+  flex: 1;
+}
+
 .input__element--large {
   flex: 2;
 }
 
 .input__element--small {
-  flex: 1;
   border-left: 1px solid rgba(black, 0.2);
 }
 
