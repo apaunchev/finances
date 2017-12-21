@@ -139,58 +139,6 @@ transactionSchema.statics.getTransactions = function(
   ]);
 };
 
-transactionSchema.statics.getTransactionsByCategory = function(
-  user,
-  year,
-  month
-) {
-  let $match = {
-    user: user._id
-  };
-
-  if (year && isNaN(month)) {
-    $match.date = {
-      $gte: new Date(year, 0, 1),
-      $lte: new Date(year, 11, 31)
-    };
-  }
-
-  if (year && month >= 0) {
-    $match.date = {
-      $gte: new Date(year, month, 1),
-      $lte: new Date(year, month + 1, 0)
-    };
-  }
-
-  return this.aggregate([
-    {
-      $match
-    },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "category",
-        foreignField: "_id",
-        as: "category"
-      }
-    },
-    {
-      $unwind: "$category"
-    },
-    {
-      $group: {
-        _id: {
-          _id: "$category._id",
-          name: "$category.name",
-          color: "$category.color"
-        },
-        count: { $sum: 1 },
-        amount: { $sum: "$amount" }
-      }
-    }
-  ]);
-};
-
 function autopopulate(next) {
   this.populate("category");
   next();
