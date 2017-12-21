@@ -5,14 +5,9 @@ const authController = require("../controllers/authController");
 const dashboardController = require("../controllers/dashboardController");
 const transactionsController = require("../controllers/transactionsController");
 const settingsController = require("../controllers/settingsController");
-const reportsController = require("../controllers/reportsController");
 const { catchErrors } = require("../handlers/errorHandlers");
 
-router.get(
-  "/",
-  authController.isAuthenticated,
-  dashboardController.dashboard
-);
+router.get("/", authController.isAuthenticated, dashboardController.dashboard);
 
 // Auth
 
@@ -36,13 +31,7 @@ router.get(
 router.get(
   "/dashboard",
   authController.isAuthenticated,
-  dashboardController.dashboard
-);
-
-router.get(
-  "/months",
-  authController.isAuthenticated,
-  catchErrors(dashboardController.months)
+  catchErrors(dashboardController.dashboard)
 );
 
 // Transactions
@@ -141,48 +130,6 @@ router.get(
   "/settings/category/:id/remove",
   authController.isAuthenticated,
   catchErrors(settingsController.removeCategory)
-);
-
-// Reports
-
-router.get(
-  "/reports",
-  authController.isAuthenticated,
-  catchErrors(reportsController.reports)
-);
-
-router.get(
-  "/reports/categories",
-  authController.isAuthenticated,
-  catchErrors(reportsController.categories)
-);
-
-router.get(
-  "/reports/stats",
-  authController.isAuthenticated,
-  catchErrors(reportsController.stats)
-);
-
-// Search
-
-router.get(
-  "/search",
-  authController.isAuthenticated,
-  transactionsController.search
-);
-
-router.post(
-  "/search",
-  authController.isAuthenticated,
-  catchErrors(transactionsController.performSearch)
-);
-
-// API
-
-router.get(
-  "/api/search",
-  authController.isAuthenticated,
-  catchErrors(transactionsController.search)
 );
 
 module.exports = router;

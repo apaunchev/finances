@@ -1,22 +1,8 @@
-const _ = require("lodash");
 const mongoose = require("mongoose");
-const Transaction = mongoose.model("Transaction");
+const Category = mongoose.model("Category");
 
-exports.dashboard = (req, res) => {
-  res.render("dashboard", { title: "My Finances" });
-};
+exports.dashboard = async (req, res) => {
+  const categories = await Category.getCategoriesForUser(req.user, true);
 
-exports.months = async (req, res) => {
-  const filter = req.query.filter || "";
-  const months = await Transaction.getTransactionsByMonth(req.user);
-  let groupedMonths = _.chain(months)
-    .groupBy(m => m._id.year)
-    .values()
-    .reverse()
-    .value();
-  res.render("months", {
-    title: "Browse months",
-    filter,
-    months: groupedMonths
-  });
+  res.render("dashboard", { title: "My Finances", categories });
 };

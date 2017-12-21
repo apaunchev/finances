@@ -8,7 +8,7 @@ exports.settings = (req, res) => {
 };
 
 exports.account = (req, res) => {
-  res.render("account", { title: "Account" });
+  res.render("settingsAccount", { title: "Account" });
 };
 
 exports.updateAccount = async (req, res) => {
@@ -22,11 +22,12 @@ exports.updateAccount = async (req, res) => {
     { new: true, runValidators: true }
   );
 
-  res.redirect("back");
+  res.redirect("/settings/account");
 };
 
 exports.categories = async (req, res) => {
   const categories = await Category.getCategoriesForUser(req.user, true);
+
   res.render("settingsCategories", { title: "Categories", categories });
 };
 
@@ -36,17 +37,20 @@ exports.addCategory = async (req, res) => {
 
 exports.processCategory = (req, res, next) => {
   req.body.user = req.user._id;
+
   next();
 };
 
 exports.createCategory = async (req, res) => {
   const category = await new Category(req.body).save();
+
   res.redirect("/settings/categories");
 };
 
 exports.editCategory = async (req, res) => {
   const category = await Category.findOne({ _id: req.params.id });
   const transactionsCount = await Transaction.count({ category: category._id });
+
   res.render("editCategory", {
     title: "Edit category",
     category,
@@ -60,10 +64,12 @@ exports.updateCategory = async (req, res) => {
     req.body,
     { new: true, runValidators: true }
   ).exec();
+
   res.redirect("/settings/categories");
 };
 
 exports.removeCategory = async (req, res) => {
   const category = await Category.remove({ _id: req.params.id });
+
   res.redirect("/settings/categories");
 };

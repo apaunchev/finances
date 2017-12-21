@@ -4,7 +4,7 @@ include mixins/_appNav
 include mixins/_groupedTransactions
 
 block content
-  - const pageTitle = category ? `${category.name}` : month >= 0 ? `${h.getMonthName(month)} ${year}` : "Transactions"
+  - const pageTitle = category ? `${category.name}` : "All"
 
   +appNav(pageTitle, menus.transactions.appNavLeft, menus.transactions.appNavRight)
 

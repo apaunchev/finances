@@ -1,0 +1,56 @@
+$c-pill-bg: #f3f3f3;
+$c-pill-expenses-bg: $c-expenses;
+$c-pill-income-bg: $c-income;
+
+.pills {
+  margin-top: 16px;
+  margin-bottom: 16px;
+  padding: 0 5px;
+  display: flex;
+  overflow-x: scroll;
+}
+
+.pill {
+  margin: 0 5px;
+  padding: 10px 20px;
+  background-color: #f3f3f3;
+  border-radius: 20px;
+  line-height: 1.3;
+}
+
+.pill-label {
+  color: darken($c-pill-bg, 40);
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  display: block;
+}
+
+.pill-value {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.pill--bg-expenses {
+  @include setBackgroundColor($c-pill-expenses-bg);
+
+  .pill-label {
+    color: darken($c-pill-expenses-bg, 20);
+  }
+
+  .pill-value {
+    color: white;
+  }
+}
+
+.pill--bg-income {
+  @include setBackgroundColor($c-pill-income-bg);
+
+  .pill-label {
+    color: darken($c-pill-income-bg, 20);
+  }
+
+  .pill-value {
+    color: white;
+  }
+}

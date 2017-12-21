@@ -1,20 +1,13 @@
 .transactions__group {
-  margin: 8px 0 24px;
+  margin: 0 0 24px;
 }
 
 .transactions__group__title {
   display: flex;
-  align-items: baseline;
-  margin: 8px 16px;
+  margin: 0 16px;
   padding: 8px 0;
-  border-bottom: 1px solid #ccc;
-  font-weight: 500;
-}
-
-.transactions__group__subtitle {
-  padding-left: 4px;
   color: gray;
-  font-weight: 300;
+  text-transform: uppercase;
 }
 
 .transactions__group__amount {
@@ -23,23 +16,37 @@
 
 .transactions__list {
   @extend .content__list;
+  margin: 0 16px;
 }
 
 .transaction {
   @extend .content__item;
-  border-bottom: none;
 }
 
-.transaction__name {
+.transaction__details__left {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.transaction__details__right {
+  margin-left: auto;
+}
+
+.transaction__name {
+  display: block;
+  font-weight: 500;
 }
 
 .transaction__amount {
   @extend .content__item__action;
 }
 
-.transaction__pill {
-  @extend .content__item__pill;
+.transaction__amount--expense {
+  color: red;
+}
+
+.transaction__category {
+  display: block;
+  font-size: 14px;
 }

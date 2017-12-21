@@ -6,12 +6,25 @@ block content
   +appNav(title, menus.dashboard.appNavLeft, menus.dashboard.appNavRight)
 
   div.app-page
+    h1 Transactions
     ul.content__list
       each link in menus.dashboard.contentList
         li.content__item
           a(href=link.url)
             span.content__item__icon
               i(data-feather=link.icon)
-            span.content__item__name= link.title
+            span.content__item__name=link.title
             span.content__item__action
               i(data-feather="chevron-right")
+
+    h1 Categories
+      each group in categories
+        h2=group._id
+        ul.content__list
+          each category in group.categories
+            li.content__item
+              a(href=`/transactions?category=${category._id}`)
+                span.content__item__dot(style=`background-color: ${category.color}`)
+                span.content__item__name=category.name
+                span.content__item__action
+                  i(data-feather="chevron-right")

@@ -16,20 +16,12 @@ const categorySchema = new mongoose.Schema({
   }
 });
 
-categorySchema.statics.getCategoriesForUser = function(
-  user,
-  group = false,
-  searchTerm
-) {
+categorySchema.statics.getCategoriesForUser = function(user, group = false) {
   let pipeline = [];
 
   let $match = {
     user: user._id
   };
-
-  if (searchTerm) {
-    $match.name = { $regex: new RegExp(searchTerm, "i") };
-  }
 
   pipeline.push({ $match });
 

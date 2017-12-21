@@ -1,5 +1,7 @@
+$c-form-border: $c-ui;
+
 .form {
-  margin: 8px 16px 0;
+  margin: 16px;
 }
 
 .input__group {
@@ -16,7 +18,7 @@
 }
 
 .input__element--small {
-  border-left: 1px solid rgba(black, 0.2);
+  border-left: 1px solid $c-form-border;
 }
 
 select,
@@ -28,7 +30,7 @@ textarea {
   width: 100%;
   height: 41px;
   border: none;
-  border-bottom: 1px solid rgba(black, 0.2);
+  border-bottom: 1px solid $c-form-border;
   background-color: white;
 }
 
@@ -36,21 +38,19 @@ textarea {
   display: block;
   width: 100%;
   padding: 10px;
-  border: 1px solid $c-others;
   color: white;
   text-align: center;
   cursor: pointer;
   @include setBackgroundColor($c-buttons);
 
   &.form__button--danger {
-    @include setBackgroundColor($c-expenses);
+    @include setBackgroundColor($c-ui);
   }
 }
 
 button,
 input[type="submit"] {
   @extend .form__button;
-  @include setBackgroundColor($c-income);
 }
 
 select,

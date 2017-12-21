@@ -8,9 +8,19 @@ const Transaction = require("../models/Transaction");
 const Category = require("../models/Category");
 
 async function fetchData() {
-  await Transaction.find({ vendor: { $ne: null } }, (err, transactions) => {
-    console.log(transactions);
-  });
+  await Category.update(
+    {},
+    { $set: { type: "Expenses" } },
+    { multi: true, runValidators: true }
+  );
+
+  // await Transaction.update(
+  //   { type: -1 },
+  //   // { $mul: { amount: -1 } },
+  //   { $unset: { type: "" } },
+  //   { multi: true }
+  // );
+
   console.log("👍 Done!");
   process.exit();
 }

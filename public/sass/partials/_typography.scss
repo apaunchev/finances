@@ -1,5 +1,22 @@
-h1,
-h2,
+h1 {
+  font-size: 27px;
+  margin: 16px;
+  letter-spacing: -1px;
+
+  small {
+    display: inline-block;
+    margin-left: 5px;
+    color: gray;
+    font-weight: 400;
+  }
+}
+
+h2 {
+  font-size: 21px;
+  margin: 16px;
+  letter-spacing: -1px;
+}
+
 h3,
 h4,
 h5,
@@ -16,4 +33,8 @@ a {
 pre {
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+svg.feather {
+  display: block;
 }

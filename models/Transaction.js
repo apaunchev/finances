@@ -39,13 +39,6 @@ transactionSchema.statics.getTransactions = function(
     user: user._id
   };
 
-  if (year && month >= 0) {
-    $match.date = {
-      $gte: new Date(year, month, 1),
-      $lte: new Date(year, month + 1, 0)
-    };
-  }
-
   if (category) {
     $match.category = category._id;
   }
@@ -54,6 +47,7 @@ transactionSchema.statics.getTransactions = function(
     {
       $match
     },
+    // join with categories
     {
       $lookup: {
         from: "categories",
@@ -64,24 +58,79 @@ transactionSchema.statics.getTransactions = function(
     },
     {
       $unwind: "$category"
-    }
-  ]);
-};
-
-transactionSchema.statics.getTransactionsByMonth = function(user) {
-  return this.aggregate([
-    {
-      $match: {
-        user: user._id
-      }
     },
+    {
+      $sort: { _id: -1 }
+    },
+    // days
     {
       $group: {
         _id: {
-          year: { $year: "$date" },
-          month: { $month: "$date" }
+          dayOfMonth: { $dayOfMonth: "$date" },
+          month: { $month: "$date" },
+          year: { $year: "$date" }
         },
-        balance: { $sum: "$amount" }
+        balance: { $sum: "$amount" },
+        income: {
+          $sum: { $cond: [{ $gt: ["$amount", 0] }, "$amount", 0] }
+        },
+        expenses: {
+          $sum: { $cond: [{ $lt: ["$amount", 0] }, "$amount", 0] }
+        },
+        date: {
+          $first: "$date"
+        },
+        transactions: {
+          $push: "$$ROOT"
+        }
+      }
+    },
+    {
+      $sort: { _id: -1 }
+    },
+    // months
+    {
+      $group: {
+        _id: {
+          month: "$_id.month",
+          year: "$_id.year"
+        },
+        income: { $sum: "$income" },
+        expenses: { $sum: "$expenses" },
+        balance: { $sum: "$balance" },
+        days: {
+          $push: {
+            day: "$_id.dayOfMonth",
+            date: "$date",
+            balance: "$balance",
+            income: { $sum: "$income" },
+            expenses: { $sum: "$expenses" },
+            transactions: "$transactions"
+          }
+        }
+      }
+    },
+    {
+      $sort: { _id: -1 }
+    },
+    // years
+    {
+      $group: {
+        _id: {
+          year: "$_id.year"
+        },
+        income: { $sum: "$income" },
+        expenses: { $sum: "$expenses" },
+        balance: { $sum: "$balance" },
+        months: {
+          $push: {
+            month: "$_id.month",
+            income: { $sum: "$income" },
+            expenses: { $sum: "$expenses" },
+            balance: "$balance",
+            days: "$days"
+          }
+        }
       }
     },
     {

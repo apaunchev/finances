@@ -16,7 +16,4 @@ mixin categoryForm(category = {})
 
     if category._id
       .input__group
-        a.form__button(href=`/transactions?category=${category._id}`)= `Browse transactions (${transactionsCount})`
-
-      .input__group
         a.form__button.form__button--danger(href=`/settings/category/${category._id}/remove` onclick="return confirm('Are you sure you want to remove this category?')") Remove

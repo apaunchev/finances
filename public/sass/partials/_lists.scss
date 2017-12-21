@@ -1,16 +1,22 @@
+$c-content-border: whitesmoke;
+
 .content__list {
   list-style-type: none;
-  margin: 8px 16px 0;
   padding: 0;
+  margin: 16px;
 }
 
 .content__item {
-  border-bottom: 1px solid $c-others;
+  border-bottom: 1px solid $c-content-border;
+
+  &:first-child {
+    border-top: 1px solid $c-content-border;
+  }
 
   > a {
     display: flex;
     align-items: center;
-    padding: 10px 0;
+    padding: 8px 0;
     @include setBackgroundColor(white);
   }
 }
@@ -27,8 +33,11 @@
   padding-left: 10px;
 }
 
-.content__item__pill {
-  color: white;
-  padding: 5px 10px;
-  border-radius: 10px;
+.content__item__dot {
+  display: inline-block;
+  margin-right: 8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 100%;
+  background-color: $c-content-border;
 }
