@@ -4,7 +4,7 @@ module.exports = {
     appNavRight: [{ url: "/add", title: "Add", icon: "plus-circle" }],
     contentList: [
       { url: "/transactions", title: "All", icon: "arrow-right-circle" },
-      { url: "/", title: "Uncleared", icon: "circle" },
+      { url: "/transactions?cleared=false", title: "Uncleared", icon: "circle" },
       { url: "/", title: "Repeating", icon: "rotate-cw" }
     ]
   },

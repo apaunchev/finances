@@ -9,12 +9,14 @@ exports.getTransactions = async (req, res) => {
   const user = req.user;
   const category =
     req.query.category && (await Category.findOne({ _id: req.query.category }));
-  const transactions = await Transaction.getTransactions(user, category);
+  const cleared = req.query.cleared && (req.query.cleared == "true");
+  const transactions = await Transaction.getTransactions(user, category, cleared);
 
   res.render("transactions", {
     title: "All",
     transactions,
-    category
+    category,
+    cleared
   });
 };
 
@@ -50,6 +52,7 @@ exports.processTransaction = async (req, res, next) => {
   req.body.amount = parseFloat(
     type === "Expenses" ? -Math.abs(req.body.amount) : Math.abs(req.body.amount)
   );
+  req.body.cleared = (req.body.cleared == "true");
 
   if (userCurrency !== transactionCurrency) {
     await axios

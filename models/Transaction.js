@@ -22,20 +22,26 @@ const transactionSchema = new mongoose.Schema({
     type: mongoose.Schema.ObjectId,
     ref: "User",
     required: true
-  }
+  },
+  cleared: Boolean
 });
 
 transactionSchema.index({
   description: "text"
 });
 
-transactionSchema.statics.getTransactions = function(user, category) {
+transactionSchema.statics.getTransactions = function(user, category, cleared) {
   let $match = {
     user: user._id
   };
 
   if (category) {
     $match.category = category._id;
+  }
+
+  // match by cleared only if explicitly set; otherwise it is (implicitly) undefined.
+  if (cleared === true || cleared === false) {
+    $match.cleared = cleared;
   }
 
   return this.aggregate([

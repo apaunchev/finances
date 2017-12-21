@@ -5,15 +5,13 @@ mixin groupedTransactions(transactions)
       .pills
         if year.income > 0
           .pill.pill--bg-income
-            a(href=`/`)
-              span.pill-label Income
-              span.pill-value= `${h.formatNumber(year.income)}`
+            span.pill-label Income
+            span.pill-value= `${h.formatNumber(year.income)}`
         if year.expenses < 0
           .pill.pill--bg-expenses
-            a(href=`/`)
-              span.pill-label Expenses
-              span.pill-value= `${h.formatNumber(year.expenses)}`
-        if !category
+            span.pill-label Expenses
+            span.pill-value= `${h.formatNumber(year.expenses)}`
+        if year.income > 0 && year.expenses < 0
           .pill
             span.pill-label Balance
             span.pill-value= `${h.formatNumber(year.balance)}`
@@ -24,19 +22,16 @@ mixin groupedTransactions(transactions)
         .pills
           if month.income > 0
             .pill.pill--bg-income
-              a(href=`/`)
-                span.pill-label Income
-                span.pill-value= `${h.formatNumber(month.income)}`
+              span.pill-label Income
+              span.pill-value= `${h.formatNumber(month.income)}`
           if month.expenses < 0
             .pill.pill--bg-expenses
-              a(href=`/`)
-                span.pill-label Expenses
-                span.pill-value= `${h.formatNumber(month.expenses)}`
-          if !category
+              span.pill-label Expenses
+              span.pill-value= `${h.formatNumber(month.expenses)}`
+          if month.income > 0 && month.expenses < 0
             .pill
-              a(href="/")
-                span.pill-label Balance
-                span.pill-value= `${h.formatNumber(month.balance)}`
+              span.pill-label Balance
+              span.pill-value= `${h.formatNumber(month.balance)}`
 
         each day in month.days
           .transactions__group
@@ -47,9 +42,9 @@ mixin groupedTransactions(transactions)
                 li.transaction
                   a(href=`/transaction/${transaction._id}/edit`)
                     .transaction__details__left
-                      span.transaction__name= transaction.description
+                      span.transaction__name= `${!transaction.cleared ? "• " : ""}${transaction.description}`
                       span.transaction__category(style=`color: ${transaction.category.color}`)= transaction.category.name
                     .transaction__details__right
                       span.transaction__amount(class=`${transaction.amount < 0 ? "transaction__amount--expense" : ""}`)= `${h.formatNumber(transaction.amount)}`
   else
-    .content No transactions yet.
+    .content No transactions.
