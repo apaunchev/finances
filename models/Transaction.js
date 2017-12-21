@@ -29,12 +29,7 @@ transactionSchema.index({
   description: "text"
 });
 
-transactionSchema.statics.getTransactions = function(
-  user,
-  year,
-  month,
-  category
-) {
+transactionSchema.statics.getTransactions = function(user, category) {
   let $match = {
     user: user._id
   };
