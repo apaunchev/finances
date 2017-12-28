@@ -3,6 +3,7 @@ const _ = require("lodash");
 exports.moment = require("moment");
 
 exports.getMonthName = month => {
+  // replace with momentjs
   const monthNames = [
     "January",
     "February",

@@ -30,6 +30,8 @@ transactionSchema.index({
   description: "text"
 });
 
+// TODO: constants for transaction types
+
 transactionSchema.statics.getTransactions = function(user, category, cleared) {
   let $match = {
     user: user._id
@@ -221,6 +223,65 @@ transactionSchema.statics.getByCategory = function(
     }
   ]);
 };
+
+transactionSchema.statics.getByType = function(user, type, category) {
+  let $match = {
+    user: user._id
+  };
+
+  if (category) {
+    $match.category = category._id;
+  }
+
+  if (type === -1) {
+    $match.amount = { $lte: 0 };
+  } else if (type === 1) {
+    $match.amount = { $gte: 0 };
+  } else {
+    $match.amount = null;
+  }
+
+  return this.aggregate([
+    {
+      $match
+    },
+    // join with categories
+    {
+      $lookup: {
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category"
+      }
+    },
+    {
+      $unwind: "$category"
+    },
+    // group by month
+    {
+      $group: {
+        _id: {
+          year: { $year: "$date" },
+          month: { $month: "$date" }
+        },
+        amount: { $sum: "$amount" }
+      }
+    },
+    {
+      $sort: { _id: -1 }
+    },
+    {
+      $group: {
+        _id: "Months",
+        maxAmount: { $max: "$amount" },
+        minAmount: { $min: "$amount" },
+        months: {
+          $push: "$$ROOT"
+        }
+      }
+    }
+  ]);
+}
 
 function autopopulate(next) {
   this.populate("category");

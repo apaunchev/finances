@@ -7,6 +7,20 @@ block content
   +appNav(pageTitle)
 
   div.app-page
+    h1=type
+
+    if amounts
+      - const typeClass = type === "Expenses" ? "chart--expenses" : "chart--income"
+      .chart(class=typeClass)
+        ol.chart__list
+          each m in amounts.months
+            - const selectedClass = m._id.month - 1 === month ? "chart__item--selected" : ""
+            li.chart__item(class=selectedClass)
+              a(href=`/stats?type=${type}&year=${m._id.year}&month=${m._id.month}`)
+                - const typeHeight = type === "Expenses" ? m.amount / amounts.minAmount * 100 : m.amount / amounts.maxAmount * 100
+                .chart__item__bar(style=`height: ${typeHeight}%`)
+                .chart__item__label= h.moment({months: m._id.month - 1}).format("MMM")
+
     if categories
       h1= `${month && month > 0 ? `${h.getMonthName(month)} `: ""}${year}`
       ul.progress__list

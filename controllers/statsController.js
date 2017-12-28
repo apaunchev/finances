@@ -23,11 +23,14 @@ exports.stats = async (req, res) => {
     category
   );
 
+  const amounts = await Transaction.getByType(req.user, type, category);
+
   type = type === -1 ? "Expenses" : "Income";
 
   res.render("stats", {
     title: type,
     categories: categories[0],
+    amounts: amounts[0],
     type,
     year,
     month
