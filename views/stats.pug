@@ -1,0 +1,20 @@
+extends layout
+
+include mixins/_appNav
+
+block content
+  - const pageTitle = type === "Expenses" ? "Expenses" : "Income"
+  +appNav(pageTitle)
+
+  div.app-page
+    if categories
+      h1= `${month && month > 0 ? `${h.getMonthName(month)} `: ""}${year}`
+      ul.progress__list
+        each category in categories.categories
+          li.progress__item
+            header
+              .progress__item__title= category._id.name
+              .progress__item__meta= h.formatNumber(category.amount)
+            .progress
+              - const typeClass = type === "Expenses" ? "progress__bar--expenses" : "progress__bar--income"
+              .progress__bar(class=typeClass style=`width: ${(category.amount / categories.balance) * 100}%`)

@@ -63,7 +63,7 @@ transactionSchema.statics.getTransactions = function(user, category, cleared) {
     {
       $sort: { _id: -1 }
     },
-    // days
+    // group by days
     {
       $group: {
         _id: {
@@ -89,7 +89,7 @@ transactionSchema.statics.getTransactions = function(user, category, cleared) {
     {
       $sort: { _id: -1 }
     },
-    // months
+    // group by months
     {
       $group: {
         _id: {
@@ -114,7 +114,7 @@ transactionSchema.statics.getTransactions = function(user, category, cleared) {
     {
       $sort: { _id: -1 }
     },
-    // years
+    // group by years
     {
       $group: {
         _id: {
@@ -136,6 +136,88 @@ transactionSchema.statics.getTransactions = function(user, category, cleared) {
     },
     {
       $sort: { _id: -1 }
+    }
+  ]);
+};
+
+transactionSchema.statics.getByCategory = function(
+  user,
+  type = -1,
+  year,
+  month,
+  category
+) {
+  let $match = {
+    user: user._id
+  };
+
+  if (category) {
+    $match.category = category._id;
+  }
+
+  let $sort = {};
+
+  if (type === -1) {
+    $match.amount = { $lte: 0 };
+    $sort = { amount: 1 };
+  } else if (type === 1) {
+    $match.amount = { $gte: 0 };
+    $sort = { amount: -1 };
+  } else {
+    $match.amount = null;
+  }
+
+  if (year && isNaN(month)) {
+    $match.date = {
+      $gte: new Date(year, 0, 1),
+      $lte: new Date(year, 11, 31)
+    };
+  }
+
+  if (year && month >= 0) {
+    $match.date = {
+      $gte: new Date(year, month, 1),
+      $lte: new Date(year, month + 1, 0)
+    };
+  }
+
+  return this.aggregate([
+    {
+      $match
+    },
+    {
+      $lookup: {
+        from: "categories",
+        localField: "category",
+        foreignField: "_id",
+        as: "category"
+      }
+    },
+    {
+      $unwind: "$category"
+    },
+    {
+      $group: {
+        _id: {
+          _id: "$category._id",
+          name: "$category.name",
+          color: "$category.color"
+        },
+        count: { $sum: 1 },
+        amount: { $sum: "$amount" }
+      }
+    },
+    {
+      $sort
+    },
+    {
+      $group: {
+        _id: "Stats",
+        balance: { $sum: "$amount" },
+        categories: {
+          $push: "$$ROOT"
+        }
+      }
     }
   ]);
 };

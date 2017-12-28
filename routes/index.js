@@ -5,6 +5,7 @@ const authController = require("../controllers/authController");
 const dashboardController = require("../controllers/dashboardController");
 const transactionsController = require("../controllers/transactionsController");
 const settingsController = require("../controllers/settingsController");
+const statsController = require("../controllers/statsController");
 const { catchErrors } = require("../handlers/errorHandlers");
 
 router.get("/", authController.isAuthenticated, dashboardController.dashboard);
@@ -72,6 +73,14 @@ router.post(
   authController.isAuthenticated,
   transactionsController.processTransaction,
   catchErrors(transactionsController.updateTransaction)
+);
+
+// Stats
+
+router.get(
+  "/stats",
+  authController.isAuthenticated,
+  catchErrors(statsController.stats)
 );
 
 // Settings

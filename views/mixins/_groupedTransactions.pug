@@ -1,33 +1,38 @@
 mixin groupedTransactions(transactions)
+  - const categoryParam = category ? `&category=${category._id}` : ""
+
   if transactions.length > 0
     each year in transactions
       h1= year._id.year
       .pills
         if year.income > 0
-          .pill.pill--bg-income
-            span.pill-label Income
-            span.pill-value= `${h.formatNumber(year.income)}`
+          a(href=`/stats?type=1&year=${year._id.year}${categoryParam}`)
+            .pill.pill--bg-income
+              span.pill-label Income
+              span.pill-value= `${h.formatNumber(year.income)}`
         if year.expenses < 0
-          .pill.pill--bg-expenses
-            span.pill-label Expenses
-            span.pill-value= `${h.formatNumber(year.expenses)}`
+          a(href=`/stats?type=-1&year=${year._id.year}${categoryParam}`)
+            .pill.pill--bg-expenses
+              span.pill-label Expenses
+              span.pill-value= `${h.formatNumber(year.expenses)}`
         if year.income > 0 && year.expenses < 0
           .pill
             span.pill-label Balance
             span.pill-value= `${h.formatNumber(year.balance)}`
 
       each month in year.months
-        h1= `${h.getMonthName(month.month - 1)}`
-          small= year._id.year
+        h1= `${h.getMonthName(month.month - 1)} ${year._id.year}`
         .pills
           if month.income > 0
-            .pill.pill--bg-income
-              span.pill-label Income
-              span.pill-value= `${h.formatNumber(month.income)}`
+            a(href=`/stats?type=1&year=${year._id.year}&month=${month.month}${categoryParam}`)
+              .pill.pill--bg-income
+                span.pill-label Income
+                span.pill-value= `${h.formatNumber(month.income)}`
           if month.expenses < 0
-            .pill.pill--bg-expenses
-              span.pill-label Expenses
-              span.pill-value= `${h.formatNumber(month.expenses)}`
+            a(href=`/stats?type=-1&year=${year._id.year}&month=${month.month}${categoryParam}`)
+              .pill.pill--bg-expenses
+                span.pill-label Expenses
+                span.pill-value= `${h.formatNumber(month.expenses)}`
           if month.income > 0 && month.expenses < 0
             .pill
               span.pill-label Balance
