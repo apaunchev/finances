@@ -3,9 +3,9 @@ mixin groupedTransactions(transactions)
 
   if transactions.length > 0
     each year in transactions
-      header.section__head
+      header.content__head
         h1= year._id.year
-      
+
       .pills
         if year.income > 0
           a(href=`/stats/Income?year=${year._id.year}${categoryParam}`)
@@ -23,10 +23,10 @@ mixin groupedTransactions(transactions)
             span.pill-value= `${h.formatNumber(year.balance)}`
 
       each month in year.months
-        header.section__head
+        header.content__head
           h2= h.moment({ month: month.month - 1 }).format("MMMM")
             small= year._id.year
-        
+
         .pills
           if month.income > 0
             a(href=`/stats/Income?year=${year._id.year}&month=${month.month}${categoryParam}`)
@@ -57,4 +57,4 @@ mixin groupedTransactions(transactions)
                     .transaction__details__right
                       span.transaction__amount(class=`${transaction.amount < 0 ? "transaction__amount--expense" : ""}`)= `${h.formatNumber(transaction.amount)}`
   else
-    .content No transactions.
+    .content__padded No transactions.

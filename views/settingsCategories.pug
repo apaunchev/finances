@@ -5,15 +5,15 @@ include mixins/_appNav
 block content
   +appNav(title, menus.settingsCategories.appNavLeft, menus.settingsCategories.appNavRight)
 
-  div.app-page
-    header.section__head
+  .content
+    header.content__head
       h1 Categories
 
     if categories
       each group in categories
-        header.section__head
+        header.content__head
           h2= group._id
-        
+
         ul.content__list
           each category in group.categories
             li.content__item

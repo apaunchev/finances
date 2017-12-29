@@ -6,8 +6,8 @@ include mixins/_currencySelect
 block content
   +appNav(title, menus.settingsAccount.appNavLeft)
 
-  div.app-page
-    header.section__head
+  .content
+    header.content__head
       h1 Account
 
     form(action="/settings/account" method="POST" class="form")

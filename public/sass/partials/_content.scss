@@ -1,5 +1,26 @@
 $c-content-border: whitesmoke;
 
+.content {
+  padding: 52px 0 16px;
+}
+
+.content__padded {
+  margin: 0 16px;
+  padding: 10px 0;
+}
+
+.content__head {
+  display: flex;
+  align-items: baseline;
+  margin: 16px;
+
+  > span {
+    margin-left: auto;
+    padding-left: 10px;
+    color: gray;
+  }
+}
+
 .content__list {
   list-style-type: none;
   padding: 0;
@@ -40,48 +61,4 @@ $c-content-border: whitesmoke;
   height: 20px;
   border-radius: 100%;
   background-color: $c-content-border;
-}
-
-$c-progress-red: $c-expenses;
-$c-progress-green: $c-income;
-
-.progress__list {
-  list-style-type: none;
-  padding: 0;
-  margin: 16px;
-}
-
-.progress__item {
-  margin: 8px 0;
-
-  > header {
-    display: flex;
-    align-items: center;
-    padding: 8px 0;
-  }
-}
-
-.progress__item__meta {
-  margin-left: auto;
-  padding-left: 10px;
-  color: $c-text-meta;
-}
-
-.progress {
-  height: 10px;
-  background-color: $c-content-border;
-  border-radius: 10px;
-}
-
-.progress__bar {
-  height: 100%;
-  border-radius: 10px;
-}
-
-.progress__bar--expenses {
-  background-color: $c-progress-red;
-}
-
-.progress__bar--income {
-  background-color: $c-progress-green;
 }

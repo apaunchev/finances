@@ -5,8 +5,8 @@ include mixins/_appNav
 block content
   +appNav(title)
 
-  div.app-page
-    header.section__head
+  .content
+    header.content__head
       h1= type
 
     if chartData
@@ -23,12 +23,12 @@ block content
                 .chart__item__label= h.moment({months: m._id.month - 1}).format("MMM")
 
     if categories
-      header.section__head
+      header.content__head
         h2= month >= 0 ? h.moment({ month: month, year: year }).format("MMMM") : h.moment({ year: year }).format("YYYY")
           if month >= 0
             small= year
         span= h.formatNumber(categories.balance)
-      
+
       ul.progress__list
         each category in categories.categories
           li.progress__item

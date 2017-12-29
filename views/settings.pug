@@ -5,10 +5,10 @@ include mixins/_appNav
 block content
   +appNav(title, menus.settings.appNavLeft)
 
-  div.app-page
-    header.section__head
+  .content
+    header.content__head
       h1 Settings
-    
+
     ul.content__list
       each link in menus.settings.contentList
         li.content__item
