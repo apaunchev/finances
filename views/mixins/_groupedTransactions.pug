@@ -8,12 +8,12 @@ mixin groupedTransactions(transactions)
       
       .pills
         if year.income > 0
-          a(href=`/stats?type=1&year=${year._id.year}${categoryParam}`)
+          a(href=`/stats/Income?year=${year._id.year}${categoryParam}`)
             .pill.pill--bg-income
               span.pill-label Income
               span.pill-value= `${h.formatNumber(year.income)}`
         if year.expenses < 0
-          a(href=`/stats?type=-1&year=${year._id.year}${categoryParam}`)
+          a(href=`/stats/Expenses?year=${year._id.year}${categoryParam}`)
             .pill.pill--bg-expenses
               span.pill-label Expenses
               span.pill-value= `${h.formatNumber(year.expenses)}`
@@ -29,12 +29,12 @@ mixin groupedTransactions(transactions)
         
         .pills
           if month.income > 0
-            a(href=`/stats?type=1&year=${year._id.year}&month=${month.month}${categoryParam}`)
+            a(href=`/stats/Income?year=${year._id.year}&month=${month.month}${categoryParam}`)
               .pill.pill--bg-income
                 span.pill-label Income
                 span.pill-value= `${h.formatNumber(month.income)}`
           if month.expenses < 0
-            a(href=`/stats?type=-1&year=${year._id.year}&month=${month.month}${categoryParam}`)
+            a(href=`/stats/Expenses?year=${year._id.year}&month=${month.month}${categoryParam}`)
               .pill.pill--bg-expenses
                 span.pill-label Expenses
                 span.pill-value= `${h.formatNumber(month.expenses)}`

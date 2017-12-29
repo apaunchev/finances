@@ -10,7 +10,7 @@ exports.getTransactions = async (req, res) => {
   const category =
     req.query.category && (await Category.findOne({ _id: req.query.category }));
   const cleared = req.query.cleared && (req.query.cleared == "true");
-  const transactions = await Transaction.getTransactions(user, category, cleared);
+  const transactions = await Transaction.getAll(user, category, cleared);
 
   res.render("transactions", {
     title: "All",

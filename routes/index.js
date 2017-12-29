@@ -78,7 +78,7 @@ router.post(
 // Stats
 
 router.get(
-  "/stats",
+  "/stats/:type",
   authController.isAuthenticated,
   catchErrors(statsController.stats)
 );

@@ -3,36 +3,37 @@ const Transaction = mongoose.model("Transaction");
 const Category = mongoose.model("Category");
 
 exports.stats = async (req, res) => {
-  let type = parseInt(req.query.type) || -1;
-  let year = parseInt(req.query.year);
-  let month = parseInt(req.query.month) - 1;
+  const user = req.user;
+  const type = req.params.type;
+  const year = parseInt(req.query.year);
+  const month = parseInt(req.query.month) - 1;
   const category =
     req.query.category && (await Category.findOne({ _id: req.query.category }));
 
-  if (!year && !month) {
-    const now = new Date();
-    year = now.getFullYear();
-    month = now.getMonth();
-  }
+  const chartData = await Transaction.getFiltered({
+    user,
+    type,
+    year,
+    category,
+    groupBy: "date"
+  });
 
-  const categories = await Transaction.getByCategory(
-    req.user,
+  const categories = await Transaction.getFiltered({
+    user,
     type,
     year,
     month,
-    category
-  );
-
-  const amounts = await Transaction.getByType(req.user, type, category);
-
-  type = type === -1 ? "Expenses" : "Income";
+    category,
+    groupBy: "category"
+  });
 
   res.render("stats", {
     title: type,
-    categories: categories[0],
-    amounts: amounts[0],
     type,
     year,
-    month
+    month,
+    category,
+    chartData: chartData[0],
+    categories: categories[0]
   });
 };

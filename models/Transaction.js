@@ -2,6 +2,9 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 mongoose.Promise = global.Promise;
 
+const EXPENSES_TYPE = "Expenses";
+const INCOME_TYPE = "Income";
+
 const transactionSchema = new mongoose.Schema({
   description: String,
   date: {
@@ -26,13 +29,7 @@ const transactionSchema = new mongoose.Schema({
   cleared: Boolean
 });
 
-transactionSchema.index({
-  description: "text"
-});
-
-// TODO: constants for transaction types
-
-transactionSchema.statics.getTransactions = function(user, category, cleared) {
+transactionSchema.statics.getAll = function(user, category, cleared) {
   let $match = {
     user: user._id
   };
@@ -142,31 +139,20 @@ transactionSchema.statics.getTransactions = function(user, category, cleared) {
   ]);
 };
 
-transactionSchema.statics.getByCategory = function(
-  user,
-  type = -1,
-  year,
-  month,
-  category
-) {
+transactionSchema.statics.getFiltered = function(filters) {
+  const { user, type, year, month, category, groupBy } = filters;
+  let pipeline = [];
+
   let $match = {
     user: user._id
   };
 
-  if (category) {
-    $match.category = category._id;
-  }
-
-  let $sort = {};
-
-  if (type === -1) {
+  if (type === EXPENSES_TYPE) {
     $match.amount = { $lte: 0 };
-    $sort = { amount: 1 };
-  } else if (type === 1) {
-    $match.amount = { $gte: 0 };
-    $sort = { amount: -1 };
+  } else if (type === INCOME_TYPE) {
+    $match.amount = { $gt: 0 };
   } else {
-    $match.amount = null;
+    $match.amount = { $lte: 0 };
   }
 
   if (year && isNaN(month)) {
@@ -183,105 +169,85 @@ transactionSchema.statics.getByCategory = function(
     };
   }
 
-  return this.aggregate([
-    {
-      $match
-    },
-    {
-      $lookup: {
-        from: "categories",
-        localField: "category",
-        foreignField: "_id",
-        as: "category"
-      }
-    },
-    {
-      $unwind: "$category"
-    },
-    {
-      $group: {
-        _id: {
-          _id: "$category._id",
-          name: "$category.name",
-          color: "$category.color"
-        },
-        count: { $sum: 1 },
-        amount: { $sum: "$amount" }
-      }
-    },
-    {
-      $sort
-    },
-    {
-      $group: {
-        _id: "Stats",
-        balance: { $sum: "$amount" },
-        categories: {
-          $push: "$$ROOT"
-        }
-      }
-    }
-  ]);
-};
-
-transactionSchema.statics.getByType = function(user, type, category) {
-  let $match = {
-    user: user._id
-  };
-
   if (category) {
     $match.category = category._id;
   }
 
-  if (type === -1) {
-    $match.amount = { $lte: 0 };
-  } else if (type === 1) {
-    $match.amount = { $gte: 0 };
-  } else {
-    $match.amount = null;
-  }
+  pipeline.push({ $match });
 
-  return this.aggregate([
-    {
-      $match
-    },
-    // join with categories
-    {
-      $lookup: {
-        from: "categories",
-        localField: "category",
-        foreignField: "_id",
-        as: "category"
-      }
-    },
-    {
-      $unwind: "$category"
-    },
-    // group by month
-    {
-      $group: {
+  const $lookup = {
+    from: "categories",
+    localField: "category",
+    foreignField: "_id",
+    as: "category"
+  };
+
+  pipeline.push({ $lookup }, { $unwind: "$category" });
+
+  if (groupBy) {
+    let $group = {};
+    let $sort = {};
+
+    if (groupBy === "date") {
+      $group = {
         _id: {
           year: { $year: "$date" },
           month: { $month: "$date" }
         },
         amount: { $sum: "$amount" }
-      }
-    },
-    {
-      $sort: { _id: -1 }
-    },
-    {
-      $group: {
-        _id: "Months",
+      };
+
+      pipeline.push({ $group });
+
+      $sort = { _id: -1 };
+
+      pipeline.push({ $sort });
+
+      $group = {
+        _id: "Group by date",
         maxAmount: { $max: "$amount" },
         minAmount: { $min: "$amount" },
         months: {
           $push: "$$ROOT"
         }
+      };
+
+      pipeline.push({ $group });
+    } else if (groupBy === "category") {
+      $group = {
+        _id: {
+          _id: "$category._id",
+          name: "$category.name"
+        },
+        amount: { $sum: "$amount" }
+      };
+
+      pipeline.push({ $group });
+
+      if (type === EXPENSES_TYPE) {
+        $sort = { amount: 1 };
+      } else if (type === INCOME_TYPE) {
+        $sort = { amount: -1 };
+      } else {
+        $sort = { amount: 1 };
       }
+
+      pipeline.push({ $sort });
+
+      $group = {
+        _id: "Group by category",
+        balance: { $sum: "$amount" },
+        categories: {
+          $push: "$$ROOT"
+        }
+      };
+
+      pipeline.push({ $group });
     }
-  ]);
-}
+  }
+
+  return this.aggregate(pipeline);
+};
 
 function autopopulate(next) {
   this.populate("category");
@@ -290,5 +256,9 @@ function autopopulate(next) {
 
 transactionSchema.pre("find", autopopulate);
 transactionSchema.pre("findOne", autopopulate);
+
+transactionSchema.index({
+  description: "text"
+});
 
 module.exports = mongoose.model("Transaction", transactionSchema);

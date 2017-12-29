@@ -3,22 +3,22 @@ extends layout
 include mixins/_appNav
 
 block content
-  - const pageTitle = type === "Expenses" ? "Expenses" : "Income"
-  +appNav(pageTitle)
+  +appNav(title)
 
   div.app-page
     header.section__head
       h1= type
 
-    if amounts
+    if chartData
       - const typeClass = type === "Expenses" ? "chart--expenses" : "chart--income"
       .chart(class=typeClass)
         ol.chart__list
-          each m in amounts.months
+          each m in chartData.months
             - const selectedClass = m._id.month - 1 === month ? "chart__item--selected" : ""
             li.chart__item(class=selectedClass)
-              a(href=`/stats?type=${type}&year=${m._id.year}&month=${m._id.month}`)
-                - const typeHeight = type === "Expenses" ? m.amount / amounts.minAmount * 100 : m.amount / amounts.maxAmount * 100
+              - const categoryParam = category ? `&category=${category._id}` : ""
+              a(href=`/stats/${type}?year=${m._id.year}&month=${m._id.month}${categoryParam}`)
+                - const typeHeight = type === "Expenses" ? m.amount / chartData.minAmount * 100 : m.amount / chartData.maxAmount * 100
                 .chart__item__bar(style=`height: ${typeHeight}%`)
                 .chart__item__label= h.moment({months: m._id.month - 1}).format("MMM")
 
