@@ -2,25 +2,6 @@ const _ = require("lodash");
 
 exports.moment = require("moment");
 
-exports.getMonthName = month => {
-  // replace with momentjs
-  const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December"
-  ];
-  return monthNames[parseFloat(month)];
-};
-
 exports.currencies = [
   "AUD",
   "BGN",
