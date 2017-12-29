@@ -3,7 +3,9 @@ mixin groupedTransactions(transactions)
 
   if transactions.length > 0
     each year in transactions
-      h1= year._id.year
+      header.section__head
+        h1= year._id.year
+      
       .pills
         if year.income > 0
           a(href=`/stats?type=1&year=${year._id.year}${categoryParam}`)
@@ -21,7 +23,10 @@ mixin groupedTransactions(transactions)
             span.pill-value= `${h.formatNumber(year.balance)}`
 
       each month in year.months
-        h1= `${h.getMonthName(month.month - 1)} ${year._id.year}`
+        header.section__head
+          h2= h.moment({ month: month.month - 1 }).format("MMMM")
+            small= year._id.year
+        
         .pills
           if month.income > 0
             a(href=`/stats?type=1&year=${year._id.year}&month=${month.month}${categoryParam}`)
@@ -40,7 +45,7 @@ mixin groupedTransactions(transactions)
 
         each day in month.days
           .transactions__group
-            h4.transactions__group__title= h.moment(day.date).format("LL")
+            h3.transactions__group__title= h.moment(day.date).format("LL")
               span.transactions__group__amount= h.formatNumber(day.balance)
             ol.transactions__list
               each transaction in day.transactions

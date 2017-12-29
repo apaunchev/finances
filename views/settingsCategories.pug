@@ -6,10 +6,14 @@ block content
   +appNav(title, menus.settingsCategories.appNavLeft, menus.settingsCategories.appNavRight)
 
   div.app-page
-    h1 Categories
+    header.section__head
+      h1 Categories
+
     if categories
       each group in categories
-        h2= group._id
+        header.section__head
+          h2= group._id
+        
         ul.content__list
           each category in group.categories
             li.content__item

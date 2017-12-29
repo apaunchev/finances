@@ -16,3 +16,15 @@ body {
   margin: 0 16px;
   padding: 10px 0;
 }
+
+.section__head {
+  display: flex;
+  align-items: baseline;
+  margin: 16px;
+
+  > span {
+    margin-left: auto;
+    padding-left: 10px;
+    color: gray;
+  }
+}

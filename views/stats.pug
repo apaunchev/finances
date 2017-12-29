@@ -7,7 +7,8 @@ block content
   +appNav(pageTitle)
 
   div.app-page
-    h1=type
+    header.section__head
+      h1= type
 
     if amounts
       - const typeClass = type === "Expenses" ? "chart--expenses" : "chart--income"
@@ -22,7 +23,12 @@ block content
                 .chart__item__label= h.moment({months: m._id.month - 1}).format("MMM")
 
     if categories
-      h1= `${month && month > 0 ? `${h.getMonthName(month)} `: ""}${year}`
+      header.section__head
+        h2= month >= 0 ? h.moment({ month: month, year: year }).format("MMMM") : h.moment({ year: year }).format("YYYY")
+          if month >= 0
+            small= year
+        span= h.formatNumber(categories.balance)
+      
       ul.progress__list
         each category in categories.categories
           li.progress__item

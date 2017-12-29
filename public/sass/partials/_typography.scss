@@ -4,20 +4,27 @@ h3,
 h4,
 h5,
 h6 {
-  margin: 16px;
-  letter-spacing: -1px;
+  margin: 0;
+
+  > small {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: smaller;
+    font-weight: 400;
+    color: $c-text-meta;
+  }
 }
 
 h1 {
-  font-size: 27px;
+  font-size: 30px;
 }
 
 h2 {
-  font-size: 21px;
+  font-size: 27px;
 }
 
 h3 {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 a {
