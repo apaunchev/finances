@@ -76,7 +76,7 @@ exports.processTransaction = async (req, res, next) => {
 exports.createTransaction = async (req, res) => {
   const transaction = await new Transaction(req.body).save();
 
-  res.redirect("/transactions");
+  res.redirect("/");
 };
 
 exports.updateTransaction = async (req, res) => {
@@ -86,13 +86,13 @@ exports.updateTransaction = async (req, res) => {
     { new: true, runValidators: true }
   ).exec();
 
-  res.redirect("/transactions");
+  res.redirect("/");
 };
 
 exports.removeTransaction = async (req, res) => {
   const transaction = await Transaction.remove({ _id: req.params.id });
 
-  res.redirect("/transactions");
+  res.redirect("/");
 };
 
 const confirmOwner = (transaction, user) => {
