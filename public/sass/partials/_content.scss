@@ -62,3 +62,20 @@ $c-content-border: whitesmoke;
   border-radius: 100%;
   background-color: $c-content-border;
 }
+
+.empty-page {
+  display: flex;
+  align-content: center;
+  align-items: center;
+  height: calc(100vh - 108px);
+}
+
+.empty-page__content {
+  flex: 1;
+  text-align: center;
+  color: $c-text-meta;
+}
+
+.empty-page__title {
+  font-weight: 300;
+}
