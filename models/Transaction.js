@@ -204,10 +204,30 @@ transactionSchema.statics.getFiltered = function(filters) {
       pipeline.push({ $sort });
 
       $group = {
-        _id: "Group by date",
+        _id: {
+          year: "$_id.year"
+        },
         maxAmount: { $max: "$amount" },
         minAmount: { $min: "$amount" },
         months: {
+          $push: {
+            month: "$_id.month",
+            amount: "$amount"
+          }
+        }
+      };
+
+      pipeline.push({ $group });
+
+      $sort = { _id: -1 };
+
+      pipeline.push({ $sort });
+
+      $group = {
+        _id: "Group by date",
+        maxAmount: { $max: "$maxAmount" },
+        minAmount: { $min: "$minAmount" },
+        years: {
           $push: "$$ROOT"
         }
       };

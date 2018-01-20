@@ -12,15 +12,20 @@ block content
     if chartData
       - const typeClass = type === "Expenses" ? "chart--expenses" : "chart--income"
       .chart(class=typeClass)
-        ol.chart__list
-          each m in chartData.months
-            - const selectedClass = m._id.month - 1 === month ? "chart__item--selected" : ""
-            li.chart__item(class=selectedClass)
-              - const categoryParam = category ? `&category=${category._id}` : ""
-              a(href=`/stats/${type}?year=${m._id.year}&month=${m._id.month}${categoryParam}`)
-                - const typeHeight = type === "Expenses" ? m.amount / chartData.minAmount * 100 : m.amount / chartData.maxAmount * 100
-                .chart__item__bar(style=`height: ${typeHeight}%`)
-                .chart__item__label= h.moment({months: m._id.month - 1}).format("MMM")
+        ol.chart__list.chart__list--years
+          each y in chartData.years
+            - let activeClass = y._id.year === year ? "chart__item__label--active" : ""
+            li.chart__item
+              .chart__item__label.chart__item__label--years(class=activeClass)= y._id.year
+              ol.chart__list.chart__list--months
+                each m in y.months
+                  - activeClass = m.month - 1 === month && y._id.year === year ? "chart__item--active" : ""
+                  li.chart__item(class=activeClass)
+                    - const categoryParam = category ? `&category=${category._id}` : ""
+                    a(href=`/stats/${type}?year=${y._id.year}&month=${m.month}${categoryParam}`)
+                      - const typeHeight = type === "Expenses" ? m.amount / chartData.minAmount * 81 : m.amount / chartData.maxAmount * 81
+                      .chart__item__bar(style=`height: ${typeHeight}%`)
+                      .chart__item__label.chart__item__label--months= h.moment({months: m.month - 1}).format("MMM")
 
     if categories
       header.content__head
@@ -33,8 +38,9 @@ block content
         each category in categories.categories
           li.progress__item
             header
-              .progress__item__title= category._id.name
+              - typeClass = type === "Expenses" ? "progress__item__title--expenses" : "progress__item__title--income"
+              .progress__item__title(class=typeClass)= category._id.name
               .progress__item__meta= h.formatNumber(category.amount)
             .progress
-              - const typeClass = type === "Expenses" ? "progress__bar--expenses" : "progress__bar--income"
+              - typeClass = type === "Expenses" ? "progress__bar--expenses" : "progress__bar--income"
               .progress__bar(class=typeClass style=`width: ${(category.amount / categories.balance) * 100}%`)

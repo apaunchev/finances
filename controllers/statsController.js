@@ -13,7 +13,6 @@ exports.stats = async (req, res) => {
   const chartData = await Transaction.getFiltered({
     user,
     type,
-    year,
     category,
     groupBy: "date"
   });

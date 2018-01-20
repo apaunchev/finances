@@ -17,6 +17,18 @@ $c-progress-green: $c-income;
   }
 }
 
+.progress__item__title {
+  font-weight: 500;
+
+  &--expenses {
+    color: $c-progress-red;
+  }
+
+  &--income {
+    color: $c-progress-green;
+  }
+}
+
 .progress__item__meta {
   margin-left: auto;
   padding-left: 10px;
@@ -30,14 +42,22 @@ $c-progress-green: $c-income;
 }
 
 .progress__bar {
+  width: 0;
   height: 100%;
   border-radius: 10px;
+  animation: progress 0.7s ease-in-out;
+
+  &--expenses {
+    background-color: $c-progress-red;
+  }
+
+  &--income {
+    background-color: $c-progress-green;
+  }
 }
 
-.progress__bar--expenses {
-  background-color: $c-progress-red;
-}
-
-.progress__bar--income {
-  background-color: $c-progress-green;
+@keyframes progress {
+  0% {
+    width: 0;
+  }
 }
