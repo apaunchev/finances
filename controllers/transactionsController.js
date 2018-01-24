@@ -64,7 +64,7 @@ exports.processTransaction = async (req, res, next) => {
       .catch(err => console.error(err));
 
     req.body.amount =
-      fx(amount)
+      fx(req.body.amount)
         .from(transactionCurrency)
         .to(userCurrency)
         .toFixed(2) / 1;
