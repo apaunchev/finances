@@ -237,7 +237,8 @@ transactionSchema.statics.getFiltered = function(filters) {
       $group = {
         _id: {
           _id: "$category._id",
-          name: "$category.name"
+          name: "$category.name",
+          color: "$category.color"
         },
         amount: { $sum: "$amount" }
       };

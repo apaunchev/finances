@@ -38,9 +38,7 @@ block content
         each category in categories.categories
           li.progress__item
             header
-              - typeClass = type === "Expenses" ? "progress__item__title--expenses" : "progress__item__title--income"
-              .progress__item__title(class=typeClass)= category._id.name
+              .progress__item__title(style=`color: ${category._id.color}`)= category._id.name
               .progress__item__meta= h.formatNumber(category.amount)
             .progress
-              - typeClass = type === "Expenses" ? "progress__bar--expenses" : "progress__bar--income"
-              .progress__bar(class=typeClass style=`width: ${(category.amount / categories.balance) * 100}%`)
+              .progress__bar(style=`background-color: ${category._id.color}; width: ${(category.amount / categories.balance) * 100}%`)
