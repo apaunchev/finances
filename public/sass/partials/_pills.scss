@@ -3,11 +3,10 @@ $c-pill-expenses-bg: $c-expenses;
 $c-pill-income-bg: $c-income;
 
 .pills {
+  @extend %scroll;
   margin-top: 16px;
   margin-bottom: 16px;
   padding: 0 5px;
-  display: flex;
-  overflow-x: scroll;
 }
 
 .pill {
