@@ -9,7 +9,7 @@ exports.getTransactions = async (req, res) => {
   const user = req.user;
   const category =
     req.query.category && (await Category.findOne({ _id: req.query.category }));
-  const cleared = req.query.cleared && (req.query.cleared == "true");
+  const cleared = req.query.cleared && req.query.cleared == "true";
   const transactions = await Transaction.getAll(user, category, cleared);
 
   res.render("transactions", {
@@ -52,7 +52,7 @@ exports.processTransaction = async (req, res, next) => {
   req.body.amount = parseFloat(
     type === "Expenses" ? -Math.abs(req.body.amount) : Math.abs(req.body.amount)
   );
-  req.body.cleared = (req.body.cleared == "true");
+  req.body.cleared = req.body.cleared == "true";
 
   if (userCurrency !== transactionCurrency) {
     await axios
