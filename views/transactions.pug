@@ -4,9 +4,7 @@ include mixins/_appNav
 include mixins/_groupedTransactions
 
 block content
-  - const pageTitle = category ? `${category.name}` : cleared === false ? "Uncleared" : "All"
-
-  +appNav(pageTitle, menus.transactions.appNavLeft, menus.transactions.appNavRight)
+  +appNav(title, menus.transactions.appNavLeft, menus.transactions.appNavRight)
 
   .content
     +groupedTransactions(transactions)

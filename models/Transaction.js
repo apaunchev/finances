@@ -29,7 +29,9 @@ const transactionSchema = new mongoose.Schema({
   cleared: Boolean
 });
 
-transactionSchema.statics.getAll = function(user, category, cleared) {
+transactionSchema.statics.getAll = function(filters) {
+  const { user, year, month, category, uncleared, all } = filters;
+
   let $match = {
     user: user._id
   };
@@ -38,9 +40,24 @@ transactionSchema.statics.getAll = function(user, category, cleared) {
     $match.category = category._id;
   }
 
-  // match by cleared only if explicitly set; otherwise it is (implicitly) undefined.
-  if (cleared === true || cleared === false) {
-    $match.cleared = cleared;
+  if (uncleared) {
+    $match.cleared = false;
+  }
+
+  if (!all) {
+    if (year && isNaN(month)) {
+      $match.date = {
+        $gte: new Date(year, 0, 1),
+        $lte: new Date(year, 11, 31)
+      };
+    }
+
+    if (year && month >= 0) {
+      $match.date = {
+        $gte: new Date(year, month, 1),
+        $lte: new Date(year, month + 1, 0)
+      };
+    }
   }
 
   return this.aggregate([
