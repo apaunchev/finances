@@ -22,18 +22,13 @@ mixin transactionForm(transaction = {})
         - const date = h.moment(transaction.date).format('YYYY-MM-DD')
         input(type="date" name="date" value=date)
       .input__element.input__element--small
-        select(name="repeat")
-          option(value="once") Once
-          option(value="weekly") Weekly
-          option(value="monthly") Monthly
-
-    .input__group
-      .input__element.input__element--large
-        input(type="text" name="description" placeholder="Description (optional)" value=transaction.description)
-      .input__element.input__element--small
         select(name="cleared")
           option(value="true" selected=transaction.cleared) Cleared
           option(value="false" selected=!transaction.cleared) Uncleared
+
+    .input__group
+      .input__element
+        input(type="text" name="description" placeholder="Description (optional)" value=transaction.description)
 
     .input__group
       input(type="submit" value="Save")
