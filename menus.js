@@ -3,8 +3,7 @@ module.exports = {
     appNavLeft: [{ url: "/settings", title: "Settings", icon: "sliders" }],
     appNavRight: [{ url: "/add", title: "Add", icon: "plus-circle" }],
     contentList: [
-      { url: "/transactions", title: "This month", icon: "calendar" },
-      { url: "/transactions?all=true", title: "All", icon: "arrow-right-circle" },
+      { url: "/transactions", title: "All", icon: "arrow-right-circle" },
       { url: "/transactions?uncleared=true&all=true", title: "Uncleared", icon: "circle" }
     ]
   },

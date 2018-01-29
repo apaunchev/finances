@@ -32,12 +32,14 @@ textarea {
   border: none;
   border-bottom: 1px solid $c-form-border;
   background-color: white;
+  box-sizing: border-box;
 }
 
 .form__button {
   display: block;
   width: 100%;
   padding: 10px;
+  box-sizing: border-box;
   color: white;
   text-align: center;
   cursor: pointer;

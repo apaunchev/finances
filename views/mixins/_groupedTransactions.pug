@@ -56,6 +56,11 @@ mixin groupedTransactions(transactions)
                       span.transaction__category(style=`color: ${transaction.category.color}`)= transaction.category.name
                     .transaction__details__right
                       span.transaction__amount(class=`${transaction.amount < 0 ? "transaction__amount--expense" : ""}`)= `${h.formatNumber(transaction.amount)}`
+
+    unless all
+      .content__padded
+        a.form__button(href="/transactions?all=true") Older
+
   else
     .empty-page
       .empty-page__content

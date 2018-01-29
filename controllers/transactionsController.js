@@ -27,9 +27,10 @@ exports.getTransactions = async (req, res) => {
   res.render("transactions", {
     title: category
       ? category.name
-      : uncleared ? "Uncleared" : all ? "All" : "This month",
+      : uncleared ? "Uncleared" : "All",
     transactions,
-    category
+    category,
+    all
   });
 };
 
