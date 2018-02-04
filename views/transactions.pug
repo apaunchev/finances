@@ -1,10 +1,67 @@
 extends layout
 
 include mixins/_appNav
-include mixins/_groupedTransactions
 
 block content
   +appNav(title, menus.transactions.appNavLeft, menus.transactions.appNavRight)
 
   .content
-    +groupedTransactions(transactions)
+    if transactions.length > 0
+      each year in transactions
+        header.content__head
+          h1= year._id.year
+
+        .pills
+          if year.income > 0
+            a(href=`/stats/Income?${params}&year=${year._id.year}`)
+              .pill.pill--bg-income
+                span.pill-label Income
+                span.pill-value= `${h.formatNumber(year.income)}`
+          if year.expenses < 0
+            a(href=`/stats/Expenses?${params}&year=${year._id.year}`)
+              .pill.pill--bg-expenses
+                span.pill-label Expenses
+                span.pill-value= `${h.formatNumber(year.expenses)}`
+          if year.income > 0 && year.expenses < 0
+            .pill
+              span.pill-label Balance
+              span.pill-value= `${h.formatNumber(year.balance)}`
+
+        each month in year.months
+          header.content__head
+            h2= h.moment({ month: month.month - 1 }).format("MMMM")
+              small= year._id.year
+
+          .pills
+            if month.income > 0
+              a(href=`/stats/Income?${params}&year=${year._id.year}&month=${month.month}`)
+                .pill.pill--bg-income
+                  span.pill-label Income
+                  span.pill-value= `${h.formatNumber(month.income)}`
+            if month.expenses < 0
+              a(href=`/stats/Expenses?${params}&year=${year._id.year}&month=${month.month}`)
+                .pill.pill--bg-expenses
+                  span.pill-label Expenses
+                  span.pill-value= `${h.formatNumber(month.expenses)}`
+            if month.income > 0 && month.expenses < 0
+              .pill
+                span.pill-label Balance
+                span.pill-value= `${h.formatNumber(month.balance)}`
+
+          each day in month.days
+            .transactions__group
+              h3.transactions__group__title= h.moment(day.date).format("LL")
+                span.transactions__group__amount= h.formatNumber(day.balance)
+              ol.transactions__list
+                each transaction in day.transactions
+                  li.transaction
+                    a(href=`/transaction/${transaction._id}/edit?${params}`)
+                      .transaction__details__left
+                        span.transaction__name= `${!transaction.cleared ? "• " : ""}${transaction.description}`
+                        span.transaction__category(style=`color: ${transaction.category.color}`)= transaction.category.name
+                      .transaction__details__right
+                        span.transaction__amount(class=`${transaction.amount < 0 ? "transaction__amount--expense" : ""}`)= `${h.formatNumber(transaction.amount)}`
+    else
+      .empty-page
+        .empty-page__content
+          h2.empty-page__title No transactions
