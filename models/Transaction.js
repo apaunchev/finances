@@ -30,7 +30,7 @@ const transactionSchema = new mongoose.Schema({
 });
 
 transactionSchema.statics.getAll = function(filters) {
-  const { user, year, month, category, uncleared, all } = filters;
+  const { user, category, uncleared } = filters;
 
   let $match = {
     user: user._id
@@ -42,22 +42,6 @@ transactionSchema.statics.getAll = function(filters) {
 
   if (uncleared) {
     $match.cleared = false;
-  }
-
-  if (!all) {
-    if (year && isNaN(month)) {
-      $match.date = {
-        $gte: new Date(year, 0, 1),
-        $lte: new Date(year, 11, 31)
-      };
-    }
-
-    if (year && month >= 0) {
-      $match.date = {
-        $gte: new Date(year, month, 1),
-        $lte: new Date(year, month + 1, 0)
-      };
-    }
   }
 
   return this.aggregate([

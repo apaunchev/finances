@@ -7,21 +7,13 @@ const fx = require("money");
 
 exports.getTransactions = async (req, res) => {
   const user = req.user;
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
   const category =
     req.query.category && (await Category.findOne({ _id: req.query.category }));
   const uncleared = req.query.uncleared && req.query.uncleared == "true";
-  const all = req.query.all && req.query.all == "true";
-
   const transactions = await Transaction.getAll({
     user,
-    year,
-    month,
     category,
     uncleared,
-    all
   });
 
   res.render("transactions", {
@@ -30,7 +22,6 @@ exports.getTransactions = async (req, res) => {
       : uncleared ? "Uncleared" : "All",
     transactions,
     category,
-    all
   });
 };
 
