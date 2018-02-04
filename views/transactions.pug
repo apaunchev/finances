@@ -3,7 +3,9 @@ extends layout
 include mixins/_appNav
 
 block content
-  +appNav(title, menus.transactions.appNavLeft, menus.transactions.appNavRight)
+  - const appNavRight = [{ url: `/add?${params}`, title: "Add", icon: "plus-circle" }]
+
+  +appNav(title, menus.transactions.appNavLeft, appNavRight)
 
   .content
     if transactions.length > 0

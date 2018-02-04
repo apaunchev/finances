@@ -7,28 +7,30 @@ const fx = require("money");
 
 exports.getTransactions = async (req, res) => {
   const user = req.user;
+  const params = encodeData(req.query);
   const category =
     req.query.category && (await Category.findOne({ _id: req.query.category }));
   const uncleared = req.query.uncleared && req.query.uncleared == "true";
   const transactions = await Transaction.getAll({
     user,
     category,
-    uncleared,
+    uncleared
   });
 
   res.render("transactions", {
-    title: category
-      ? category.name
-      : uncleared ? "Uncleared" : "All",
-    transactions,
-    category,
+    params,
+    title: category ? category.name : uncleared ? "Uncleared" : "All",
+    transactions
   });
 };
 
 exports.addTransaction = async (req, res) => {
   const categories = await Category.getCategoriesForUser(req.user, true);
 
-  res.render("editTransaction", { title: "Add transaction", categories });
+  res.render("editTransaction", {
+    title: "Add transaction",
+    categories
+  });
 };
 
 exports.editTransaction = async (req, res) => {
@@ -104,4 +106,10 @@ const confirmOwner = (transaction, user) => {
   if (!transaction.user.equals(user._id)) {
     throw Error("Transaction not found.");
   }
+};
+
+const encodeData = data => {
+  return Object.keys(data)
+    .map(key => [key, data[key]].map(encodeURIComponent).join("="))
+    .join("&");
 };
