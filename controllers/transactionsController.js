@@ -1,35 +1,54 @@
-const mongoose = require("mongoose");
-const Transaction = mongoose.model("Transaction");
-const Category = mongoose.model("Category");
-const moment = require("moment");
-const axios = require("axios");
-const fx = require("money");
+const mongoose = require('mongoose');
+
+const Transaction = mongoose.model('Transaction');
+const Category = mongoose.model('Category');
+const axios = require('axios');
+const fx = require('money');
+
+const encodeData = data =>
+  Object.keys(data)
+    .map(key => [key, data[key]].map(encodeURIComponent).join('='))
+    .join('&');
+
+const confirmOwner = (transaction, user) => {
+  if (!transaction.user.equals(user._id)) {
+    throw Error('Transaction not found.');
+  }
+};
 
 exports.getTransactions = async (req, res) => {
-  const user = req.user;
+  const { user } = req;
   const params = encodeData(req.query);
-  const category =
-    req.query.category && (await Category.findOne({ _id: req.query.category }));
-  const uncleared = req.query.uncleared && req.query.uncleared == "true";
+  const category = req.query.category && (await Category.findOne({ _id: req.query.category }));
+  const uncleared = req.query.uncleared && req.query.uncleared === 'true';
   const transactions = await Transaction.getAll({
     user,
     category,
-    uncleared
+    uncleared,
   });
 
-  res.render("transactions", {
+  let title = null;
+  if (category) {
+    title = category.name;
+  } else if (uncleared) {
+    title = 'Uncleared';
+  } else {
+    title = 'All';
+  }
+
+  res.render('transactions', {
     params,
-    title: category ? category.name : uncleared ? "Uncleared" : "All",
-    transactions
+    title,
+    transactions,
   });
 };
 
 exports.addTransaction = async (req, res) => {
   const categories = await Category.getCategoriesForUser(req.user, true);
 
-  res.render("editTransaction", {
-    title: "Add transaction",
-    categories
+  res.render('editTransaction', {
+    title: 'Add transaction',
+    categories,
   });
 };
 
@@ -39,34 +58,32 @@ exports.editTransaction = async (req, res) => {
 
   confirmOwner(transaction, req.user); // TODO: middleware
 
-  res.render("editTransaction", {
-    title: "Edit transaction",
+  res.render('editTransaction', {
+    title: 'Edit transaction',
     transaction,
-    categories
+    categories,
   });
 };
 
 exports.processTransaction = async (req, res, next) => {
-  const userCurrency = req.user.currency || "EUR";
+  const userCurrency = req.user.currency || 'EUR';
   const transactionCurrency = req.body.currency;
-  const category = req.body.category.split(":"); // Expenses:5921bd186ba4914d25133815:Personal
+  const category = req.body.category.split(':'); // Expenses:5921bd186ba4914d25133815:Personal
   const type = category[0]; // Expenses or Income
 
   req.body.date = req.body.date || Date.now();
   req.body.category = category[1];
   req.body.description = req.body.description || category[2];
   req.body.user = req.user._id;
-  req.body.amount = parseFloat(
-    type === "Expenses" ? -Math.abs(req.body.amount) : Math.abs(req.body.amount)
-  );
-  req.body.cleared = req.body.cleared == "true";
+  req.body.amount = parseFloat(type === 'Expenses' ? -Math.abs(req.body.amount) : Math.abs(req.body.amount));
+  req.body.cleared = req.body.cleared === 'true';
 
   if (userCurrency !== transactionCurrency) {
     await axios
-      .get("https://api.fixer.io/latest")
-      .then(res => {
-        fx.base = res.data.base;
-        fx.rates = res.data.rates;
+      .get('https://api.fixer.io/latest')
+      .then(data => {
+        fx.base = data.data.base;
+        fx.rates = data.data.rates;
       })
       .catch(err => console.error(err));
 
@@ -83,33 +100,20 @@ exports.processTransaction = async (req, res, next) => {
 exports.createTransaction = async (req, res) => {
   const transaction = await new Transaction(req.body).save();
 
-  res.redirect("/transactions");
+  res.redirect('/transactions');
 };
 
 exports.updateTransaction = async (req, res) => {
-  const transaction = await Transaction.findOneAndUpdate(
-    { _id: req.params.id },
-    req.body,
-    { new: true, runValidators: true }
-  ).exec();
+  const transaction = await Transaction.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    new: true,
+    runValidators: true,
+  }).exec();
 
-  res.redirect("/transactions");
+  res.redirect('/transactions');
 };
 
 exports.removeTransaction = async (req, res) => {
   const transaction = await Transaction.remove({ _id: req.params.id });
 
-  res.redirect("/transactions");
-};
-
-const confirmOwner = (transaction, user) => {
-  if (!transaction.user.equals(user._id)) {
-    throw Error("Transaction not found.");
-  }
-};
-
-const encodeData = data => {
-  return Object.keys(data)
-    .map(key => [key, data[key]].map(encodeURIComponent).join("="))
-    .join("&");
+  res.redirect('/transactions');
 };
