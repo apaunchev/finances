@@ -1,10 +1,10 @@
 exports.login = (req, res) => {
-  res.render('login');
+  res.render("login");
 };
 
 exports.logout = (req, res) => {
   req.logout();
-  res.redirect('/');
+  res.redirect("/");
 };
 
 exports.isAuthenticated = (req, res, next) => {
@@ -12,5 +12,5 @@ exports.isAuthenticated = (req, res, next) => {
     return next();
   }
 
-  res.redirect('/login');
+  res.redirect("/login");
 };

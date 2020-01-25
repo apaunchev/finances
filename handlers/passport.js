@@ -1,15 +1,15 @@
-const passport = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const mongoose = require('mongoose');
+const passport = require("passport");
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+const mongoose = require("mongoose");
 
-const User = mongoose.model('User');
-const Category = mongoose.model('Category');
+const User = mongoose.model("User");
+const Category = mongoose.model("Category");
 
 async function createInitialUserData(user) {
   const category = await new Category({
-    name: 'Unsorted',
-    color: '#7f8c8d',
-    user: user._id,
+    name: "Unsorted",
+    color: "#7f8c8d",
+    user: user._id
   }).save();
 }
 
@@ -28,7 +28,7 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: '/auth/google/callback',
+      callbackURL: "/auth/google/callback"
     },
     async (accessToken, refreshToken, profile, done) => {
       const existingUser = await User.findOne({ googleId: profile.id });
@@ -39,7 +39,9 @@ passport.use(
 
       const user = await new User({
         googleId: profile.id,
-        email: profile.emails && profile.emails.filter(email => email.type === 'account')[0].value,
+        email:
+          profile.emails &&
+          profile.emails.filter(email => email.type === "account")[0].value
       }).save();
 
       createInitialUserData(user);
