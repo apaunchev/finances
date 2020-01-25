@@ -6,7 +6,6 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const passport = require("passport");
-const expressValidator = require("express-validator");
 const routes = require("./routes");
 const helpers = require("./helpers");
 const menus = require("./menus");
@@ -22,8 +21,6 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-app.use(expressValidator());
 
 app.use(cookieParser());
 

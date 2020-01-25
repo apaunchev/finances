@@ -3,7 +3,11 @@ const mongodbErrorHandler = require("mongoose-mongodb-errors");
 
 require("dotenv").config({ path: "variables.env" });
 
-mongoose.connect(process.env.DATABASE, { useMongoClient: true });
+mongoose.connect(process.env.DATABASE, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true
+});
 mongoose.Promise = global.Promise;
 mongoose.connection.on("error", err => {
   console.error(`🚫 → ${err.message}`);
