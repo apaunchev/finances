@@ -9,7 +9,7 @@ const passport = require("passport");
 const routes = require("./routes");
 const helpers = require("./helpers");
 const menus = require("./menus");
-const errorHandlers = require("./handlers/errorHandlers");
+const errorHandlers = require("./handlers/errors");
 require("./handlers/passport");
 
 const app = express();

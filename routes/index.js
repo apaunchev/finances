@@ -7,7 +7,7 @@ const dashboardController = require("../controllers/dashboardController");
 const transactionsController = require("../controllers/transactionsController");
 const settingsController = require("../controllers/settingsController");
 const statsController = require("../controllers/statsController");
-const { catchErrors } = require("../handlers/errorHandlers");
+const { catchErrors } = require("../handlers/errors");
 
 router.get("/", authController.isAuthenticated, dashboardController.dashboard);
 
