@@ -1,6 +1,6 @@
 {
   "name": "finances",
-  "version": "0.2.0",
+  "version": "2.0.0",
   "private": true,
   "engines": {
     "node": ">= 7.10.1"
