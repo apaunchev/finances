@@ -9,9 +9,7 @@ mongoose.connect(process.env.DATABASE, {
   useCreateIndex: true
 });
 mongoose.Promise = global.Promise;
-mongoose.connection.on("error", err => {
-  console.error(`🚫 → ${err.message}`);
-});
+mongoose.connection.on("error", err => console.error(`🚫 → ${err.message}`));
 mongoose.plugin(mongodbErrorHandler);
 
 require("./models/Transaction");
@@ -22,6 +20,6 @@ const app = require("./app");
 
 app.set("port", process.env.PORT || 1234);
 
-const server = app.listen(app.get("port"), () => {
-  console.log(`💻 → PORT ${server.address().port}`);
-});
+const server = app.listen(app.get("port"), () =>
+  console.log(`💻 → PORT ${server.address().port}`)
+);

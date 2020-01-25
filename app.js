@@ -6,6 +6,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const passport = require("passport");
+
 const routes = require("./routes");
 const helpers = require("./helpers");
 const menus = require("./menus");
@@ -31,7 +32,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7 // 168 hours
+      maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
     },
     store: new MongoStore({ mongooseConnection: mongoose.connection })
   })
