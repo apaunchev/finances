@@ -10,6 +10,7 @@
     "watch": "nodemon ./start.js --ignore public/",
     "dev": "concurrently \"npm run watch\" \"npm run assets\" --names \"💻,📦\" --prefix name",
     "assets": "webpack --watch --display-max-modules 0",
+    "deploy": "git push heroku master",
     "heroku-postbuild": "webpack"
   },
   "dependencies": {
