@@ -6,9 +6,6 @@ block content
   +appNav(title)
 
   .content
-    header.content__head
-      h1= type
-
     if chartData
       - const typeClass = type === "Expenses" ? "chart--expenses" : "chart--income"
       .chart(class=typeClass)

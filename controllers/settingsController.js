@@ -14,20 +14,19 @@ exports.account = (req, res) => {
 
 exports.updateAccount = async (req, res) => {
   const updates = {
-    currency: req.body.currency
+    currency: req.body.currency,
+    timezone: req.body.timezone
   };
 
-  const user = await User.findOneAndUpdate(
+  await User.findOneAndUpdate(
     { _id: req.user._id },
     { $set: updates },
     { new: true, runValidators: true }
-  );
-
-  res.redirect("/settings/account");
+  ).then(() => res.redirect("/settings/account"));
 };
 
 exports.categories = async (req, res) => {
-  const categories = await Category.getCategoriesForUser(req.user, true);
+  const categories = await Category.getCategoriesForUser({ user: req.user });
 
   res.render("settingsCategories", { title: "Categories", categories });
 };
@@ -43,14 +42,16 @@ exports.processCategory = (req, res, next) => {
 };
 
 exports.createCategory = async (req, res) => {
-  const category = await new Category(req.body).save();
-
-  res.redirect("/settings/categories");
+  await new Category(req.body)
+    .save()
+    .then(() => res.redirect("/settings/categories"));
 };
 
 exports.editCategory = async (req, res) => {
   const category = await Category.findOne({ _id: req.params.id });
-  const transactionsCount = await Transaction.count({ category: category._id });
+  const transactionsCount = await Transaction.countDocuments({
+    category: category._id
+  });
 
   res.render("editCategory", {
     title: "Edit category",
@@ -60,20 +61,16 @@ exports.editCategory = async (req, res) => {
 };
 
 exports.updateCategory = async (req, res) => {
-  const category = await Category.findOneAndUpdate(
-    { _id: req.params.id },
-    req.body,
-    {
-      new: true,
-      runValidators: true
-    }
-  ).exec();
-
-  res.redirect("/settings/categories");
+  await Category.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    new: true,
+    runValidators: true
+  })
+    .exec()
+    .then(() => res.redirect("/settings/categories"));
 };
 
 exports.removeCategory = async (req, res) => {
-  const category = await Category.remove({ _id: req.params.id });
-
-  res.redirect("/settings/categories");
+  await Category.remove({ _id: req.params.id }).then(() =>
+    res.redirect("/settings/categories")
+  );
 };

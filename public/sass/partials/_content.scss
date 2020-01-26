@@ -28,6 +28,7 @@ $c-content-border: whitesmoke;
 }
 
 .content__item {
+  position: relative;
   border-bottom: 1px solid $c-content-border;
 
   &:first-child {

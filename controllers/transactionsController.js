@@ -45,17 +45,18 @@ exports.getTransactions = async (req, res) => {
 };
 
 exports.addTransaction = async (req, res) => {
-  const categories = await Category.getCategoriesForUser(req.user, true);
-
-  res.render("editTransaction", {
-    title: "Add transaction",
-    categories
+  const categories = await Category.getCategoriesForUser({
+    user: req.user,
+    sortBy: "count",
+    sortDirection: -1
   });
+
+  res.render("editTransaction", { title: "Add transaction", categories });
 };
 
 exports.editTransaction = async (req, res) => {
   const transaction = await Transaction.findOne({ _id: req.params.id });
-  const categories = await Category.getCategoriesForUser(req.user, true);
+  const categories = await Category.getCategoriesForUser({ user: req.user });
 
   confirmOwner(transaction, req.user); // TODO: middleware
 
@@ -74,19 +75,23 @@ exports.processTransaction = async (req, res, next) => {
 
   req.body.date = req.body.date || Date.now();
   req.body.category = category[1];
-  req.body.description = req.body.description || category[2];
+  req.body.note = req.body.note || "";
   req.body.user = req.user._id;
-  req.body.amount = parseFloat(
-    type === "Expenses" ? -Math.abs(req.body.amount) : Math.abs(req.body.amount)
-  );
   req.body.cleared = req.body.cleared === "true";
+  req.body.amount = parseFloat(
+    type === res.locals.h.types.expenses
+      ? -Math.abs(req.body.amount)
+      : Math.abs(req.body.amount)
+  );
 
   if (userCurrency !== transactionCurrency) {
     await axios
-      .get("https://api.fixer.io/latest")
-      .then(data => {
-        fx.base = data.data.base;
-        fx.rates = data.data.rates;
+      .get(
+        `http://data.fixer.io/api//latest?access_key=${process.env.FIXER_ACCESS_KEY}`
+      )
+      .then(res => {
+        fx.base = res.data.base;
+        fx.rates = res.data.rates;
       })
       .catch(err => console.error(err));
 
@@ -101,26 +106,22 @@ exports.processTransaction = async (req, res, next) => {
 };
 
 exports.createTransaction = async (req, res) => {
-  const transaction = await new Transaction(req.body).save();
-
-  res.redirect("/transactions");
+  await new Transaction(req.body)
+    .save()
+    .then(() => res.redirect("/transactions"));
 };
 
 exports.updateTransaction = async (req, res) => {
-  const transaction = await Transaction.findOneAndUpdate(
-    { _id: req.params.id },
-    req.body,
-    {
-      new: true,
-      runValidators: true
-    }
-  ).exec();
-
-  res.redirect("/transactions");
+  await Transaction.findOneAndUpdate({ _id: req.params.id }, req.body, {
+    new: true,
+    runValidators: true
+  })
+    .exec()
+    .then(() => res.redirect("/transactions"));
 };
 
 exports.removeTransaction = async (req, res) => {
-  const transaction = await Transaction.remove({ _id: req.params.id });
-
-  res.redirect("/transactions");
+  await Transaction.deleteOne({ _id: req.params.id }).then(() =>
+    res.redirect("/transactions")
+  );
 };

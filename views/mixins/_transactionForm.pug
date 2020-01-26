@@ -20,15 +20,16 @@ mixin transactionForm(transaction = {})
     .input__group
       .input__element.input__element--large
         - const date = h.moment(transaction.date).format('YYYY-MM-DD')
+        - const selected = transaction.cleared
         input(type="date" name="date" value=date)
       .input__element.input__element--small
         select(name="cleared")
-          option(value="true" selected=transaction.cleared) Cleared
-          option(value="false" selected=!transaction.cleared) Uncleared
+          option(value="true" selected=selected) Cleared
+          option(value="false" selected=selected) Uncleared
 
     .input__group
       .input__element
-        input(type="text" name="description" placeholder="Description (optional)" value=transaction.description)
+        input(type="text" name="note" placeholder="Note (optional)" value=transaction.note)
 
     .input__group
       input(type="submit" value="Save")

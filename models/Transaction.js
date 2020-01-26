@@ -1,36 +1,45 @@
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Types.ObjectId;
-mongoose.Promise = global.Promise;
+const helpers = require("../helpers");
 
-const EXPENSES_TYPE = "Expenses";
-const INCOME_TYPE = "Income";
-
-const transactionSchema = new mongoose.Schema({
-  description: String,
-  date: {
-    type: Date,
-    default: Date.now,
-    required: "Please provide a valid date."
+const transactionSchema = new mongoose.Schema(
+  {
+    category: {
+      type: mongoose.ObjectId,
+      ref: "Category",
+      required: true
+    },
+    user: {
+      type: mongoose.ObjectId,
+      ref: "User",
+      required: true
+    },
+    date: {
+      type: Date,
+      required: true,
+      default: Date.now
+    },
+    amount: {
+      type: Number,
+      required: true
+    },
+    payee: {
+      type: String,
+      required: false,
+      maxlength: 64
+    },
+    note: {
+      type: String,
+      required: false,
+      maxlength: 256
+    },
+    cleared: Boolean
   },
-  amount: {
-    type: Number,
-    required: "Please provide a valid amount."
-  },
-  category: {
-    type: mongoose.Schema.ObjectId,
-    ref: "Category",
-    required: true
-  },
-  user: {
-    type: mongoose.Schema.ObjectId,
-    ref: "User",
-    required: true
-  },
-  cleared: Boolean
-});
+  { timestamps: true }
+);
 
 transactionSchema.statics.getAll = function(filters) {
   const { user, category, uncleared } = filters;
+  const timezone = user.timezone || "UTC";
 
   let $match = {
     user: user._id
@@ -67,9 +76,11 @@ transactionSchema.statics.getAll = function(filters) {
     {
       $group: {
         _id: {
-          dayOfMonth: { $dayOfMonth: "$date" },
-          month: { $month: "$date" },
-          year: { $year: "$date" }
+          dayOfMonth: {
+            $dayOfMonth: { date: "$date", timezone }
+          },
+          month: { $month: { date: "$date", timezone } },
+          year: { $year: { date: "$date", timezone } }
         },
         balance: { $sum: "$amount" },
         income: {
@@ -148,9 +159,9 @@ transactionSchema.statics.getFiltered = function(filters) {
     user: user._id
   };
 
-  if (type === EXPENSES_TYPE) {
+  if (type === helpers.types.expenses) {
     $match.amount = { $lte: 0 };
-  } else if (type === INCOME_TYPE) {
+  } else if (type === helpers.types.income) {
     $match.amount = { $gt: 0 };
   } else {
     $match.amount = { $lte: 0 };
@@ -246,9 +257,9 @@ transactionSchema.statics.getFiltered = function(filters) {
 
       pipeline.push({ $group });
 
-      if (type === EXPENSES_TYPE) {
+      if (type === helpers.types.expenses) {
         $sort = { amount: 1 };
-      } else if (type === INCOME_TYPE) {
+      } else if (type === helpers.types.income) {
         $sort = { amount: -1 };
       } else {
         $sort = { amount: 1 };

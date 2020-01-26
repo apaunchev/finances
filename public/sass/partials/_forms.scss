@@ -46,7 +46,7 @@ textarea {
   @include setBackgroundColor($c-buttons);
 
   &.form__button--danger {
-    @include setBackgroundColor($c-ui);
+    @include setBackgroundColor($c-text-meta);
   }
 }
 

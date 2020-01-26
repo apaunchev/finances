@@ -1,22 +1,39 @@
 const mongoose = require("mongoose");
-mongoose.Promise = global.Promise;
+const helpers = require("../helpers");
 
-const categorySchema = new mongoose.Schema({
-  name: String,
-  color: String,
-  type: {
-    type: String,
-    required: true,
-    enum: ["Income", "Expenses"]
+const categorySchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      maxlength: 64
+    },
+    color: {
+      type: String,
+      required: false,
+      default: "#222222",
+      maxlength: 7
+    },
+    type: {
+      type: String,
+      required: true,
+      enum: [helpers.types.expenses, helpers.types.income]
+    },
+    user: {
+      type: mongoose.ObjectId,
+      ref: "User",
+      required: true
+    }
   },
-  user: {
-    type: mongoose.Schema.ObjectId,
-    ref: "User",
-    required: true
-  }
-});
+  { timestamps: true }
+);
 
-categorySchema.statics.getCategoriesForUser = function(user, group = false) {
+categorySchema.statics.getCategoriesForUser = function({
+  user,
+  groupBy = "type",
+  sortBy = "name",
+  sortDirection = 1
+}) {
   let pipeline = [];
 
   let $match = {
@@ -43,15 +60,15 @@ categorySchema.statics.getCategoriesForUser = function(user, group = false) {
 
   pipeline.push({ $project });
 
-  const $sort = { count: -1 };
+  const $sort = { [sortBy]: sortDirection };
 
   pipeline.push({ $sort: $sort });
 
-  if (group) {
+  if (groupBy) {
     let $group = {};
 
     $group = {
-      _id: "$type",
+      _id: `$${groupBy}`,
       categories: { $push: "$$ROOT" }
     };
 

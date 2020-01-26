@@ -2,6 +2,7 @@ extends layout
 
 include mixins/_appNav
 include mixins/_currencySelect
+include mixins/_timezoneSelect
 
 block content
   +appNav(title, menus.settingsAccount.appNavLeft)
@@ -16,6 +17,9 @@ block content
 
       .input__group
         +currencySelect()
+
+      .input__group
+        +timezoneSelect()
 
       .input__group
         input(type="submit" value="Save")

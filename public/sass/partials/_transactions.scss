@@ -24,6 +24,15 @@
   @extend .content__item;
 }
 
+.transaction--uncleared::before {
+  content: "•";
+  position: absolute;
+  top: 0;
+  left: -14px;
+  font-size: 24px;
+  color: $c-ui;
+}
+
 .transaction__details__left {
   white-space: nowrap;
   overflow: hidden;
@@ -36,6 +45,9 @@
 
 .transaction__name {
   display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   font-weight: 500;
 }
 
@@ -44,7 +56,7 @@
 }
 
 .transaction__amount--expense {
-  color: red;
+  color: $c-expenses;
 }
 
 .transaction__category {

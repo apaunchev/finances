@@ -10,14 +10,12 @@ exports.stats = async (req, res) => {
   const month = parseInt(req.query.month) - 1;
   const category =
     req.query.category && (await Category.findOne({ _id: req.query.category }));
-
   const chartData = await Transaction.getFiltered({
     user,
     type,
     category,
     groupBy: "date"
   });
-
   const categories = await Transaction.getFiltered({
     user,
     type,

@@ -1,0 +1,5 @@
+mixin timezoneSelect
+  select(name="timezone")
+    each timezone in h.timezones
+      - const selected = user.timezone && user.timezone === timezone
+      option(value=timezone selected=selected) #{timezone}

@@ -4,11 +4,13 @@ const mongoose = require("mongoose");
 
 const User = mongoose.model("User");
 const Category = mongoose.model("Category");
+const helpers = require("../helpers");
 
 async function createInitialUserData(user) {
-  const category = await new Category({
+  await new Category({
     name: "Unsorted",
-    color: "#7f8c8d",
+    color: "#e53e3e",
+    type: helpers.types.expenses,
     user: user._id
   }).save();
 }

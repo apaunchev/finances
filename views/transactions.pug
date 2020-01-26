@@ -56,10 +56,11 @@ block content
                 span.transactions__group__amount= h.formatNumber(day.balance)
               ol.transactions__list
                 each transaction in day.transactions
-                  li.transaction
+                  - const name = transaction.note || (transaction.amount < 0 ? "Expense" : "Income")
+                  li(class=`transaction${!transaction.cleared ? " transaction--uncleared" : ""}`)
                     a(href=`/transaction/${transaction._id}/edit?${params}`)
                       .transaction__details__left
-                        span.transaction__name= `${!transaction.cleared ? "• " : ""}${transaction.description}`
+                        span.transaction__name= name
                         span.transaction__category(style=`color: ${transaction.category.color}`)= transaction.category.name
                       .transaction__details__right
                         span.transaction__amount(class=`${transaction.amount < 0 ? "transaction__amount--expense" : ""}`)= `${h.formatNumber(transaction.amount)}`
