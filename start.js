@@ -6,7 +6,8 @@ require("dotenv").config({ path: "variables.env" });
 mongoose.connect(process.env.DATABASE, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  useCreateIndex: true
+  useCreateIndex: true,
+  useFindAndModify: false
 });
 mongoose.Promise = global.Promise;
 mongoose.connection.on("error", err => console.error(`🚫 → ${err.message}`));
