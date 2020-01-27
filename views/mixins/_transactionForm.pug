@@ -25,7 +25,7 @@ mixin transactionForm(transaction = {})
       .input__element.input__element--small
         select(name="cleared")
           option(value="true" selected=selected) Cleared
-          option(value="false" selected=selected) Uncleared
+          option(value="false" selected=!selected) Uncleared
 
     .input__group
       .input__element
