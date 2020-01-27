@@ -3,31 +3,34 @@ extends layout
 include mixins/_appNav
 
 block content
-  - const appNavRight = [{ url: `/add?${params}`, title: "Add", icon: "plus-circle" }]
+  - const queryParams = h.convertObjectToQueryParams(query)
+  - const appNavRight = [{ url: `/add?${queryParams}`, title: "Add", icon: "plus-circle" }]
 
   +appNav(title, menus.transactions.appNavLeft, appNavRight)
 
   .content
     if transactions.length > 0
       each year in transactions
-        header.content__head
-          h1= year._id.year
+        // hide year header when filtering by category, year and month
+        unless query.category && query.year && query.month
+          header.content__head
+            h1= year._id.year
 
-        .pills
-          if year.income > 0
-            a(href=`/stats/Income?${params}&year=${year._id.year}`)
-              .pill.pill--bg-income
-                span.pill-label Income
-                span.pill-value= `${h.formatNumber(year.income)}`
-          if year.expenses < 0
-            a(href=`/stats/Expenses?${params}&year=${year._id.year}`)
-              .pill.pill--bg-expenses
-                span.pill-label Expenses
-                span.pill-value= `${h.formatNumber(year.expenses)}`
-          if year.income > 0 && year.expenses < 0
-            .pill
-              span.pill-label Balance
-              span.pill-value= `${h.formatNumber(year.balance)}`
+          .pills
+            if year.income > 0
+              a(href=`/stats/Income?${queryParams}&year=${year._id.year}`)
+                .pill.pill--bg-income
+                  span.pill-label Income
+                  span.pill-value= `${h.formatNumber(year.income)}`
+            if year.expenses < 0
+              a(href=`/stats/Expenses?${queryParams}&year=${year._id.year}`)
+                .pill.pill--bg-expenses
+                  span.pill-label Expenses
+                  span.pill-value= `${h.formatNumber(year.expenses)}`
+            if year.income > 0 && year.expenses < 0
+              .pill
+                span.pill-label Balance
+                span.pill-value= `${h.formatNumber(year.balance)}`
 
         each month in year.months
           header.content__head
@@ -36,12 +39,12 @@ block content
 
           .pills
             if month.income > 0
-              a(href=`/stats/Income?${params}&year=${year._id.year}&month=${month.month}`)
+              a(href=`/stats/Income?${queryParams}&year=${year._id.year}&month=${month.month}`)
                 .pill.pill--bg-income
                   span.pill-label Income
                   span.pill-value= `${h.formatNumber(month.income)}`
             if month.expenses < 0
-              a(href=`/stats/Expenses?${params}&year=${year._id.year}&month=${month.month}`)
+              a(href=`/stats/Expenses?${queryParams}&year=${year._id.year}&month=${month.month}`)
                 .pill.pill--bg-expenses
                   span.pill-label Expenses
                   span.pill-value= `${h.formatNumber(month.expenses)}`
@@ -59,7 +62,7 @@ block content
                   - const name = transaction.note || (transaction.amount < 0 ? "Expense" : "Income")
                   - const payee = transaction.payee ? ` <span class="text--ui">@</span>${transaction.payee}` : ""
                   li(class=`transaction${!transaction.cleared ? " transaction--uncleared" : ""}`)
-                    a(href=`/transaction/${transaction._id}/edit?${params}`)
+                    a(href=`/transaction/${transaction._id}/edit?${queryParams}`)
                       .transaction__details__left
                         span.transaction__name!= `${name}${payee}`
                         span.transaction__category(style=`color: ${transaction.category.color}`)= transaction.category.name

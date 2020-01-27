@@ -1,6 +1,6 @@
 include _currencySelect
 
-mixin transactionForm(transaction = {})
+mixin transactionForm(query = {}, transaction = {})
   form(action=`/add/${transaction._id || ''}` method="POST" class="form")
     .input__group
       .input__element
@@ -8,7 +8,7 @@ mixin transactionForm(transaction = {})
           each group in categories
             optgroup(label=group._id)
               each category in group.categories
-                - const selected = transaction.category && transaction.category.type === category.type && transaction.category.name === category.name
+                - const selected = (query.category && query.category == category._id) || (transaction.category && transaction.category.type === category.type && transaction.category.name === category.name)
                 option(value=`${category.type}:${category._id}:${category.name}` selected=selected)= category.name
 
     .input__group

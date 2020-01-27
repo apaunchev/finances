@@ -5,11 +5,6 @@ const Category = mongoose.model("Category");
 const axios = require("axios");
 const fx = require("money");
 
-const encodeData = data =>
-  Object.keys(data)
-    .map(key => [key, data[key]].map(encodeURIComponent).join("="))
-    .join("&");
-
 const confirmOwner = (transaction, user) => {
   if (!transaction.user.equals(user._id)) {
     throw Error("Transaction not found.");
@@ -18,7 +13,7 @@ const confirmOwner = (transaction, user) => {
 
 exports.getTransactions = async (req, res) => {
   const { user } = req;
-  const params = encodeData(req.query);
+  const query = req.query;
   const category =
     req.query.category && (await Category.findOne({ _id: req.query.category }));
   const uncleared = req.query.uncleared && req.query.uncleared === "true";
@@ -38,20 +33,25 @@ exports.getTransactions = async (req, res) => {
   }
 
   res.render("transactions", {
-    params,
+    query,
     title,
     transactions
   });
 };
 
 exports.addTransaction = async (req, res) => {
+  const query = req.query;
   const categories = await Category.getCategoriesForUser({
     user: req.user,
     sortBy: "count",
     sortDirection: -1
   });
 
-  res.render("editTransaction", { title: "Add transaction", categories });
+  res.render("editTransaction", {
+    query,
+    title: "Add transaction",
+    categories
+  });
 };
 
 exports.editTransaction = async (req, res) => {

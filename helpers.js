@@ -640,4 +640,9 @@ exports.currencies = [
 
 exports.formatNumber = n => n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1,");
 
+exports.convertObjectToQueryParams = obj =>
+  Object.keys(obj)
+    .map(key => [key, obj[key]].map(encodeURIComponent).join("="))
+    .join("&");
+
 exports.dump = obj => JSON.stringify(obj, null, 2);
