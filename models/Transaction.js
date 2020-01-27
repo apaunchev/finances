@@ -153,6 +153,7 @@ transactionSchema.statics.getAll = function(filters) {
 
 transactionSchema.statics.getFiltered = function(filters) {
   const { user, type, year, month, category, groupBy } = filters;
+  const timezone = user.timezone || "UTC";
   let pipeline = [];
 
   let $match = {
@@ -203,8 +204,8 @@ transactionSchema.statics.getFiltered = function(filters) {
     if (groupBy === "date") {
       $group = {
         _id: {
-          year: { $year: "$date" },
-          month: { $month: "$date" }
+          year: { $year: { date: "$date", timezone } },
+          month: { $month: { date: "$date", timezone } }
         },
         amount: { $sum: "$amount" }
       };
