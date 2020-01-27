@@ -35,7 +35,7 @@ block content
         each category in categories.categories
           li.progress__item
             header
-              .progress__item__title(style=`color: ${category._id.color}`)= category._id.name
+              .progress__item__title= category._id.name
               .progress__item__meta= h.formatNumber(category.amount)
             .progress
               .progress__bar(style=`background-color: ${category._id.color}; width: ${(category.amount / categories.balance) * 100}%`)
