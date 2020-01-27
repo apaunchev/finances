@@ -38,7 +38,7 @@ const transactionSchema = new mongoose.Schema(
 );
 
 transactionSchema.statics.getAll = function(filters) {
-  const { user, category, uncleared } = filters;
+  const { user, category, year, month, uncleared } = filters;
   const timezone = user.timezone || "UTC";
 
   let $match = {
@@ -47,6 +47,20 @@ transactionSchema.statics.getAll = function(filters) {
 
   if (category) {
     $match.category = category._id;
+  }
+
+  if (year && isNaN(month)) {
+    $match.date = {
+      $gte: new Date(year, 0, 1),
+      $lte: new Date(year, 11, 31)
+    };
+  }
+
+  if (year && month >= 0) {
+    $match.date = {
+      $gte: new Date(year, month, 1),
+      $lte: new Date(year, month + 1, 0)
+    };
   }
 
   if (uncleared) {

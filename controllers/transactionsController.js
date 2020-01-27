@@ -16,10 +16,14 @@ exports.getTransactions = async (req, res) => {
   const query = req.query;
   const category =
     req.query.category && (await Category.findOne({ _id: req.query.category }));
+  const year = parseInt(req.query.year);
+  const month = parseInt(req.query.month) - 1;
   const uncleared = req.query.uncleared && req.query.uncleared === "true";
   const transactions = await Transaction.getAll({
     user,
     category,
+    year,
+    month,
     uncleared
   });
 

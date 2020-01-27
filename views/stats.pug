@@ -34,8 +34,9 @@ block content
       ul.progress__list
         each category in categories.categories
           li.progress__item
-            header
-              .progress__item__title= category._id.name
-              .progress__item__meta= h.formatNumber(category.amount)
-            .progress
-              .progress__bar(style=`background-color: ${category._id.color}; width: ${(category.amount / categories.balance) * 100}%`)
+            a(href=`/transactions?category=${category._id._id}&year=${year}&month=${month + 1}`)
+              header
+                .progress__item__title= category._id.name
+                .progress__item__meta= h.formatNumber(category.amount)
+              .progress
+                .progress__bar(style=`background-color: ${category._id.color}; width: ${(category.amount / categories.balance) * 100}%`)
