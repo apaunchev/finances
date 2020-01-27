@@ -6,7 +6,7 @@ block content
   - const queryParams = h.convertObjectToQueryParams(query)
   - const appNavRight = [{ url: `/add?${queryParams}`, title: "Add", icon: "plus-circle" }]
 
-  +appNav(title, menus.transactions.appNavLeft, appNavRight)
+  +appNav(title, null, appNavRight)
 
   .content
     if transactions.length > 0

@@ -11,11 +11,6 @@ module.exports = {
       }
     ]
   },
-  transactions: {
-    appNavLeft: [
-      { url: "/dashboard", title: "Dashboard", icon: "chevron-left" }
-    ]
-  },
   settings: {
     appNavLeft: [
       { url: "/dashboard", title: "Dashboard", icon: "chevron-left" }
