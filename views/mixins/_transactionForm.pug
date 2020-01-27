@@ -29,6 +29,10 @@ mixin transactionForm(transaction = {})
 
     .input__group
       .input__element
+        input(type="text" name="payee" placeholder="Payee (optional)" value=transaction.payee)
+
+    .input__group
+      .input__element
         input(type="text" name="note" placeholder="Note (optional)" value=transaction.note)
 
     .input__group

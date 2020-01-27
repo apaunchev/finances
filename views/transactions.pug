@@ -57,10 +57,11 @@ block content
               ol.transactions__list
                 each transaction in day.transactions
                   - const name = transaction.note || (transaction.amount < 0 ? "Expense" : "Income")
+                  - const payee = transaction.payee ? ` <span class="text--meta">@</span>${transaction.payee}` : ""
                   li(class=`transaction${!transaction.cleared ? " transaction--uncleared" : ""}`)
                     a(href=`/transaction/${transaction._id}/edit?${params}`)
                       .transaction__details__left
-                        span.transaction__name= name
+                        span.transaction__name!= `${name}${payee}`
                         span.transaction__category(style=`color: ${transaction.category.color}`)= transaction.category.name
                       .transaction__details__right
                         span.transaction__amount(class=`${transaction.amount < 0 ? "transaction__amount--expense" : ""}`)= `${h.formatNumber(transaction.amount)}`
