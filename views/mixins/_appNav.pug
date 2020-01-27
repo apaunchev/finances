@@ -13,5 +13,8 @@ mixin appNav(screenTitle = title, leftMenu, rightMenu)
     div
       if rightMenu
         each link in rightMenu
-          a(href=`${link.url}` title=`${link.title}`)
-            i(data-feather=`${link.icon}`)
+          if link.icon
+            a(href=`${link.url}` title=`${link.title}`)
+              i(data-feather=`${link.icon}`)
+          else
+            a(href=`${link.url}` title=`${link.title}`)= link.title

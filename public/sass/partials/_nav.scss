@@ -26,6 +26,7 @@
       width: 24px;
     }
 
+    // left
     &:nth-child(1) {
       flex: 1;
 
@@ -35,14 +36,17 @@
       }
     }
 
+    // middle
     &:nth-child(2) {
       flex: 2;
       text-align: center;
       font-weight: 500;
     }
 
+    // right
     &:nth-child(3) {
       flex: 1;
+      text-align: right;
 
       svg {
         float: right;
