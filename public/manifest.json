@@ -1,0 +1,12 @@
+{
+  "short_name": "Finances",
+  "name": "Finances",
+  "icons": [
+    {
+      "src": "/images/icons/app-icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "display": "standalone"
+}
