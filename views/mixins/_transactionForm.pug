@@ -19,8 +19,7 @@ mixin transactionForm(query = {}, transaction = {})
 
     .input__group
       .input__element.input__element--large
-        - const date = h.moment(transaction.date).format('YYYY-MM-DD')
-        input(type="date" name="date" value=date)
+        input(type="date" name="date" value=h.moment(transaction.date).format('YYYY-MM-DD'))
       .input__element.input__element--small
         select(name="cleared")
           if "cleared" in transaction
