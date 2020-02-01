@@ -9,6 +9,23 @@ block content
   +appNav(title, null, appNavRight)
 
   .content
+    unless query.category && query.year && query.month
+      if chartData && !query.uncleared
+        .chart.chart--mixed
+          ol.chart__list.chart__list--years
+            each y in chartData.years
+              li.chart__item
+                .chart__item__label.chart__item__label--years= y._id.year
+                ol.chart__list.chart__list--months
+                  each m in y.months
+                    - activeClass = m.month - 1 === month && y._id.year === year ? "chart__item--active" : ""
+                    li.chart__item(class=activeClass)
+                      a(href=`#${y._id.year}-${m.month}`)
+                        .chart__item__bar
+                          .chart__item__bar__segment.chart__item__bar__segment--income(style=`height: ${m.income / chartData.maxAmount * 81}px`)
+                          .chart__item__bar__segment.chart__item__bar__segment--expenses(style=`height: ${m.expenses / chartData.minAmount * 81}px`)
+                        .chart__item__label.chart__item__label--months= h.moment({months: m.month - 1}).format("MMM")
+
     if transactions.length > 0
       each year in transactions
         // hide year header when filtering by category, year and month
@@ -34,9 +51,9 @@ block content
 
         each month in year.months
           header.content__head
-            h2= h.moment({ month: month.month - 1 }).format("MMMM")
-              small= year._id.year
-
+            a(name=`${year._id.year}-${month.month}`)
+              h2= h.moment({ month: month.month - 1 }).format("MMMM")
+                small= year._id.year
           .pills
             if month.income > 0
               a(href=`/stats/?type=Income${queryParams}&year=${year._id.year}&month=${month.month}`)

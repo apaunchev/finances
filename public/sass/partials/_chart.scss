@@ -3,15 +3,30 @@ $c-chart-active: white;
 
 .chart {
   padding: 16px 8px;
-  color: $c-chart-default;
 }
 
 .chart--expenses {
   background-color: $c-expenses;
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .chart--income {
   background-color: $c-income;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.chart--mixed {
+  color: #2d3748;
+  background-color: rgba(245, 245, 245, 0.9);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  .chart__item > a {
+    color: #2d3748;
+  }
+
+  .chart__item__bar {
+    background-color: transparent;
+  }
 }
 
 .chart__list {
@@ -54,7 +69,7 @@ $c-chart-active: white;
 
   &.chart__item--active {
     > a {
-      color: $c-chart-active;
+      color: $c-chart-default;
     }
 
     .chart__item__bar {
@@ -64,9 +79,23 @@ $c-chart-active: white;
 }
 
 .chart__item__bar {
+  display: flex;
+  align-items: baseline;
   margin-top: auto;
-  width: 25px;
+  width: 24px;
   background-color: $c-chart-default;
+}
+
+.chart__item__bar__segment {
+  width: 12px;
+
+  &--income {
+    background-color: $c-income;
+  }
+
+  &--expenses {
+    background-color: $c-expenses;
+  }
 }
 
 .chart__item__label {

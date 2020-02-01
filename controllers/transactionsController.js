@@ -26,6 +26,11 @@ exports.getTransactions = async (req, res) => {
     month,
     uncleared
   });
+  const chartData = await Transaction.getFiltered({
+    user,
+    category,
+    groupBy: "date"
+  });
 
   let title = null;
   if (category) {
@@ -39,7 +44,8 @@ exports.getTransactions = async (req, res) => {
   res.render("transactions", {
     query,
     title,
-    transactions
+    transactions,
+    chartData: chartData[0]
   });
 };
 
