@@ -18,12 +18,12 @@ block content
 
           .pills
             if year.income > 0
-              a(href=`/stats/Income?${queryParams}&year=${year._id.year}`)
+              a(href=`/stats/?type=Income${queryParams}&year=${year._id.year}`)
                 .pill.pill--bg-income
                   span.pill-label Income
                   span.pill-value= `${h.formatNumber(year.income)}`
             if year.expenses < 0
-              a(href=`/stats/Expenses?${queryParams}&year=${year._id.year}`)
+              a(href=`/stats/?type=Expenses${queryParams}&year=${year._id.year}`)
                 .pill.pill--bg-expenses
                   span.pill-label Expenses
                   span.pill-value= `${h.formatNumber(year.expenses)}`
@@ -39,12 +39,12 @@ block content
 
           .pills
             if month.income > 0
-              a(href=`/stats/Income?${queryParams}&year=${year._id.year}&month=${month.month}`)
+              a(href=`/stats/?type=Income${queryParams}&year=${year._id.year}&month=${month.month}`)
                 .pill.pill--bg-income
                   span.pill-label Income
                   span.pill-value= `${h.formatNumber(month.income)}`
             if month.expenses < 0
-              a(href=`/stats/Expenses?${queryParams}&year=${year._id.year}&month=${month.month}`)
+              a(href=`/stats/?type=Expenses${queryParams}&year=${year._id.year}&month=${month.month}`)
                 .pill.pill--bg-expenses
                   span.pill-label Expenses
                   span.pill-value= `${h.formatNumber(month.expenses)}`

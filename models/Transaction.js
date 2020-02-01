@@ -178,8 +178,6 @@ transactionSchema.statics.getFiltered = function(filters) {
     $match.amount = { $lte: 0 };
   } else if (type === helpers.types.income) {
     $match.amount = { $gt: 0 };
-  } else {
-    $match.amount = { $lte: 0 };
   }
 
   if (year && isNaN(month)) {
@@ -221,7 +219,13 @@ transactionSchema.statics.getFiltered = function(filters) {
           year: { $year: { date: "$date", timezone } },
           month: { $month: { date: "$date", timezone } }
         },
-        amount: { $sum: "$amount" }
+        income: {
+          $sum: { $cond: [{ $gt: ["$amount", 0] }, "$amount", 0] }
+        },
+        expenses: {
+          $sum: { $cond: [{ $lt: ["$amount", 0] }, "$amount", 0] }
+        },
+        balance: { $sum: "$amount" }
       };
 
       pipeline.push({ $group });
@@ -234,12 +238,14 @@ transactionSchema.statics.getFiltered = function(filters) {
         _id: {
           year: "$_id.year"
         },
-        maxAmount: { $max: "$amount" },
-        minAmount: { $min: "$amount" },
+        maxAmount: { $max: "$income" },
+        minAmount: { $min: "$expenses" },
         months: {
           $push: {
             month: "$_id.month",
-            amount: "$amount"
+            income: "$income",
+            expenses: "$expenses",
+            balance: "$balance"
           }
         }
       };
@@ -251,7 +257,7 @@ transactionSchema.statics.getFiltered = function(filters) {
       pipeline.push({ $sort });
 
       $group = {
-        _id: "Group by date",
+        _id: null,
         maxAmount: { $max: "$maxAmount" },
         minAmount: { $min: "$minAmount" },
         years: {
@@ -283,7 +289,7 @@ transactionSchema.statics.getFiltered = function(filters) {
       pipeline.push({ $sort });
 
       $group = {
-        _id: "Group by category",
+        _id: null,
         balance: { $sum: "$amount" },
         categories: {
           $push: "$$ROOT"

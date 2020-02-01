@@ -4,8 +4,8 @@ const Transaction = mongoose.model("Transaction");
 const Category = mongoose.model("Category");
 
 exports.stats = async (req, res) => {
-  const { user } = req;
-  const { type } = req.params;
+  const user = req.user;
+  const type = req.query.type;
   const year = parseInt(req.query.year);
   const month = parseInt(req.query.month) - 1;
   const category =

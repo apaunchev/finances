@@ -19,8 +19,8 @@ block content
                   - activeClass = m.month - 1 === month && y._id.year === year ? "chart__item--active" : ""
                   li.chart__item(class=activeClass)
                     - const categoryParam = category ? `&category=${category._id}` : ""
-                    a(href=`/stats/${type}?year=${y._id.year}&month=${m.month}${categoryParam}`)
-                      - const typeHeight = type === "Expenses" ? m.amount / chartData.minAmount * 81 : m.amount / chartData.maxAmount * 81
+                    a(href=`/stats/?type=${type}&year=${y._id.year}&month=${m.month}${categoryParam}`)
+                      - const typeHeight = type === "Expenses" ? m.balance / chartData.minAmount * 81 : m.balance / chartData.maxAmount * 81
                       .chart__item__bar(style=`height: ${typeHeight}%`)
                       .chart__item__label.chart__item__label--months= h.moment({months: m.month - 1}).format("MMM")
 
