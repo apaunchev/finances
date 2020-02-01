@@ -28,11 +28,9 @@ block content
 
     if transactions.length > 0
       each year in transactions
-        // hide year header when filtering by category, year and month
         unless query.category && query.year && query.month
           header.content__head
             h1= year._id.year
-
           .pills
             if year.income > 0
               a(href=`/stats/?type=Income${queryParams}&year=${year._id.year}`)
@@ -84,7 +82,7 @@ block content
                         span.transaction__name!= `${name}${payee}`
                         span.transaction__category(style=`color: ${transaction.category.color}`)= transaction.category.name
                       .transaction__details__right
-                        span.transaction__amount(class=`${transaction.amount < 0 ? "transaction__amount--expense" : ""}`)= `${h.formatNumber(transaction.amount)}`
+                        span.transaction__amount= `${h.formatNumber(transaction.amount)}`
     else
       .empty-page
         .empty-page__content

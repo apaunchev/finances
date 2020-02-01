@@ -1,13 +1,12 @@
 .transactions__group {
-  margin: 0 0 24px;
+  margin: 0 0 16px;
 }
 
 .transactions__group__title {
   display: flex;
   margin: 0 16px;
   padding: 8px 0;
-  color: $c-text-meta;
-  font-weight: 400;
+  font-weight: 500;
   text-transform: uppercase;
 }
 
@@ -48,15 +47,10 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-weight: 500;
 }
 
 .transaction__amount {
   @extend .content__item__action;
-}
-
-.transaction__amount--expense {
-  color: $c-expenses;
 }
 
 .transaction__category {
