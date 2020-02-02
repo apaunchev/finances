@@ -9,8 +9,8 @@ block content
   +appNav(title, null, appNavRight)
 
   .content
-    unless query.category && query.year && query.month
-      if chartData && !query.uncleared
+    unless query.category || query.year || query.month || query.uncleared
+      if chartData
         .chart.chart--mixed
           ol.chart__list.chart__list--years
             each y in chartData.years
@@ -28,7 +28,7 @@ block content
 
     if transactions.length > 0
       each year in transactions
-        unless query.category && query.year && query.month
+        unless query.category || query.year || query.month
           header.content__head
             h1= year._id.year
           .pills
