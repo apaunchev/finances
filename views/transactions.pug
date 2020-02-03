@@ -28,7 +28,7 @@ block content
 
     if transactions.length > 0
       each year in transactions
-        unless query.category || query.year || query.month
+        unless query.category && query.year && query.month
           header.content__head
             h1= year._id.year
           .pills
