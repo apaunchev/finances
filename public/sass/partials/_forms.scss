@@ -11,6 +11,8 @@ $c-form-border: $c-ui;
 
 .input__element {
   flex: 1;
+  display: flex;
+  align-items: center;
 }
 
 .input__element--large {
@@ -70,4 +72,8 @@ input[type="color"] {
 input[type="color"] {
   padding: 0;
   width: 100%;
+}
+
+input[type="checkbox"] + label {
+  margin-left: 8px;
 }
