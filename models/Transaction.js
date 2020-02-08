@@ -37,9 +37,15 @@ const transactionSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-transactionSchema.statics.getAll = function(filters) {
-  const { user, category, year, month, uncleared } = filters;
+transactionSchema.statics.getAll = function({
+  user,
+  category,
+  year,
+  month,
+  uncleared
+}) {
   const timezone = user.timezone || "UTC";
+  let $pipeline = [];
 
   let $match = {
     user: user._id
@@ -67,106 +73,114 @@ transactionSchema.statics.getAll = function(filters) {
     $match.cleared = false;
   }
 
-  return this.aggregate([
-    {
-      $match
+  $pipeline.push({ $match });
+
+  const $lookup = {
+    from: "categories",
+    localField: "category",
+    foreignField: "_id",
+    as: "category"
+  };
+
+  // join with categories
+  $pipeline.push({ $lookup }, { $unwind: "$category" }, { $sort: { _id: 1 } });
+
+  let $group = {};
+  let $sort = {};
+
+  // group by days
+  $group = {
+    _id: {
+      dayOfMonth: {
+        $dayOfMonth: { date: "$date", timezone }
+      },
+      month: { $month: { date: "$date", timezone } },
+      year: { $year: { date: "$date", timezone } }
     },
-    // join with categories
-    {
-      $lookup: {
-        from: "categories",
-        localField: "category",
-        foreignField: "_id",
-        as: "category"
-      }
+    balance: { $sum: "$amount" },
+    income: {
+      $sum: { $cond: [{ $gt: ["$amount", 0] }, "$amount", 0] }
     },
-    {
-      $unwind: "$category"
+    expenses: {
+      $sum: { $cond: [{ $lt: ["$amount", 0] }, "$amount", 0] }
     },
-    {
-      $sort: { _id: -1 }
+    date: {
+      $first: "$date"
     },
-    // group by days
-    {
-      $group: {
-        _id: {
-          dayOfMonth: {
-            $dayOfMonth: { date: "$date", timezone }
-          },
-          month: { $month: { date: "$date", timezone } },
-          year: { $year: { date: "$date", timezone } }
-        },
-        balance: { $sum: "$amount" },
-        income: {
-          $sum: { $cond: [{ $gt: ["$amount", 0] }, "$amount", 0] }
-        },
-        expenses: {
-          $sum: { $cond: [{ $lt: ["$amount", 0] }, "$amount", 0] }
-        },
-        date: {
-          $first: "$date"
-        },
-        transactions: {
-          $push: "$$ROOT"
-        }
-      }
-    },
-    {
-      $sort: { _id: -1 }
-    },
-    // group by months
-    {
-      $group: {
-        _id: {
-          month: "$_id.month",
-          year: "$_id.year"
-        },
-        income: { $sum: "$income" },
-        expenses: { $sum: "$expenses" },
-        balance: { $sum: "$balance" },
-        days: {
-          $push: {
-            day: "$_id.dayOfMonth",
-            date: "$date",
-            balance: "$balance",
-            income: { $sum: "$income" },
-            expenses: { $sum: "$expenses" },
-            transactions: "$transactions"
-          }
-        }
-      }
-    },
-    {
-      $sort: { _id: -1 }
-    },
-    // group by years
-    {
-      $group: {
-        _id: {
-          year: "$_id.year"
-        },
-        income: { $sum: "$income" },
-        expenses: { $sum: "$expenses" },
-        balance: { $sum: "$balance" },
-        months: {
-          $push: {
-            month: "$_id.month",
-            income: { $sum: "$income" },
-            expenses: { $sum: "$expenses" },
-            balance: "$balance",
-            days: "$days"
-          }
-        }
-      }
-    },
-    {
-      $sort: { _id: -1 }
+    transactions: {
+      $push: "$$ROOT"
     }
-  ]);
+  };
+
+  $pipeline.push({ $group });
+
+  $sort = { _id: -1 };
+
+  $pipeline.push({ $sort });
+
+  // group by months
+  $group = {
+    _id: {
+      month: "$_id.month",
+      year: "$_id.year"
+    },
+    income: { $sum: "$income" },
+    expenses: { $sum: "$expenses" },
+    balance: { $sum: "$balance" },
+    days: {
+      $push: {
+        day: "$_id.dayOfMonth",
+        date: "$date",
+        balance: "$balance",
+        income: { $sum: "$income" },
+        expenses: { $sum: "$expenses" },
+        transactions: "$transactions"
+      }
+    }
+  };
+
+  $pipeline.push({ $group });
+
+  $sort = { _id: -1 };
+
+  $pipeline.push({ $sort });
+
+  // group by years
+  $group = {
+    _id: {
+      year: "$_id.year"
+    },
+    income: { $sum: "$income" },
+    expenses: { $sum: "$expenses" },
+    balance: { $sum: "$balance" },
+    months: {
+      $push: {
+        month: "$_id.month",
+        income: { $sum: "$income" },
+        expenses: { $sum: "$expenses" },
+        balance: "$balance",
+        days: "$days"
+      }
+    }
+  };
+
+  $pipeline.push({ $group });
+
+  $sort = { _id: -1 };
+
+  $pipeline.push({ $sort });
+
+  return this.aggregate($pipeline);
 };
 
-transactionSchema.statics.getFiltered = function(filters) {
-  const { user, type, year, month, category, groupBy } = filters;
+transactionSchema.statics.getFiltered = function({
+  user,
+  type,
+  year,
+  month,
+  category,
+  groupBy
+}) {
   const timezone = user.timezone || "UTC";
   let pipeline = [];
 
