@@ -26,7 +26,10 @@ exports.updateAccount = async (req, res) => {
 };
 
 exports.categories = async (req, res) => {
-  const categories = await Category.getCategoriesForUser({ user: req.user });
+  const categories = await Category.getCategoriesForUser({
+    user: req.user,
+    groupBy: "type"
+  });
 
   res.render("settingsCategories", { title: "Categories", categories });
 };

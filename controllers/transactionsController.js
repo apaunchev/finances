@@ -53,6 +53,7 @@ exports.addTransaction = async (req, res) => {
   const query = req.query;
   const categories = await Category.getCategoriesForUser({
     user: req.user,
+    groupBy: "type",
     sortBy: "count",
     sortDirection: -1
   });
@@ -66,7 +67,10 @@ exports.addTransaction = async (req, res) => {
 
 exports.editTransaction = async (req, res) => {
   const transaction = await Transaction.findOne({ _id: req.params.id });
-  const categories = await Category.getCategoriesForUser({ user: req.user });
+  const categories = await Category.getCategoriesForUser({
+    user: req.user,
+    groupBy: "type"
+  });
 
   confirmOwner(transaction, req.user); // TODO: middleware
 

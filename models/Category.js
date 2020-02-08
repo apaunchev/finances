@@ -30,7 +30,7 @@ const categorySchema = new mongoose.Schema(
 
 categorySchema.statics.getCategoriesForUser = function({
   user,
-  groupBy = "type",
+  groupBy,
   sortBy = "name",
   sortDirection = 1
 }) {
