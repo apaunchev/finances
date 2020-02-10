@@ -83,7 +83,10 @@ transactionSchema.statics.getAll = function({
   };
 
   // join with categories
-  $pipeline.push({ $lookup }, { $unwind: "$category" }, { $sort: { _id: 1 } });
+  $pipeline.push({ $lookup }, { $unwind: "$category" });
+
+  // sort transactions by date
+  $pipeline.push({ $sort: { createdAt: -1 } });
 
   let $group = {};
   let $sort = {};
