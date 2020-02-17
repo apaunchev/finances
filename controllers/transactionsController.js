@@ -126,12 +126,14 @@ exports.createTransaction = async (req, res) => {
 };
 
 exports.updateTransaction = async (req, res) => {
-  await Transaction.findOneAndUpdate({ _id: req.params.id }, req.body, {
-    new: true,
-    runValidators: true
-  })
-    .exec()
-    .then(() => res.redirect("/transactions"));
+  await Transaction.findOneAndUpdate(
+    { _id: req.params.id },
+    { $set: { ...req.body } },
+    {
+      new: true,
+      runValidators: true
+    }
+  ).then(() => res.redirect("/transactions"));
 };
 
 exports.removeTransaction = async (req, res) => {

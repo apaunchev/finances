@@ -64,12 +64,14 @@ exports.editCategory = async (req, res) => {
 };
 
 exports.updateCategory = async (req, res) => {
-  await Category.findOneAndUpdate({ _id: req.params.id }, req.body, {
-    new: true,
-    runValidators: true
-  })
-    .exec()
-    .then(() => res.redirect("/settings/categories"));
+  await Category.findOneAndUpdate(
+    { _id: req.params.id },
+    { $set: { ...req.body } },
+    {
+      new: true,
+      runValidators: true
+    }
+  ).then(() => res.redirect("/settings/categories"));
 };
 
 exports.removeCategory = async (req, res) => {
