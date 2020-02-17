@@ -6,7 +6,7 @@ block content
   - const queryParams = h.convertObjectToQueryParams(query)
   - const appNavRight = [{ url: `/add?${queryParams}`, title: "Add", icon: "plus-circle" }]
 
-  +appNav(title, null, appNavRight)
+  +appNav(title, menus.transactions.appNavLeft, appNavRight)
 
   .content
     unless query.category || query.year || query.month || query.uncleared
