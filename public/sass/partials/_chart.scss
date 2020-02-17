@@ -88,6 +88,7 @@ $c-chart-active: white;
 
 .chart__item__bar__segment {
   width: 12px;
+  max-height: 81px;
 
   &--income {
     background-color: $c-income;
