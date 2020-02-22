@@ -22,8 +22,9 @@ block content
                     li.chart__item(class=activeClass)
                       a(href=`#${y._id.year}-${m.month}`)
                         .chart__item__bar
-                          .chart__item__bar__segment.chart__item__bar__segment--income(style=`height: ${m.income / -chartData.minAmount * 81}px` title=`${h.formatNumber(m.income)}`)
-                          .chart__item__bar__segment.chart__item__bar__segment--expenses(style=`height: ${m.expenses / chartData.minAmount * 81}px` title= `${h.formatNumber(m.expenses)}`)
+                          - const largestAmount = Math.max(-chartData.minAmount, chartData.maxAmount)
+                          .chart__item__bar__segment.chart__item__bar__segment--income(style=`height: ${m.income / largestAmount * 81}px` title=`${h.formatNumber(m.income)}`)
+                          .chart__item__bar__segment.chart__item__bar__segment--expenses(style=`height: ${m.expenses / -largestAmount * 81}px` title= `${h.formatNumber(m.expenses)}`)
                         .chart__item__label.chart__item__label--months= h.moment({months: m.month - 1}).format("MMM")
 
     if transactions.length > 0
