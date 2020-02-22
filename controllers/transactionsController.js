@@ -19,17 +19,20 @@ exports.getTransactions = async (req, res) => {
   const year = parseInt(req.query.year);
   const month = parseInt(req.query.month) - 1;
   const uncleared = req.query.uncleared && req.query.uncleared === "true";
+  const term = req.query.term;
   const transactions = await Transaction.getAll({
     user,
     category,
     year,
     month,
-    uncleared
+    uncleared,
+    term
   });
   const chartData = await Transaction.getFiltered({
     user,
     category,
-    groupBy: "date"
+    groupBy: "date",
+    term
   });
 
   let title = null;
@@ -140,4 +143,12 @@ exports.removeTransaction = async (req, res) => {
   await Transaction.deleteOne({ _id: req.params.id }).then(() =>
     res.redirect("/transactions")
   );
+};
+
+exports.search = async (req, res) => {
+  res.render("search", { title: "Search" });
+};
+
+exports.results = async (req, res) => {
+  res.redirect(`/transactions?term=${req.body.term}`);
 };

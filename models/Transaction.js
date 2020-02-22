@@ -42,7 +42,8 @@ transactionSchema.statics.getAll = function({
   category,
   year,
   month,
-  uncleared
+  uncleared,
+  term
 }) {
   const timezone = user.timezone || "UTC";
   let $pipeline = [];
@@ -71,6 +72,10 @@ transactionSchema.statics.getAll = function({
 
   if (uncleared) {
     $match.cleared = false;
+  }
+
+  if (term) {
+    $match.$text = { $search: term };
   }
 
   $pipeline.push({ $match });
@@ -182,7 +187,8 @@ transactionSchema.statics.getFiltered = function({
   year,
   month,
   category,
-  groupBy
+  groupBy,
+  term
 }) {
   const timezone = user.timezone || "UTC";
   let pipeline = [];
@@ -213,6 +219,10 @@ transactionSchema.statics.getFiltered = function({
 
   if (category) {
     $match.category = category._id;
+  }
+
+  if (term) {
+    $match.$text = { $search: term };
   }
 
   pipeline.push({ $match });
@@ -328,8 +338,6 @@ function autopopulate(next) {
 transactionSchema.pre("find", autopopulate);
 transactionSchema.pre("findOne", autopopulate);
 
-transactionSchema.index({
-  description: "text"
-});
+transactionSchema.index({ note: "text", payee: "text" });
 
 module.exports = mongoose.model("Transaction", transactionSchema);

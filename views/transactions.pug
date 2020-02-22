@@ -4,7 +4,7 @@ include mixins/_appNav
 
 block content
   - const queryParams = h.convertObjectToQueryParams(query)
-  - const appNavRight = [{ url: `/add?${queryParams}`, title: "Add", icon: "plus-circle" }]
+  - const appNavRight = [{ url: `/add${queryParams ? `?${queryParams}` : ""}`, title: "Add", icon: "plus-circle" }, { url: "/search", title: "Search", icon: "search" }]
 
   +appNav(title, menus.transactions.appNavLeft, appNavRight)
 

@@ -1,0 +1,14 @@
+extends layout
+
+include mixins/_appNav
+
+block content
+  +appNav(title)
+
+  .content
+    form(action="/search" method="POST" class="form")
+      .input__group
+        .input__element
+          input(type="search" name="term" placeholder="Search by note or payee..." value=term required)
+      .input__group
+        input(type="submit" value="Search")

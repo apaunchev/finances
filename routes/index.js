@@ -76,6 +76,20 @@ router.post(
   catchErrors(transactionsController.updateTransaction)
 );
 
+// Search
+
+router.get(
+  "/search",
+  authController.isAuthenticated,
+  catchErrors(transactionsController.search)
+);
+
+router.post(
+  "/search",
+  authController.isAuthenticated,
+  catchErrors(transactionsController.results)
+);
+
 // Stats
 
 router.get(

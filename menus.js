@@ -1,7 +1,10 @@
 module.exports = {
   dashboard: {
     appNavLeft: [{ url: "/settings", title: "Settings", icon: "sliders" }],
-    appNavRight: [{ url: "/add", title: "Add", icon: "plus-circle" }],
+    appNavRight: [
+      { url: "/add", title: "Add", icon: "plus-circle" },
+      { url: "/search", title: "Search", icon: "search" }
+    ],
     contentList: [
       { url: "/transactions", title: "All", icon: "arrow-right-circle" },
       {
